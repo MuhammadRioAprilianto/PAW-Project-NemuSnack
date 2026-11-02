@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="snackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#EA580C" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#snackGrad)" />
+  <g transform="translate(180, 80)">
+    <!-- Snack plate / cart illustration -->
+    <rect x="20" y="90" width="200" height="60" rx="30" fill="url(#accentGrad)" opacity="0.9" />
+    <circle cx="80" cy="80" r="28" fill="#FBBF24" />
+    <circle cx="120" cy="70" r="32" fill="#F97316" />
+    <circle cx="160" cy="80" r="28" fill="#EF4444" />
+    <text x="120" y="190" font-family="system-ui, sans-serif" font-size="24" font-weight="bold" fill="#FEF3C7" text-anchor="middle">NemuSnack</text>
+    <text x="120" y="220" font-family="system-ui, sans-serif" font-size="14" fill="#94A3B8" text-anchor="middle">Jajanan &amp; PKL Terdekat</text>
+  </g>
+</svg>

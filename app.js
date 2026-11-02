@@ -1,5 +1,6 @@
 /**
- * Entry Point Utama Aplikasi Kebab Corner
+ * Entry Point Utama Aplikasi NemuSnack
+ * Berdasarkan PRD NemuSnack (Muhammad Rio Aprilianto - 20240140204)
  * Inisialisasi Express, Middleware, View Engine EJS, Routing, dan Server
  */
 

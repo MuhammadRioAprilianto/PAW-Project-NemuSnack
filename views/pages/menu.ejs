@@ -1,57 +1,57 @@
-<!-- Halaman Daftar Menu Kebab Corner -->
+<!-- Halaman Katalog Jajanan & Monitoring Lapak PKL - NemuSnack -->
 
-<!-- Header Banner Halaman Menu -->
-<section class="bg-gradient-to-b from-brand-warm via-brand-cream to-white py-10 lg:py-14 border-b border-brand-warm">
+<!-- Header Banner Halaman Katalog -->
+<section class="bg-gradient-to-b from-orange-50/80 via-amber-50/30 to-white py-10 lg:py-14 border-b border-orange-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange text-xs sm:text-sm font-bold tracking-wide mb-3">
-      <span>Daftar Menu & Monitoring REST API</span>
+      <span>Katalog Jajanan &amp; Pemantauan Status Lapak PKL</span>
     </div>
-    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-brown tracking-tight">
-      Pilihan Menu Kebab Corner
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
+      Direktori Jajanan &amp; Rute Lapak PKL
     </h1>
     <p class="mt-3 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-      Dibuat dari bahan-bahan segar berkualitas tinggi dengan bumbu khas Timur Tengah. Dilengkapi fitur pencarian menu by ID dan pemantauan Response API secara real-time.
+      Pantau posisi pedagang gerobak keliling maupun lapak menetap. Lengkap dengan pencarian menu by ID dan kotak inspeksi Route &amp; Response REST API real-time.
     </p>
 
-    <!-- Info Jumlah Produk -->
-    <div class="mt-5 flex items-center justify-center space-x-3 text-xs sm:text-sm text-gray-500">
-      <span class="inline-flex items-center px-3 py-1 rounded-full bg-white border border-gray-200 font-semibold text-brand-brown shadow-sm">
-        Total: <%= typeof products !== 'undefined' ? products.length : 0 %> Varian Kebab
+    <!-- Info Jumlah Produk & Status Operasional -->
+    <div class="mt-5 flex items-center justify-center space-x-3 text-xs sm:text-sm text-gray-600">
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-white border border-gray-200 font-semibold text-gray-800 shadow-sm">
+        Total: <%= typeof products !== 'undefined' ? products.length : 0 %> Lapak PKL Terdaftar
       </span>
       <span>•</span>
       <span class="text-emerald-600 font-semibold flex items-center">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> REST API Aktif
+        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Sinkronisasi Real-Time Aktif
       </span>
     </div>
   </div>
 </section>
 
 <!-- SECTION: CONTROL PANEL (Pencarian by ID & Kotak Pantau Route / Response API) -->
-<section class="py-8 bg-brand-warm/30 border-b border-brand-warm">
+<section class="py-8 bg-orange-50/30 border-b border-orange-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
     
     <!-- 1. FORM PENCARIAN BY ID -->
-    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-gray-100 shadow-sm">
+    <div class="bg-white p-6 sm:p-7 rounded-2xl border border-gray-200/80 shadow-sm">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
         <div>
-          <h2 class="text-lg sm:text-xl font-bold text-brand-brown flex items-center">
+          <h2 class="text-lg sm:text-xl font-bold text-gray-900 flex items-center">
             <svg class="w-5 h-5 text-brand-orange mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
-            Pencarian Menu Berdasarkan ID
+            Pencarian Jajanan / Lapak Berdasarkan ID
           </h2>
           <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
-            Gunakan input di bawah untuk mengambil data menu spesifik via endpoint <code class="bg-brand-warm text-brand-orange px-1.5 py-0.5 rounded font-mono text-xs font-bold">GET /api/produk/:id</code>
+            Ambil data katalog jajanan spesifik melalui backend route <code class="bg-orange-100 text-brand-orange px-1.5 py-0.5 rounded font-mono text-xs font-bold">GET /api/produk/:id</code>
           </p>
         </div>
 
         <button type="button" 
                 onclick="resetMenuFilter()"
-                class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:text-brand-orange bg-gray-100 hover:bg-brand-warm border border-gray-200 transition-colors">
+                class="inline-flex items-center justify-center px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:text-brand-orange bg-gray-100 hover:bg-orange-50 border border-gray-200 transition-colors">
           <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
-          Reset / Tampilkan Semua
+          Reset / Tampilkan Semua Lapak
         </button>
       </div>
 
@@ -64,7 +64,7 @@
           <input type="number" 
                  id="search-id-input" 
                  min="1" 
-                 placeholder="Masukkan nomor ID produk (contoh: 1, 2, 3...)"
+                 placeholder="Ketik ID jajanan (contoh: 1 untuk Pisang Cokelat Pak Yono)..."
                  value="<%= typeof requestedId !== 'undefined' && requestedId ? requestedId : '' %>"
                  class="w-full pl-14 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-sm outline-none transition-all"
                  required>
@@ -75,11 +75,11 @@
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
-          Cari & Ambil Data API
+          Cari &amp; Ambil Data API
         </button>
       </form>
 
-      <!-- Preset Tombol Cepat ID (Quick Filters) -->
+      <!-- Preset Tombol Cepat ID (Quick Filters Sesuai PRD) -->
       <div class="mt-4 pt-3 border-t border-gray-100">
         <p class="text-xs font-semibold text-gray-500 mb-2">Pilih Cepat untuk Pengujian Route:</p>
         <div class="flex flex-wrap gap-2">
@@ -87,8 +87,8 @@
             <% products.forEach((p) => { %>
               <button type="button" 
                       onclick="fetchProductById(<%= p.id %>)"
-                      class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-warm/80 hover:bg-brand-orange hover:text-white text-brand-brown border border-brand-warm transition-all flex items-center">
-                <span class="font-mono mr-1.5 font-bold">#<%= p.id %></span> <%= p.name %>
+                      class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-50 hover:bg-brand-orange hover:text-white text-gray-800 border border-orange-200 transition-all flex items-center">
+                <span class="font-mono mr-1.5 font-bold text-brand-orange">#<%= p.id %></span> <%= p.name %>
               </button>
             <% }); %>
           <% } %>
@@ -120,7 +120,7 @@
             <svg class="w-4 h-4 text-brand-orange mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
             </svg>
-            Live Route & Response API Inspector
+            Live Route &amp; Response API Inspector (NemuSnack)
           </span>
         </div>
 
@@ -130,7 +130,7 @@
             HTTP GET
           </span>
 
-          <span id="inspector-route-badge" class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-gray-800 text-brand-accent border border-gray-700">
+          <span id="inspector-route-badge" class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-gray-800 text-brand-amber border border-gray-700">
             /api/produk
           </span>
 
@@ -156,8 +156,8 @@
       <div class="px-4 sm:px-6 py-3 bg-gray-900/90 border-b border-gray-800/80 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-gray-300 gap-2">
         <div class="flex items-center space-x-2">
           <span class="text-gray-400 font-semibold">Aksi yang Sedang Dilakukan:</span>
-          <span id="inspector-action-desc" class="font-semibold text-brand-accent">
-            Menampilkan seluruh katalog produk kebab melalui REST API
+          <span id="inspector-action-desc" class="font-semibold text-brand-amber">
+            Mengambil data katalog seluruh jajanan PKL NemuSnack
           </span>
         </div>
         <div class="flex items-center space-x-3 text-gray-400 text-[11px]">
@@ -182,23 +182,23 @@
   </div>
 </section>
 
-<!-- Konten Grid Produk Kebab -->
+<!-- Konten Grid Jajanan & Lapak PKL -->
 <section class="py-12 lg:py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <!-- Filter Status Alert (Muncul jika ada produk yang dipilih / disaring) -->
-    <div id="filter-status-banner" class="hidden mb-8 p-4 rounded-xl bg-brand-warm border border-brand-orange/30 flex items-center justify-between">
+    <!-- Filter Status Alert -->
+    <div id="filter-status-banner" class="hidden mb-8 p-4 rounded-xl bg-orange-50 border border-brand-orange/40 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="w-9 h-9 rounded-lg bg-brand-orange text-white flex items-center justify-center font-bold">
           ✓
         </div>
         <div>
-          <p class="text-sm font-bold text-brand-brown" id="filter-status-title">Menampilkan Produk Terpilih</p>
-          <p class="text-xs text-gray-600" id="filter-status-desc">Hanya menampilkan produk berdasarkan pencarian ID.</p>
+          <p class="text-sm font-bold text-gray-900" id="filter-status-title">Menampilkan Lapak Terpilih</p>
+          <p class="text-xs text-gray-600" id="filter-status-desc">Hanya menampilkan lapak berdasarkan pencarian ID.</p>
         </div>
       </div>
       <button onclick="resetMenuFilter()" class="text-xs font-bold text-brand-orange hover:underline px-3 py-1">
-        Tampilkan Semua Menu
+        Tampilkan Semua Lapak
       </button>
     </div>
 
@@ -208,43 +208,76 @@
         <% products.forEach((product) => { %>
           <div id="product-card-<%= product.id %>"
                data-product-id="<%= product.id %>"
-               class="product-card bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col overflow-hidden group">
+               class="product-card bg-white rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col overflow-hidden group">
             
-            <!-- Foto Produk -->
+            <!-- Foto Produk Jajanan -->
             <div class="relative h-64 w-full overflow-hidden bg-gray-100">
               <img src="<%= product.image %>" 
                    alt="<%= product.name %>" 
                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                   onerror="this.onerror=null; this.src='/assets/images/kebab-placeholder.svg';">
+                   onerror="this.onerror=null; this.src='/assets/images/snack-placeholder.svg';">
               
               <!-- Badge Kategori -->
-              <span class="absolute top-3 left-3 bg-brand-brown/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm">
+              <span class="absolute top-3 left-3 bg-gray-900/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm">
                 <%= product.category %>
               </span>
 
-              <!-- ID Produk Badge -->
-              <span class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm text-brand-orange text-xs font-extrabold px-2.5 py-1 rounded-md shadow-sm border border-brand-warm font-mono">
-                ID: <%= product.id %>
-              </span>
+              <!-- Live Status Pergerakan Lapak (US-02 PRD) -->
+              <% if (product.status === 'Mangkal') { %>
+                <span class="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-md flex items-center">
+                  <span class="w-2 h-2 rounded-full bg-white mr-1.5 animate-pulse"></span> Mangkal
+                </span>
+              <% } else { %>
+                <span class="absolute top-3 right-3 bg-brand-amber text-gray-950 text-xs font-extrabold px-2.5 py-1 rounded-md shadow-md flex items-center">
+                  🚶 Sedang Berjalan
+                </span>
+              <% } %>
             </div>
 
-            <!-- Detail Produk -->
+            <!-- Detail Jajanan & Lapak -->
             <div class="p-6 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-xl font-bold text-gray-900 group-hover:text-brand-orange transition-colors flex items-center justify-between">
-                  <span><%= product.name %></span>
+                <!-- Penjual & Rating (US-04 PRD) -->
+                <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                  <span class="font-bold text-brand-orange flex items-center">
+                    <span class="mr-1">👨‍🍳</span> <%= product.seller %>
+                  </span>
+                  <span class="flex items-center text-amber-500 font-extrabold">
+                    ★ <%= product.rating %> <span class="text-gray-400 font-normal ml-1">(<%= product.reviewsCount %> ulasan)</span>
+                  </span>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+                  <%= product.name %>
                 </h3>
                 <p class="mt-2 text-sm text-gray-600 leading-relaxed">
                   <%= product.description %>
                 </p>
+
+                <!-- Informasi Titik Lokasi & Rencana Rute (US-06 PRD) -->
+                <div class="mt-4 p-3 rounded-xl bg-orange-50/70 border border-orange-100 text-xs space-y-1.5">
+                  <div class="flex items-start text-gray-700">
+                    <span class="font-bold w-14 shrink-0 text-gray-900">Lokasi:</span>
+                    <span><%= product.location %></span>
+                  </div>
+                  <div class="flex items-start text-gray-600">
+                    <span class="font-bold w-14 shrink-0 text-gray-900">Rute:</span>
+                    <span class="italic"><%= product.route %></span>
+                  </div>
+                </div>
               </div>
 
               <!-- Harga & Aksi Tombol -->
               <div class="mt-6 pt-4 border-t border-gray-100 space-y-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-xs text-gray-400 font-medium">Harga</span>
-                  <span class="text-xl font-extrabold text-brand-orange">
-                    <%= formatCurrency(product.price) %>
+                  <div>
+                    <span class="text-[11px] text-gray-400 font-medium block">Harga Jajanan</span>
+                    <span class="text-xl font-extrabold text-brand-orange">
+                      <%= formatCurrency(product.price) %>
+                    </span>
+                  </div>
+                  <span class="text-xs px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 font-mono font-semibold">
+                    ID: <%= product.id %>
                   </span>
                 </div>
 
@@ -252,22 +285,22 @@
                   <!-- Tombol Pantau API Route untuk Produk Ini -->
                   <button type="button"
                           onclick="fetchProductById(<%= product.id %>)"
-                          class="w-full inline-flex items-center justify-center px-3 py-2 rounded-xl font-bold text-xs text-brand-brown bg-brand-warm hover:bg-brand-orange hover:text-white border border-brand-warm transition-all duration-200"
-                          title="Klik untuk melihat aksi Route dan Response JSON dari produk ini">
+                          class="w-full inline-flex items-center justify-center px-3 py-2 rounded-xl font-bold text-xs text-gray-800 bg-orange-100/70 hover:bg-brand-orange hover:text-white border border-orange-200 transition-all duration-200"
+                          title="Klik untuk melihat aksi Route dan Response JSON dari jajanan ini">
                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                     </svg>
                     <span>Cek Route API</span>
                   </button>
 
-                  <!-- Tombol Pesan -->
+                  <!-- Tombol Datangi Lapak / Info Pemesanan (Sesuai Non-Goals PRD) -->
                   <button type="button"
-                          onclick="showOrderModal('<%= product.name %>', '<%= formatCurrency(product.price) %>')"
+                          onclick="showLapakModal('<%= product.name %>', '<%= product.seller %>', '<%= formatCurrency(product.price) %>', '<%= product.location %>', '<%= product.status %>')"
                           class="w-full inline-flex items-center justify-center px-3 py-2 rounded-xl font-bold text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-sm hover:shadow transition-all duration-200">
                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     </svg>
-                    <span>Pesan</span>
+                    <span>Datangi Lapak</span>
                   </button>
                 </div>
               </div>
@@ -276,54 +309,47 @@
 
           </div>
         <% }); %>
-      <% } else { %>
-        <div class="col-span-full text-center py-16 text-gray-500">
-          <p class="text-lg">Tidak ada data produk yang ditemukan.</p>
-        </div>
       <% } %>
     </div>
 
-    <!-- Informasi Pemesanan di Bawah Menu -->
-    <div class="mt-16 bg-brand-warm rounded-2xl p-6 sm:p-8 border border-brand-warm/80 text-center max-w-2xl mx-auto">
-      <h3 class="text-lg font-bold text-brand-brown">Informasi Pemesanan</h3>
-      <p class="mt-2 text-sm text-gray-600">
-        Pemesanan dapat dilakukan langsung di outlet Kebab Corner terdekat atau hubungi counter layanan kami. Seluruh produk disajikan hangat saat dipesan.
+    <!-- Catatan Non-Goals PRD -->
+    <div class="mt-16 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 border border-orange-200 text-center max-w-3xl mx-auto space-y-2">
+      <h3 class="text-base sm:text-lg font-bold text-gray-900">Pedoman Transaksi (Non-Goals PRD NemuSnack)</h3>
+      <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+        NemuSnack <strong>tidak menyediakan kurir pengiriman</strong> dan <strong>tidak memproses pembayaran digital in-app</strong>. Pembeli dipersilakan mendatangi langsung gerobak atau titik koordinat lapak PKL dan melakukan transaksi tunai/COD di tempat.
       </p>
-      <div class="mt-4">
-        <a href="/#contact" class="inline-flex items-center text-sm font-bold text-brand-orange hover:underline">
-          <span>Lihat lokasi outlet dan kontak</span>
-          <span class="ml-1">→</span>
-        </a>
-      </div>
     </div>
 
   </div>
 </section>
 
-<!-- Modal Petunjuk Pemesanan -->
-<div id="order-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+<!-- Modal Informasi Lapak PKL & Kunjungan -->
+<div id="lapak-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 transform transition-all">
-    <button onclick="closeOrderModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+    <button onclick="closeLapakModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
       </svg>
     </button>
-    <div class="w-12 h-12 rounded-full bg-brand-orange/10 text-brand-orange flex items-center justify-center mx-auto mb-4">
+    <div class="w-12 h-12 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center mx-auto mb-4">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
       </svg>
     </div>
-    <h3 class="text-xl font-bold text-gray-900 text-center" id="modal-product-name">Pesan Kebab</h3>
-    <p class="text-sm font-semibold text-brand-orange text-center mt-1" id="modal-product-price">Rp 0</p>
-    <div class="mt-5 p-4 rounded-xl bg-brand-warm/60 border border-brand-warm text-xs text-gray-600 space-y-2">
-      <p class="font-bold text-gray-800">Petunjuk Pemesanan:</p>
-      <p>1. Kunjungi gerai outlet resmi Kebab Corner.</p>
-      <p>2. Sebutkan varian menu pilihanmu kepada barista kasir.</p>
-      <p>3. Kebab akan langsung dipanggang dan diracik hangat sesuai pesanan.</p>
+    <h3 class="text-xl font-bold text-gray-900 text-center" id="modal-product-name">Pisang Cokelat Pak Yono</h3>
+    <p class="text-xs text-center text-gray-500 mt-0.5" id="modal-seller-name">Lapak Gerobak Pak Yono</p>
+    <p class="text-base font-extrabold text-brand-orange text-center mt-2" id="modal-product-price">Rp 12.000</p>
+    
+    <div class="mt-5 p-4 rounded-xl bg-orange-50/80 border border-orange-200 text-xs text-gray-700 space-y-2">
+      <p><strong>Titik Lokasi:</strong> <span id="modal-location">Jl. Kaliurang km 5</span></p>
+      <p><strong>Status Lapak:</strong> <span id="modal-status" class="font-bold text-emerald-600">Mangkal</span></p>
+      <div class="pt-2 border-t border-orange-200 text-[11px] text-gray-600">
+        💡 <em>Tips: Langsung kunjungi lapak PKL pada titik lokasi di atas untuk menikmati jajanan hangat langsung dari wajan!</em>
+      </div>
     </div>
     <div class="mt-6 flex flex-col gap-2">
-      <button onclick="closeOrderModal()" class="w-full py-3 rounded-xl font-bold text-sm text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors">
-        Tutup & Lanjutkan Melihat Menu
+      <button onclick="closeLapakModal()" class="w-full py-3 rounded-xl font-bold text-sm text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors">
+        Tutup &amp; Lanjutkan Memantau
       </button>
     </div>
   </div>
@@ -333,21 +359,17 @@
 <script>
   let currentJsonData = null;
 
-  // Format timestamp lokal untuk inspector
   function getCurrentFormattedTime() {
     const now = new Date();
     return now.toLocaleTimeString('id-ID', { hour12: false }) + '.' + String(now.getMilliseconds()).padStart(3, '0');
   }
 
-  // Fungsi memperbarui Kotak Pantau Route & Response API
   function updateInspector({ route, statusCode, actionDesc, jsonData, isSuccess }) {
     currentJsonData = jsonData;
     
-    // Update Route Badge
     const routeBadge = document.getElementById('inspector-route-badge');
     if (routeBadge) routeBadge.textContent = route;
 
-    // Update Status Badge
     const statusBadge = document.getElementById('inspector-status-badge');
     if (statusBadge) {
       if (isSuccess) {
@@ -359,22 +381,18 @@
       }
     }
 
-    // Update Action Description
     const actionDescEl = document.getElementById('inspector-action-desc');
     if (actionDescEl) actionDescEl.textContent = actionDesc;
 
-    // Update Timestamp
     const timeEl = document.getElementById('inspector-time');
     if (timeEl) timeEl.textContent = getCurrentFormattedTime();
 
-    // Update Link Langsung
     const rawLink = document.getElementById('inspector-raw-link');
     if (rawLink) {
       rawLink.href = route;
       rawLink.textContent = `Buka ${route}`;
     }
 
-    // Update JSON Pre Content
     const jsonPre = document.getElementById('inspector-json-content');
     if (jsonPre) {
       jsonPre.textContent = JSON.stringify(jsonData, null, 2);
@@ -386,12 +404,10 @@
     }
   }
 
-  // Mengambil data produk berdasarkan ID melalui API
   async function fetchProductById(id) {
     const route = `/api/produk/${id}`;
-    const actionDesc = `Mengambil data produk spesifik (ID: ${id}) via endpoint GET ${route}`;
+    const actionDesc = `Mengambil data jajanan spesifik (ID: ${id}) via endpoint GET ${route}`;
 
-    // Tampilkan status memuat pada inspector
     const statusBadge = document.getElementById('inspector-status-badge');
     if (statusBadge) {
       statusBadge.className = 'px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
@@ -410,10 +426,8 @@
         isSuccess: response.ok
       });
 
-      // Perbarui tampilan card di grid produk
       filterGridByProductId(id, data.data);
 
-      // Scroll halus ke inspector console agar user dapat melihat respons
       const inspectorEl = document.getElementById('api-inspector-container');
       if (inspectorEl && window.innerWidth < 768) {
         inspectorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -431,7 +445,6 @@
     }
   }
 
-  // Filter tampilan kartu di grid berdasarkan ID
   function filterGridByProductId(id, productData) {
     const cards = document.querySelectorAll('.product-card');
     const banner = document.getElementById('filter-status-banner');
@@ -439,18 +452,16 @@
     const desc = document.getElementById('filter-status-desc');
 
     if (productData) {
-      // Produk ditemukan: sorot kartu yang sesuai
       banner.classList.remove('hidden');
-      banner.className = 'mb-8 p-4 rounded-xl bg-brand-warm border border-brand-orange/40 flex items-center justify-between transition-all';
+      banner.className = 'mb-8 p-4 rounded-xl bg-orange-50 border border-brand-orange/40 flex items-center justify-between transition-all';
       title.textContent = `Menampilkan Hasil: ${productData.name} (ID: ${id})`;
-      desc.textContent = `Harga: ${productData.price} | Kategori: ${productData.category}. Kartu di bawah telah disorot.`;
+      desc.textContent = `Penjual: ${productData.seller} | Status: ${productData.status}. Kartu di bawah telah disorot.`;
 
       cards.forEach(card => {
         const cardId = card.getAttribute('data-product-id');
         if (cardId == id) {
           card.classList.remove('opacity-40', 'scale-95');
           card.classList.add('ring-4', 'ring-brand-orange', 'shadow-2xl', 'scale-100');
-          // Scroll kartu ke layar jika perlu
           card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         } else {
           card.classList.add('opacity-40', 'scale-95');
@@ -458,11 +469,10 @@
         }
       });
     } else {
-      // Produk tidak ditemukan (misal ID 99)
       banner.classList.remove('hidden');
       banner.className = 'mb-8 p-4 rounded-xl bg-red-50 border border-red-200 flex items-center justify-between transition-all';
-      title.textContent = `Produk ID #${id} Tidak Ditemukan (404)`;
-      desc.textContent = `Sistem mengembalikan response 404 Not Found. Tidak ada menu dengan ID ${id}.`;
+      title.textContent = `Jajanan ID #${id} Tidak Ditemukan (404)`;
+      desc.textContent = `Sistem mengembalikan response 404 Not Found. Tidak ada lapak atau menu dengan ID ${id}.`;
 
       cards.forEach(card => {
         card.classList.add('opacity-40', 'scale-95');
@@ -471,7 +481,6 @@
     }
   }
 
-  // Reset filter dan kembali ke tampilan awal
   async function resetMenuFilter() {
     const searchInput = document.getElementById('search-id-input');
     if (searchInput) searchInput.value = '';
@@ -484,14 +493,13 @@
       card.classList.remove('opacity-40', 'scale-95', 'ring-4', 'ring-brand-orange', 'shadow-2xl');
     });
 
-    // Ambil ulang data seluruh produk untuk console inspector
     try {
       const response = await fetch('/api/produk');
       const data = await response.json();
       updateInspector({
         route: '/api/produk',
         statusCode: 200,
-        actionDesc: 'Menampilkan seluruh katalog produk kebab melalui REST API',
+        actionDesc: 'Mengambil data katalog seluruh jajanan PKL NemuSnack',
         jsonData: data,
         isSuccess: true
       });
@@ -500,7 +508,6 @@
     }
   }
 
-  // Handler submit form pencarian ID
   function handleIdSearch(event) {
     event.preventDefault();
     const idInput = document.getElementById('search-id-input');
@@ -509,7 +516,6 @@
     }
   }
 
-  // Salin isi JSON ke Clipboard
   function copyJsonResponse() {
     if (!currentJsonData) return;
     navigator.clipboard.writeText(JSON.stringify(currentJsonData, null, 2)).then(() => {
@@ -523,31 +529,31 @@
     });
   }
 
-  // Modal Pesanan
-  function showOrderModal(name, price) {
+  function showLapakModal(name, seller, price, location, status) {
     document.getElementById('modal-product-name').textContent = name;
+    document.getElementById('modal-seller-name').textContent = seller;
     document.getElementById('modal-product-price').textContent = price;
-    document.getElementById('order-modal').classList.remove('hidden');
+    document.getElementById('modal-location').textContent = location;
+    document.getElementById('modal-status').textContent = status;
+    document.getElementById('lapak-modal').classList.remove('hidden');
   }
 
-  function closeOrderModal() {
-    document.getElementById('order-modal').classList.add('hidden');
+  function closeLapakModal() {
+    document.getElementById('lapak-modal').classList.add('hidden');
   }
 
   window.addEventListener('click', function(e) {
-    const modal = document.getElementById('order-modal');
+    const modal = document.getElementById('lapak-modal');
     if (e.target === modal) {
-      closeOrderModal();
+      closeLapakModal();
     }
   });
 
-  // Inisialisasi awal saat halaman dimuat
   document.addEventListener('DOMContentLoaded', () => {
     const initialId = <%= typeof requestedId !== 'undefined' && requestedId ? requestedId : 'null' %>;
     if (initialId) {
       fetchProductById(initialId);
     } else {
-      // Auto-load route /api/produk di console saat pertama kali dibuka
       resetMenuFilter();
     }
   });

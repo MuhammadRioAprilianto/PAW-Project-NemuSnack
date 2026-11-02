@@ -1,7 +1,7 @@
 {
-  "name": "kebab-corner",
+  "name": "nemusnack",
   "version": "1.0.0",
-  "description": "Aplikasi Web Penjualan Kebab Corner dengan Express.js, EJS, dan Tailwind CSS",
+  "description": "NemuSnack - Platform Direktori & Pemetaan Jajanan Kaki Lima (PAW MVC Express.js)",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -11,10 +11,12 @@
     "express",
     "ejs",
     "mvc",
-    "kebab-corner",
+    "nemusnack",
+    "pkl",
+    "jajanan-kaki-lima",
     "middleware-logger"
   ],
-  "author": "",
+  "author": "Muhammad Rio Aprilianto - 20240140204",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.10",

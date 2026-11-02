@@ -1,6 +1,7 @@
 /**
- * Page Controller
+ * Page Controller - NemuSnack
  * Mengatur alur request dan rendering halaman frontend (EJS)
+ * Berdasarkan tema PRD NemuSnack (Muhammad Rio Aprilianto - 20240140204)
  */
 
 const productModel = require('../models/productModel');
@@ -10,7 +11,7 @@ const formatCurrency = require('../utils/formatCurrency');
 const pageController = {
   /**
    * Menampilkan halaman utama (Home)
-   * Menyediakan 3 produk unggulan dari model
+   * Menampilkan hero NemuSnack, rekomendasi AI, preview lapak PKL, dan persona Salsa & Pak Yono
    */
   getHomePage(req, res) {
     try {
@@ -19,9 +20,12 @@ const pageController = {
       const featuredProducts = allProducts.slice(0, 3);
 
       res.render('pages/home', {
-        title: `${appConfig.appName} - Cita Rasa Kebab Autentik & Fresh`,
+        title: `${appConfig.appName} - Temukan Jajanan Kaki Lima & PKL Terdekat`,
         appName: appConfig.appName,
         appTagline: appConfig.appTagline,
+        author: appConfig.author,
+        nim: appConfig.nim,
+        version: appConfig.version,
         featuredProducts,
         formatCurrency,
         currentPath: '/'
@@ -38,8 +42,8 @@ const pageController = {
   },
 
   /**
-   * Menampilkan halaman menu
-   * Menyediakan seluruh data produk dari model, serta mendukung query pencarian by ID
+   * Menampilkan halaman katalog jajanan & monitoring lapak
+   * Menyediakan seluruh data produk, pencarian by ID, dan live route inspector
    */
   getMenuPage(req, res) {
     try {
@@ -48,9 +52,11 @@ const pageController = {
       const selectedProduct = requestedId ? productModel.getProductById(requestedId) : null;
 
       res.render('pages/menu', {
-        title: `Menu Kebab - ${appConfig.appName}`,
+        title: `Katalog Jajanan & Status Lapak - ${appConfig.appName}`,
         appName: appConfig.appName,
         appTagline: appConfig.appTagline,
+        author: appConfig.author,
+        nim: appConfig.nim,
         products,
         formatCurrency,
         currentPath: '/menu',

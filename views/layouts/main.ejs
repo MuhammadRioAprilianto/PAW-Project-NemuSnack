@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title : 'Kebab Corner - Cita Rasa Kebab Autentik' %></title>
+  <title><%= typeof title !== 'undefined' ? title : 'NemuSnack - Temukan Jajanan Kaki Lima Terdekat' %></title>
   
-  <!-- Favicon / SVG Icon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23EA580C'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/></svg>">
+  <!-- Favicon / SVG Icon NemuSnack -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23EA580C'><path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/></svg>">
   
   <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,15 +21,14 @@
         extend: {
           colors: {
             brand: {
-              brown: '#3B1E08',
-              'brown-light': '#542B0D',
-              dark: '#1F1106',
               orange: '#EA580C',
               'orange-hover': '#C2410C',
-              accent: '#F59E0B',
+              amber: '#F59E0B',
+              brown: '#3A1C0E',
+              dark: '#0F172A',
               cream: '#FFFBF5',
               warm: '#FFF7ED',
-              surface: '#FFF1E0'
+              emerald: '#10B981'
             }
           },
           fontFamily: {
@@ -41,10 +40,9 @@
   </script>
 
   <style>
-    /* Styling tambahan untuk transisi dan efek visual */
     body {
       background-color: #FFFDF9;
-      color: #1F2937;
+      color: #1E293B;
     }
   </style>
 </head>
@@ -61,7 +59,7 @@
   <!-- Footer -->
   <%- include('../partials/footer') %>
 
-  <!-- Script untuk interaktivitas umum jika diperlukan -->
+  <!-- Script untuk interaktivitas umum -->
   <script>
     // Smooth scroll handling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
