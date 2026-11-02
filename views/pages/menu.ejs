@@ -1,0 +1,162 @@
+<!-- Halaman Daftar Menu Kebab Corner -->
+
+<!-- Header Banner Halaman Menu -->
+<section class="bg-gradient-to-b from-brand-warm via-brand-cream to-white py-12 lg:py-16 border-b border-brand-warm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange text-xs sm:text-sm font-bold tracking-wide mb-4">
+      <span>Daftar Menu Lengkap</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-brown tracking-tight">
+      Pilihan Menu Kebab Corner
+    </h1>
+    <p class="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+      Dibuat dari bahan-bahan segar berkualitas tinggi dengan bumbu khas Timur Tengah. Pilih varian favoritmu sekarang juga!
+    </p>
+
+    <!-- Info Jumlah Produk -->
+    <div class="mt-6 flex items-center justify-center space-x-3 text-xs sm:text-sm text-gray-500">
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-white border border-gray-200 font-semibold text-brand-brown">
+        Total: <%= typeof products !== 'undefined' ? products.length : 0 %> Varian Kebab
+      </span>
+      <span>•</span>
+      <span class="text-emerald-600 font-semibold flex items-center">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span> Siap Dipesan
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- Konten Grid Produk -->
+<section class="py-12 lg:py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Responsive Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% if (typeof products !== 'undefined' && products.length > 0) { %>
+        <% products.forEach((product) => { %>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col overflow-hidden group">
+            
+            <!-- Foto Produk -->
+            <div class="relative h-64 w-full overflow-hidden bg-gray-100">
+              <img src="<%= product.image %>" 
+                   alt="<%= product.name %>" 
+                   class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                   onerror="this.onerror=null; this.src='/assets/images/kebab-placeholder.svg';">
+              
+              <!-- Badge Kategori -->
+              <span class="absolute top-3 left-3 bg-brand-brown/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm">
+                <%= product.category %>
+              </span>
+
+              <!-- ID Produk Badge -->
+              <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-700 text-[11px] font-semibold px-2 py-0.5 rounded-md shadow-sm">
+                #<%= product.id %>
+              </span>
+            </div>
+
+            <!-- Detail Produk -->
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+                  <%= product.name %>
+                </h3>
+                <p class="mt-2 text-sm text-gray-600 leading-relaxed">
+                  <%= product.description %>
+                </p>
+              </div>
+
+              <!-- Harga & Tombol Pesan -->
+              <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                <div>
+                  <span class="text-xs text-gray-400 block font-medium">Harga</span>
+                  <span class="text-xl font-extrabold text-brand-orange">
+                    <%= formatCurrency(product.price) %>
+                  </span>
+                </div>
+
+                <button type="button"
+                        onclick="showOrderModal('<%= product.name %>', '<%= formatCurrency(product.price) %>')"
+                        class="inline-flex items-center px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-sm hover:shadow-md transition-all duration-200">
+                  <span>Pesan Sekarang</span>
+                  <svg class="w-3.5 h-3.5 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="col-span-full text-center py-16 text-gray-500">
+          <p class="text-lg">Tidak ada data produk yang ditemukan.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Informasi Pemesanan di Bawah Menu -->
+    <div class="mt-16 bg-brand-warm rounded-2xl p-6 sm:p-8 border border-brand-warm/80 text-center max-w-2xl mx-auto">
+      <h3 class="text-lg font-bold text-brand-brown">Informasi Pemesanan</h3>
+      <p class="mt-2 text-sm text-gray-600">
+        Pemesanan dapat dilakukan langsung di outlet Kebab Corner terdekat atau hubungi counter layanan kami. Seluruh produk disajikan hangat saat dipesan.
+      </p>
+      <div class="mt-4">
+        <a href="/#contact" class="inline-flex items-center text-sm font-bold text-brand-orange hover:underline">
+          <span>Lihat lokasi outlet dan kontak</span>
+          <span class="ml-1">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Modal Petunjuk Pemesanan -->
+<div id="order-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 transform transition-all">
+    <button onclick="closeOrderModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="w-12 h-12 rounded-full bg-brand-orange/10 text-brand-orange flex items-center justify-center mx-auto mb-4">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+      </svg>
+    </div>
+    <h3 class="text-xl font-bold text-gray-900 text-center" id="modal-product-name">Pesan Kebab</h3>
+    <p class="text-sm font-semibold text-brand-orange text-center mt-1" id="modal-product-price">Rp 0</p>
+    <div class="mt-5 p-4 rounded-xl bg-brand-warm/60 border border-brand-warm text-xs text-gray-600 space-y-2">
+      <p class="font-bold text-gray-800">Petunjuk Pemesanan:</p>
+      <p>1. Kunjungi gerai outlet resmi Kebab Corner.</p>
+      <p>2. Sebutkan varian menu pilihanmu kepada barista kasir.</p>
+      <p>3. Kebab akan langsung dipanggang dan diracik hangat sesuai pesanan.</p>
+    </div>
+    <div class="mt-6 flex flex-col gap-2">
+      <button onclick="closeOrderModal()" class="w-full py-3 rounded-xl font-bold text-sm text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors">
+        Tutup & Lanjutkan Melihat Menu
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showOrderModal(name, price) {
+    document.getElementById('modal-product-name').textContent = name;
+    document.getElementById('modal-product-price').textContent = price;
+    document.getElementById('order-modal').classList.remove('hidden');
+  }
+
+  function closeOrderModal() {
+    document.getElementById('order-modal').classList.add('hidden');
+  }
+
+  // Tutup modal jika klik di luar area modal
+  window.addEventListener('click', function(e) {
+    const modal = document.getElementById('order-modal');
+    if (e.target === modal) {
+      closeOrderModal();
+    }
+  });
+</script>
