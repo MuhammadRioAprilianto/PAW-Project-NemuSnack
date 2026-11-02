@@ -1,7 +1,6 @@
 /**
  * Page Controller - NemuSnack
  * Mengatur alur request dan rendering halaman frontend (EJS)
- * Berdasarkan tema PRD NemuSnack (Muhammad Rio Aprilianto - 20240140204)
  */
 
 const productModel = require('../models/productModel');
@@ -11,21 +10,18 @@ const formatCurrency = require('../utils/formatCurrency');
 const pageController = {
   /**
    * Menampilkan halaman utama (Home)
-   * Menampilkan hero NemuSnack, rekomendasi AI, preview lapak PKL, dan persona Salsa & Pak Yono
+   * Menyediakan data jajanan untuk hero, rekomendasi, featured card, dan live map tracking
    */
   getHomePage(req, res) {
     try {
       const allProducts = productModel.getAllProducts();
-      // Mengambil 3 produk unggulan pertama untuk halaman home
       const featuredProducts = allProducts.slice(0, 3);
 
       res.render('pages/home', {
-        title: `${appConfig.appName} - Temukan Jajanan Kaki Lima & PKL Terdekat`,
+        title: `${appConfig.appName} - Jajanan Kaki Lima Favoritmu, Dilacak Real-Time`,
         appName: appConfig.appName,
         appTagline: appConfig.appTagline,
-        author: appConfig.author,
-        nim: appConfig.nim,
-        version: appConfig.version,
+        products: allProducts,
         featuredProducts,
         formatCurrency,
         currentPath: '/'
@@ -55,8 +51,6 @@ const pageController = {
         title: `Katalog Jajanan & Status Lapak - ${appConfig.appName}`,
         appName: appConfig.appName,
         appTagline: appConfig.appTagline,
-        author: appConfig.author,
-        nim: appConfig.nim,
         products,
         formatCurrency,
         currentPath: '/menu',

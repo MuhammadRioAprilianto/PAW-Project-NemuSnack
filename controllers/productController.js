@@ -1,7 +1,7 @@
 /**
  * Product Controller - NemuSnack
  * Menangani kebutuhan REST API JSON untuk katalog jajanan kaki lima,
- * status server, pencarian by ID, serta asisten rekomendasi kuliner (F-01 PRD).
+ * status server, pencarian by ID, serta asisten rekomendasi kuliner.
  */
 
 const productModel = require('../models/productModel');
@@ -18,8 +18,6 @@ const productController = {
         success: true,
         message: 'NemuSnack API is running',
         application: appConfig.appName,
-        author: `${appConfig.author} (${appConfig.nim})`,
-        version: appConfig.version,
         status: 'OK'
       });
     } catch (error) {
@@ -68,7 +66,7 @@ const productController = {
       if (!product) {
         return res.status(404).json({
           success: false,
-          message: `Jajanan dengan ID ${id} tidak ditemukan pada direktori NemuSnack`,
+          message: `Jajanan dengan ID ${id} tidak ditemukan`,
           data: null
         });
       }
@@ -89,7 +87,7 @@ const productController = {
   },
 
   /**
-   * Asisten Rekomendasi Jajanan AI (F-01 / US-01 PRD NemuSnack)
+   * Asisten Rekomendasi Jajanan
    * Memberikan rekomendasi jajanan berbasis selera, budget, atau kata kunci
    * Endpoint: GET /api/rekomendasi?q=...
    */
@@ -108,12 +106,12 @@ const productController = {
 
       let matches = productModel.searchProducts(query);
       
-      // Jika filter 'murah', cari yang harga <= 12000
+      // Filter 'murah' -> harga <= 12000
       if (query.toLowerCase().includes('murah')) {
         matches = allProducts.filter(p => p.price <= 12000);
       }
 
-      // Default jika tidak ada yang spesifik, tampilkan rekomendasi terpopuler
+      // Default jika tidak ada yang spesifik
       if (matches.length === 0) {
         matches = allProducts.slice(0, 2);
       }
@@ -128,7 +126,7 @@ const productController = {
       console.error('Error pada getAiRecommendation API:', error);
       return res.status(500).json({
         success: false,
-        message: 'Gagal memproses rekomendasi AI',
+        message: 'Gagal memproses rekomendasi',
         error: error.message
       });
     }

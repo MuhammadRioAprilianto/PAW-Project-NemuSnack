@@ -1,88 +1,106 @@
-<!-- Halaman Utama (Home) NemuSnack -->
+<!-- Halaman Utama (Home) NemuSnack - Agency Design Style -->
 
-<!-- 1. HERO SECTION -->
-<section class="relative overflow-hidden bg-gradient-to-b from-orange-50/70 via-white to-transparent py-12 lg:py-20">
+<!-- 1. HERO SECTION (Inspired by Zesty Agency Design) -->
+<section class="relative overflow-hidden pt-6 pb-16 lg:pt-10 lg:pb-24">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
-      <!-- Hero Text & Intro -->
-      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange text-xs sm:text-sm font-bold tracking-wide">
-          <span class="w-2 h-2 rounded-full bg-brand-orange animate-pulse"></span>
-          <span>Platform Direktori &amp; Pemetaan PKL Terdekat</span>
+      <!-- Left Column: Headline & Action -->
+      <div class="lg:col-span-7 space-y-7 text-center lg:text-left">
+        
+        <!-- Top Pill Tag -->
+        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-orange-100/70 border border-orange-200/60 text-brand-orange text-xs sm:text-sm font-extrabold tracking-wide">
+          <span>⚡</span>
+          <span>Cepat • Fresh • Dilacak Real-Time</span>
         </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.15]">
-          Temukan Jajanan Kaki Lima <span class="text-brand-orange underline decoration-brand-amber/50 decoration-wavy decoration-2">Terdekat</span> Tanpa Tersasar
+        <!-- Big Agency Headline -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900 tracking-tight leading-[1.1]">
+          Jajanan Lezat, <br class="hidden sm:inline"/>
+          <span class="text-brand-orange">Dilacak Cepat</span> <br class="hidden sm:inline"/>
+          Di Sekitarmu
         </h1>
 
-        <p class="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-          <span class="font-bold text-gray-900">NemuSnack</span> hadir memecahkan masalah minimnya <em>visibility</em> pedagang kaki lima (PKL). Pantau status gerobak apakah sedang <strong>Mangkal</strong> atau <strong>Sedang Berjalan</strong>, rute keliling, serta temukan rekomendasi jajanan sesuai selera dan budgetmu!
+        <!-- Subtitle -->
+        <p class="text-base sm:text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+          Lapar dan rindu jajanan kaki lima favorit? NemuSnack memetakan lokasi gerobak mangkal maupun rute keliling secara live, hangat, dan siap dinikmati kapan saja.
         </p>
 
         <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-1">
           <a href="/menu" 
-             class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-base text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/25 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
-            <span>Jelajahi Lapak &amp; Jajanan</span>
+             class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full font-black text-base text-white bg-brand-orange hover:bg-brand-orange-hover shadow-xl shadow-brand-orange/30 hover:shadow-2xl hover:shadow-brand-orange/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+            <span>Cari Jajanan Sekarang</span>
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
             </svg>
           </a>
 
-          <a href="#ai-assistant" 
-             class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-base text-gray-800 bg-white hover:bg-orange-50 border-2 border-gray-200 shadow-sm transition-all duration-200">
-            <span>✨ Tanya Asisten AI</span>
+          <a href="#map-tracking" 
+             class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-full font-bold text-base text-gray-800 bg-white hover:bg-orange-50 border border-gray-200 shadow-sm hover:shadow transition-all duration-200 group">
+            <span class="w-8 h-8 rounded-full bg-orange-100 text-brand-orange flex items-center justify-center mr-2.5 group-hover:scale-110 transition-transform">
+              <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            <span>Buka Peta Lapak</span>
           </a>
         </div>
 
-        <!-- Quick Metrik & Goals PRD -->
-        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-gray-100 max-w-lg mx-auto lg:mx-0">
-          <div class="text-center lg:text-left">
-            <p class="text-2xl font-black text-brand-orange">&lt; 1 Menit</p>
-            <p class="text-xs text-gray-500 font-medium">Temukan Rekomendasi (M-01)</p>
+        <!-- Social Proof (Matching Reference: Avatars + 10K+ Happy Customers) -->
+        <div class="pt-4 flex items-center justify-center lg:justify-start space-x-4">
+          <div class="flex -space-x-2.5 overflow-hidden">
+            <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover" src="/assets/images/testimonial-person.jpg" alt="Pelanggan 1">
+            <img class="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover" src="/assets/images/hero-person.jpg" alt="Pelanggan 2">
+            <div class="h-10 w-10 rounded-full ring-2 ring-white bg-brand-orange text-white font-black text-xs flex items-center justify-center">
+              +10k
+            </div>
           </div>
-          <div class="text-center lg:text-left">
-            <p class="text-2xl font-black text-emerald-600">100%</p>
-            <p class="text-xs text-gray-500 font-medium">Sinkron Status Lapak (M-02)</p>
-          </div>
-          <div class="text-center lg:text-left">
-            <p class="text-2xl font-black text-gray-800">Direct</p>
-            <p class="text-xs text-gray-500 font-medium">Datang Langsung / COD</p>
+          <div class="text-left">
+            <p class="text-sm font-extrabold text-gray-900">10K+ Pelanggan Jajanan</p>
+            <div class="flex items-center text-amber-500 text-xs">
+              <span>★★★★★</span>
+              <span class="font-extrabold text-gray-700 ml-1.5">(4.9)</span>
+            </div>
           </div>
         </div>
+
       </div>
 
-      <!-- Hero Visual Image -->
+      <!-- Right Column: Visual Container (Organic Shape + High-res Photo + Floating Cards) -->
       <div class="lg:col-span-5 relative flex justify-center">
         <div class="relative w-full max-w-md lg:max-w-none">
-          <div class="absolute -inset-4 bg-gradient-to-r from-brand-orange/20 to-brand-amber/30 rounded-3xl blur-2xl transform -rotate-3"></div>
           
-          <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white group">
-            <img src="/assets/images/hero-nemusnack.jpg" 
-                 alt="Kuliner Jajanan Kaki Lima NemuSnack" 
-                 class="w-full h-80 sm:h-96 lg:h-[450px] object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
-                 onerror="this.onerror=null; this.src='/assets/images/snack-placeholder.svg';">
+          <!-- Soft Organic Backdrop -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-orange-200/60 to-amber-100/50 rounded-full filter blur-2xl transform scale-110"></div>
+          
+          <!-- Main Hero Circular Image -->
+          <div class="relative z-10 w-full h-[400px] sm:h-[480px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white bg-white group">
+            <img src="/assets/images/hero-person.jpg" 
+                 alt="Menikmati Jajanan NemuSnack" 
+                 class="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+                 onerror="this.onerror=null; this.src='/assets/images/hero-nemusnack.jpg';">
 
-            <!-- Floating Status Pill 1: Pak Yono (Mangkal) -->
-            <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-lg border border-white/50 flex items-center space-x-2.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <!-- Floating Pill 1: Waktu Operasional (Matching Reference) -->
+            <div class="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-xl border border-white/60 flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-xl bg-orange-100 text-brand-orange flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
               <div>
-                <p class="text-[11px] font-extrabold text-gray-900">Gerobak Pak Yono</p>
-                <p class="text-[10px] text-emerald-700 font-semibold">Status: Mangkal di Jl. Kaliurang km 5</p>
+                <p class="text-[11px] text-gray-500 font-semibold">Jam Buka Ramai</p>
+                <p class="text-xs font-black text-gray-900">15.30 - 22.00 WIB</p>
               </div>
             </div>
 
-            <!-- Floating Status Pill 2: Telur Gulung (Sedang Berjalan) -->
-            <div class="absolute bottom-4 right-4 bg-gray-900/95 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-lg border border-gray-700 text-white flex items-center space-x-3">
-              <div class="w-7 h-7 rounded-lg bg-brand-amber text-gray-900 flex items-center justify-center font-bold text-xs">
-                🚶
-              </div>
-              <div>
-                <p class="text-xs font-bold">Telur Gulung Mas Danang</p>
-                <p class="text-[10px] text-brand-amber font-semibold">Sedang Berjalan: Rute Pogung Raya</p>
+            <!-- Floating Card 2: 100% Street Food (Matching Reference) -->
+            <div class="absolute top-6 right-6 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-white/60 flex items-center space-x-3">
+              <img src="/assets/images/snack-piscok.jpg" class="w-11 h-11 rounded-xl object-cover" alt="Snack">
+              <div class="pr-1">
+                <p class="text-[11px] font-black text-brand-orange">Lapak Aktif</p>
+                <p class="text-xs font-extrabold text-gray-900">Siap Dipesan</p>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -91,171 +109,190 @@
   </div>
 </section>
 
-<!-- 2. FITUR UTAMA F-01: ASISTEN REKOMENDASI KULINER AI (CHATBOT WIDGET) -->
-<section id="ai-assistant" class="py-14 bg-gradient-to-b from-white via-orange-50/40 to-white border-y border-orange-100">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-2xl mx-auto mb-8">
-      <div class="inline-flex items-center px-3 py-1 rounded-full bg-brand-orange/10 text-brand-orange text-xs font-bold uppercase tracking-wider mb-2">
-        Fitur F-01 (Must Priority PRD)
-      </div>
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
-        ✨ Asisten Rekomendasi Jajanan NemuAI
-      </h2>
-      <p class="mt-2 text-sm text-gray-600">
-        Ketik preferensi selera atau budgetmu (sesuai Acceptance Criteria US-01) untuk mendapatkan rekomendasi instan beserta lokasi PKL.
-      </p>
-    </div>
-
-    <!-- AI Chatbot Interactive Container -->
-    <div class="bg-white rounded-2xl border border-orange-200/80 shadow-xl overflow-hidden">
-      <!-- Chat Header -->
-      <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 px-6 py-4 flex items-center justify-between text-white">
-        <div class="flex items-center space-x-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-orange to-brand-amber flex items-center justify-center font-bold text-sm">
-            AI
-          </div>
-          <div>
-            <h3 class="text-sm font-bold">NemuAI Culinary Bot</h3>
-            <p class="text-[11px] text-emerald-400 flex items-center">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> Siap memberi rekomendasi jajanan
-            </p>
-          </div>
-        </div>
-        <span class="text-xs text-gray-400 font-mono hidden sm:inline">Endpoint: /api/rekomendasi</span>
-      </div>
-
-      <!-- Chat Body & Results -->
-      <div class="p-6 space-y-4">
-        
-        <!-- Preset Prompt Buttons (Sesuai US-01 PRD) -->
-        <div>
-          <p class="text-xs font-semibold text-gray-500 mb-2">Coba pertanyaan cepat:</p>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="askAiPrompt('cari makanan pedas murah')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-100/70 hover:bg-brand-orange hover:text-white text-brand-orange border border-orange-200 transition-colors">
-              "cari makanan pedas murah"
-            </button>
-            <button onclick="askAiPrompt('jajanan manis lumer sore ini')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100/70 hover:bg-brand-amber hover:text-white text-amber-800 border border-amber-200 transition-colors">
-              "jajanan manis lumer sore ini"
-            </button>
-            <button onclick="askAiPrompt('jajanan gurih')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-800 hover:text-white text-gray-700 transition-colors">
-              "jajanan gurih di Pogung"
-            </button>
-          </div>
-        </div>
-
-        <!-- Chat Input Form -->
-        <form onsubmit="handleAiSubmit(event)" class="flex gap-2">
-          <input type="text" 
-                 id="ai-user-query" 
-                 placeholder="Tanya ke NemuAI (contoh: cari jajanan manis, pedas, atau murah)..." 
-                 class="flex-grow px-4 py-3 rounded-xl border border-gray-300 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-sm outline-none">
-          <button type="submit" 
-                  class="px-6 py-3 rounded-xl font-bold text-sm text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors flex items-center">
-            <span>Tanya AI</span>
-            <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
-          </button>
-        </form>
-
-        <!-- AI Output Box -->
-        <div id="ai-response-box" class="p-4 rounded-xl bg-orange-50/60 border border-orange-200 text-sm space-y-3">
-          <div class="flex items-center space-x-2 text-brand-orange font-bold text-xs uppercase tracking-wider">
-            <span>✨ Rekomendasi Asisten NemuAI:</span>
-          </div>
-          <div id="ai-result-content" class="text-gray-700 space-y-2">
-            <p>Halo Salsa! Mau jajan apa hari ini? Klik salah satu contoh pertanyaan di atas atau ketik langsung makanan favoritmu!</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 3. FEATURED SNACKS SECTION -->
-<section class="py-16 bg-white">
+<!-- 2. WHY CHOOSE US (Matching Reference Section Layout) -->
+<section id="why-us" class="py-20 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <div class="text-center max-w-3xl mx-auto mb-14">
-      <div class="inline-flex items-center px-3 py-1 rounded-full bg-brand-orange/10 text-brand-orange text-xs font-bold uppercase tracking-wider mb-3">
-        Katalog Populer PKL
-      </div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-        Jajanan Pilihan Terlaris di Sekitar Kampus
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <p class="text-xs font-black text-brand-orange tracking-widest uppercase mb-2">• KENAPA NEMUSNACK •</p>
+      <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+        Teman Terbaik Berburu Jajanan Kaki Lima
       </h2>
-      <p class="mt-3 text-base sm:text-lg text-gray-600">
-        Disajikan langsung oleh pedagang kaki lima binaan dengan cita rasa autentik dan harga ramah mahasiswa.
-      </p>
     </div>
 
-    <!-- Product Cards Grid (3 Featured Products) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- 3 Clean Feature Cards (Matching Reference Visuals) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Feature 1: Lightning Fast Tracking -->
+      <div class="p-8 rounded-3xl bg-[#FAF8F5] border border-gray-100 hover:shadow-card-hover transition-all duration-300 text-center flex flex-col items-center">
+        <div class="w-20 h-20 rounded-2xl bg-orange-100 flex items-center justify-center text-3xl mb-6 shadow-sm">
+          🛵
+        </div>
+        <h3 class="text-xl font-black text-gray-900 mb-2">Pelacakan Cepat (Live)</h3>
+        <p class="text-sm text-gray-600 leading-relaxed max-w-xs">
+          Pantau posisi gerobak mangkal dan rute keliling secara real-time langsung melalui peta interaktif.
+        </p>
+      </div>
+
+      <!-- Feature 2: Wide Variety -->
+      <div class="p-8 rounded-3xl bg-[#FAF8F5] border border-gray-100 hover:shadow-card-hover transition-all duration-300 text-center flex flex-col items-center">
+        <div class="w-20 h-20 rounded-2xl bg-amber-100 flex items-center justify-center text-3xl mb-6 shadow-sm">
+          🍜
+        </div>
+        <h3 class="text-xl font-black text-gray-900 mb-2">Pilihan Beragam</h3>
+        <p class="text-sm text-gray-600 leading-relaxed max-w-xs">
+          Dari pisang cokelat lumer, tahu gejrot pedas, telur gulung, hingga martabak mini dengan harga ramah kantong.
+        </p>
+      </div>
+
+      <!-- Feature 3: Top Quality -->
+      <div class="p-8 rounded-3xl bg-[#FAF8F5] border border-gray-100 hover:shadow-card-hover transition-all duration-300 text-center flex flex-col items-center">
+        <div class="w-20 h-20 rounded-2xl bg-emerald-100 flex items-center justify-center text-3xl mb-6 shadow-sm">
+          🏆
+        </div>
+        <h3 class="text-xl font-black text-gray-900 mb-2">Kualitas &amp; Fresh</h3>
+        <p class="text-sm text-gray-600 leading-relaxed max-w-xs">
+          Dimasak dan diracik hangat seketika saat kamu tiba di lapak, menjamin rasa renyah dan kenikmatan maksimal.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- 3. LIVE MAP TRACKING SECTION (NEW REQUESTED FEATURE!) -->
+<section id="map-tracking" class="py-20 bg-gradient-to-b from-white via-orange-50/30 to-white border-y border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <p class="text-xs font-black text-brand-orange tracking-widest uppercase mb-1">• LIVE MAP TRACKING •</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+          Peta Pelacakan Gerobak &amp; Lapak PKL Aktif
+        </h2>
+        <p class="mt-2 text-sm text-gray-600">
+          Titik posisi gerobak yang sedang mangkal atau berkeliling di area kampus dan sekitarnya.
+        </p>
+      </div>
+
+      <!-- Filter Map Markers Buttons -->
+      <div class="flex items-center space-x-2 bg-white p-1.5 rounded-full border border-gray-200 shadow-sm">
+        <button onclick="filterMapMarkers('all')" id="btn-filter-all" class="px-4 py-1.5 rounded-full text-xs font-black bg-brand-orange text-white shadow-sm transition-all">
+          Semua Lapak
+        </button>
+        <button onclick="filterMapMarkers('Mangkal')" id="btn-filter-mangkal" class="px-4 py-1.5 rounded-full text-xs font-bold text-gray-600 hover:text-brand-orange transition-all flex items-center">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span> Mangkal
+        </button>
+        <button onclick="filterMapMarkers('Sedang Berjalan')" id="btn-filter-jalan" class="px-4 py-1.5 rounded-full text-xs font-bold text-gray-600 hover:text-brand-orange transition-all flex items-center">
+          <span class="w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span> Berjalan
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Leaflet Map Container -->
+    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-100">
+      <div id="tracking-map" class="w-full h-[480px] z-10"></div>
+      
+      <!-- Overlay Map Legend -->
+      <div class="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-lg border border-gray-100 text-xs space-y-1 hidden sm:block">
+        <p class="font-extrabold text-gray-900 mb-1">Keterangan Pin Peta:</p>
+        <div class="flex items-center space-x-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+          <span class="text-gray-700 font-semibold">Lapak Mangkal Menetap</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+          <span class="text-gray-700 font-semibold">Gerobak Sedang Berjalan</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 4. EXPLORE OUR MENU SECTION (Matching Reference: Tasty Food You'll Love) -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+      <div>
+        <p class="text-xs font-black text-brand-orange tracking-widest uppercase mb-1">• EXPLORE OUR MENU •</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+          Jajanan Favorit Terlaris
+        </h2>
+      </div>
+
+      <!-- Action Nav Buttons (Matching Reference Arrow Buttons) -->
+      <div class="flex items-center space-x-3">
+        <a href="/menu" class="text-sm font-bold text-brand-orange hover:underline flex items-center">
+          <span>Lihat Semua Menu</span>
+          <span class="ml-1">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Product Cards Grid (Matching Reference Image Card Design) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <% if (typeof featuredProducts !== 'undefined' && featuredProducts.length > 0) { %>
         <% featuredProducts.forEach((product) => { %>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col overflow-hidden group">
+          <div class="bg-white rounded-[2rem] border border-gray-100 p-4 shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group">
             
-            <!-- Card Image -->
-            <div class="relative h-60 w-full overflow-hidden bg-gray-100">
+            <!-- Card Image Container -->
+            <div class="relative h-64 w-full rounded-[1.5rem] overflow-hidden bg-gray-100 mb-5">
               <img src="<%= product.image %>" 
                    alt="<%= product.name %>" 
                    class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                    onerror="this.onerror=null; this.src='/assets/images/snack-placeholder.svg';">
               
-              <!-- Category Badge -->
-              <span class="absolute top-3 left-3 bg-gray-900/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-lg shadow-sm">
-                <%= product.category %>
-              </span>
-
-              <!-- Live Status Lapak Badge -->
+              <!-- Status Pill (Top Left) -->
               <% if (product.status === 'Mangkal') { %>
-                <span class="absolute top-3 right-3 bg-emerald-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow flex items-center">
-                  <span class="w-1.5 h-1.5 rounded-full bg-white mr-1.5 animate-pulse"></span> Mangkal
+                <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-emerald-700 text-xs font-extrabold px-3 py-1.5 rounded-full shadow-sm flex items-center">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Mangkal
                 </span>
               <% } else { %>
-                <span class="absolute top-3 right-3 bg-brand-amber text-gray-950 text-[11px] font-extrabold px-2.5 py-1 rounded-md shadow flex items-center">
-                  🚶 Sedang Berjalan
+                <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-amber-800 text-xs font-extrabold px-3 py-1.5 rounded-full shadow-sm flex items-center">
+                  🚶 Berjalan
                 </span>
               <% } %>
+
+              <!-- Heart Button (Top Right, Matching Reference) -->
+              <button class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md text-gray-500 hover:text-red-500 hover:bg-white flex items-center justify-center shadow-sm transition-colors">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </button>
             </div>
 
             <!-- Card Body -->
-            <div class="p-6 flex-1 flex flex-col justify-between">
+            <div class="px-2 pb-2 flex-1 flex flex-col justify-between">
               <div>
-                <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
-                  <span class="font-semibold text-brand-orange">📍 <%= product.seller %></span>
-                  <span class="flex items-center text-amber-500 font-bold">★ <%= product.rating %> (<%= product.reviewsCount %>)</span>
-                </div>
-
-                <h3 class="text-xl font-bold text-gray-900 group-hover:text-brand-orange transition-colors">
+                <p class="text-xs font-bold text-gray-400 mb-1">📍 <%= product.seller %></p>
+                <h3 class="text-xl font-extrabold text-gray-900 group-hover:text-brand-orange transition-colors">
                   <%= product.name %>
                 </h3>
-                <p class="mt-2 text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                  <%= product.description %>
-                </p>
 
-                <div class="mt-3 p-2.5 rounded-lg bg-orange-50/70 border border-orange-100 text-[11px] text-gray-600">
-                  <span class="font-bold text-gray-800">Posisi:</span> <%= product.location %>
+                <!-- Rating (Matching Reference) -->
+                <div class="flex items-center text-xs text-amber-500 font-extrabold mt-1.5 mb-3">
+                  <span>★ <%= product.rating %></span>
+                  <span class="text-gray-400 font-semibold ml-1.5">(<%= product.reviewsCount %>)</span>
                 </div>
               </div>
 
-              <!-- Price & Action -->
-              <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+              <!-- Price & Order Action (Matching Reference) -->
+              <div class="pt-3 border-t border-gray-100 flex items-center justify-between mt-auto">
                 <div>
-                  <span class="text-xs text-gray-400 block font-medium">Harga Menu</span>
-                  <span class="text-xl font-extrabold text-brand-orange">
+                  <span class="text-2xl font-black text-gray-900">
                     <%= formatCurrency(product.price) %>
                   </span>
                 </div>
 
-                <a href="/menu?id=<%= product.id %>" 
-                   class="inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold text-gray-800 bg-orange-100 hover:bg-brand-orange hover:text-white transition-all duration-200">
-                  <span>Pantau Route</span>
-                  <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </a>
+                <div class="flex items-center space-x-2">
+                  <a href="/menu?id=<%= product.id %>" 
+                     class="px-5 py-2.5 rounded-full font-bold text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-md shadow-brand-orange/20 transition-all">
+                    Lihat Lapak
+                  </a>
+                </div>
               </div>
+
             </div>
 
           </div>
@@ -263,88 +300,211 @@
       <% } %>
     </div>
 
-    <!-- More Button -->
-    <div class="text-center mt-12">
-      <a href="/menu" 
-         class="inline-flex items-center px-7 py-3.5 rounded-xl font-bold text-sm text-white bg-gray-900 hover:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-200">
-        <span>Buka Katalog Lengkap &amp; Monitoring Lapak</span>
-        <svg class="w-4 h-4 ml-2 text-brand-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-        </svg>
-      </a>
-    </div>
-
   </div>
 </section>
 
-<!-- 4. SECTION TENTANG PRD & PERSONA (Sesuai Bab 1 & Bab 4 PRD) -->
-<section id="about" class="py-16 lg:py-20 bg-orange-50/40 border-y border-orange-100">
+<!-- 5. INTERACTIVE SMART AI RECOMMENDATION -->
+<section id="ai-assistant" class="py-16 bg-[#FAF8F5]">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 p-8 sm:p-12 shadow-card">
+      <div class="max-w-2xl mx-auto text-center mb-8">
+        <span class="text-xs font-black text-brand-orange tracking-widest uppercase mb-1 block">• SMART RECOMMENDATION •</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-gray-900">
+          Bingung Mau Jajan Apa Hari Ini?
+        </h2>
+        <p class="text-sm text-gray-500 mt-2">
+          Ketik preferensi rasa atau budgetmu, asisten kami akan langsung merekomendasikan lapak yang pas!
+        </p>
+      </div>
+
+      <!-- Quick Suggestion Pills -->
+      <div class="flex flex-wrap justify-center gap-2 mb-6">
+        <button onclick="askAiPrompt('cari makanan pedas murah')" class="px-4 py-2 rounded-full text-xs font-bold bg-orange-50 hover:bg-brand-orange hover:text-white text-brand-orange border border-orange-200 transition-colors">
+          🌶️ Cari makanan pedas murah
+        </button>
+        <button onclick="askAiPrompt('jajanan manis lumer sore ini')" class="px-4 py-2 rounded-full text-xs font-bold bg-amber-50 hover:bg-brand-amber hover:text-white text-amber-800 border border-amber-200 transition-colors">
+          🥞 Jajanan manis lumer
+        </button>
+        <button onclick="askAiPrompt('camilan gurih')" class="px-4 py-2 rounded-full text-xs font-bold bg-gray-50 hover:bg-gray-800 hover:text-white text-gray-700 border border-gray-200 transition-colors">
+          🍢 Camilan gurih
+        </button>
+      </div>
+
+      <!-- Search Input Form -->
+      <form onsubmit="handleAiSubmit(event)" class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+        <input type="text" 
+               id="ai-user-query" 
+               placeholder="Ketik selera jajanan (contoh: manis, pedas, murah, bihun)..." 
+               class="flex-grow px-5 py-3.5 rounded-full border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-sm outline-none">
+        <button type="submit" 
+                class="px-8 py-3.5 rounded-full font-bold text-sm text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/20 transition-all">
+          Rekomendasikan
+        </button>
+      </form>
+
+      <!-- AI Results Output -->
+      <div id="ai-result-content" class="mt-6 max-w-2xl mx-auto text-sm text-gray-600 text-center">
+        <!-- Default text -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. TESTIMONIAL SECTION (Matching Reference: Loved By Thousands Of Foodies) -->
+<section class="py-20 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
-    <div class="max-w-3xl mx-auto text-center mb-12">
-      <div class="inline-flex items-center px-3 py-1 rounded-full bg-brand-orange/10 text-brand-orange text-xs font-bold uppercase tracking-wider mb-2">
-        Dasar Pengembangan Produk
-      </div>
-      <h2 class="text-3xl font-extrabold text-gray-900">
-        Problem Statement &amp; Target Persona
-      </h2>
-      <p class="mt-2 text-sm text-gray-600">
-        Disusun berdasarkan PRD Ujian PAW oleh Muhammad Rio Aprilianto (20240140204).
-      </p>
-    </div>
-
-    <!-- Persona 2 Columns Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
-      <!-- Persona 1: Salsa -->
-      <div class="bg-white p-7 rounded-2xl border border-gray-200 shadow-sm">
-        <div class="flex items-center space-x-3 mb-4">
-          <div class="w-12 h-12 rounded-2xl bg-orange-100 text-2xl flex items-center justify-center">
-            👩‍🎓
+      <!-- Left Image: Happy Foodie Person -->
+      <div class="lg:col-span-5 relative flex justify-center">
+        <div class="relative w-full max-w-md">
+          <div class="w-full h-96 sm:h-[440px] rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white bg-orange-100">
+            <img src="/assets/images/testimonial-person.jpg" 
+                 alt="Foodie Review" 
+                 class="w-full h-full object-cover object-center">
           </div>
-          <div>
-            <h3 class="text-lg font-bold text-gray-900">Persona 1: Salsa</h3>
-            <p class="text-xs text-brand-orange font-semibold">Mahasiswi Pencari Jajanan Sore-Malam</p>
+          <!-- Floating Badge (Matching Reference: Our Happy Customers) -->
+          <div class="absolute bottom-6 left-6 bg-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center space-x-3 border border-gray-100">
+            <div class="flex -space-x-2">
+              <span class="w-7 h-7 rounded-full bg-brand-orange text-white text-[10px] font-bold flex items-center justify-center">★</span>
+              <span class="w-7 h-7 rounded-full bg-amber-400 text-white text-[10px] font-bold flex items-center justify-center">★</span>
+            </div>
+            <div>
+              <p class="text-xs font-black text-gray-900">12K+ Pengguna</p>
+              <p class="text-[10px] text-gray-400">Pecinta Kuliner PKL</p>
+            </div>
           </div>
-        </div>
-        <div class="space-y-3 text-xs sm:text-sm text-gray-600">
-          <p>
-            <strong>Masalah:</strong> Sering kebingungan mencari jajanan di sekitar tempat tinggalnya pada sore hingga malam hari yang pas dengan budget dan seleranya.
-          </p>
-          <p>
-            <strong>Solusi NemuSnack:</strong> Menyediakan rekomendasi instan via AI Chatbot dan katalog lengkap beserta harga dan titik lokasi pasti PKL.
-          </p>
         </div>
       </div>
 
-      <!-- Persona 2: Pak Yono -->
-      <div class="bg-white p-7 rounded-2xl border border-gray-200 shadow-sm">
-        <div class="flex items-center space-x-3 mb-4">
-          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-2xl flex items-center justify-center">
-            👨‍🍳
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-gray-900">Persona 2: Pak Yono</h3>
-            <p class="text-xs text-amber-700 font-semibold">Penjual Pisang Cokelat Gerobak</p>
+      <!-- Right Testimonial Content -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <p class="text-xs font-black text-brand-orange tracking-widest uppercase">• KATA MEREKA •</p>
+        <h2 class="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+          Disukai Oleh Ribuan <br/>
+          Pencinta Jajanan Kaki Lima
+        </h2>
+        <p class="text-base text-gray-600 leading-relaxed max-w-xl">
+          "Dulu sering bingung cari gerobak pisang cokelat Pak Yono karena lokasinya kadang bergeser. Sekarang lewat NemuSnack tinggal buka peta, kelihatan jelas apakah beliau lagi mangkal atau keliling!"
+        </p>
+
+        <!-- Reviewer Detail (Matching Reference) -->
+        <div class="pt-2 flex items-center justify-center lg:justify-start space-x-4">
+          <img class="w-12 h-12 rounded-full object-cover ring-2 ring-brand-orange" src="/assets/images/hero-person.jpg" alt="Salsa Nabila">
+          <div class="text-left">
+            <h4 class="text-sm font-extrabold text-gray-900">Salsa Nabila</h4>
+            <div class="flex items-center text-amber-500 text-xs">
+              <span>★★★★★</span>
+              <span class="font-bold text-gray-500 ml-1.5">4.9 / 5.0</span>
+            </div>
           </div>
         </div>
-        <div class="space-y-3 text-xs sm:text-sm text-gray-600">
-          <p>
-            <strong>Masalah:</strong> Lokasi gerobaknya sering bergeser, punya jam buka yang tidak pasti, dan sepi pembeli karena minimnya keterlihatan (visibility).
-          </p>
-          <p>
-            <strong>Solusi NemuSnack:</strong> Menyediakan sistem pembaruan status lapak (Mangkal / Berjalan), rencana rute keliling, dan showcase menu tanpa ribet.
-          </p>
-        </div>
+
       </div>
 
     </div>
-
   </div>
 </section>
 
-<!-- SCRIPT AI INTERAKTIF -->
+<!-- SCRIPT PETA INTERAKTIF & AI REKOMENDASI -->
 <script>
+  let mapInstance = null;
+  let mapMarkers = [];
+  const vendorsData = <%- JSON.stringify(products) %>;
+
+  // Inisialisasi Peta Leaflet.js
+  function initTrackingMap() {
+    const mapContainer = document.getElementById('tracking-map');
+    if (!mapContainer || mapInstance) return;
+
+    // Koordinat pusat peta di sekitar area kuliner kampus
+    mapInstance = L.map('tracking-map').setView([-7.766, 110.380], 15);
+
+    // Tile Layer OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mapInstance);
+
+    // Render Markers untuk setiap vendor
+    renderVendorMarkers(vendorsData);
+  }
+
+  function renderVendorMarkers(data) {
+    // Bersihkan marker lama
+    mapMarkers.forEach(m => mapInstance.removeLayer(m));
+    mapMarkers = [];
+
+    data.forEach(vendor => {
+      if (!vendor.lat || !vendor.lng) return;
+
+      const isMangkal = vendor.status === 'Mangkal';
+      const markerColor = isMangkal ? '#10B981' : '#F59E0B';
+      const statusIcon = isMangkal ? '📍' : '🚶';
+
+      // Custom HTML Marker Icon
+      const customIcon = L.divIcon({
+        className: 'custom-vendor-marker',
+        html: `
+          <div style="background-color: ${markerColor}; width: 34px; height: 34px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 14px;">
+            ${statusIcon}
+          </div>
+        `,
+        iconSize: [34, 34],
+        iconAnchor: [17, 34],
+        popupAnchor: [0, -32]
+      });
+
+      const marker = L.marker([vendor.lat, vendor.lng], { icon: customIcon }).addTo(mapInstance);
+
+      // Popup Content (Agency Card Style)
+      const popupHtml = `
+        <div style="min-width: 220px; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <img src="${vendor.image}" style="width: 100%; height: 110px; object-fit: cover; border-radius: 12px; margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 10px; font-weight: 800; color: ${markerColor}; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 20px;">
+              ${vendor.status}
+            </span>
+            <span style="font-size: 11px; font-weight: 800; color: #F59E0B;">★ ${vendor.rating}</span>
+          </div>
+          <h4 style="font-size: 14px; font-weight: 800; margin: 0 0 2px 0; color: #111827;">${vendor.name}</h4>
+          <p style="font-size: 11px; color: #6B7280; margin: 0 0 6px 0;">📍 ${vendor.location}</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F3F4F6; padding-top: 6px;">
+            <span style="font-size: 13px; font-weight: 900; color: #FF532A;">Rp ${vendor.price.toLocaleString('id-ID')}</span>
+            <a href="/menu?id=${vendor.id}" style="font-size: 11px; font-weight: 800; color: white; background: #FF532A; padding: 4px 12px; border-radius: 20px; text-decoration: none;">
+              Detail
+            </a>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml);
+      marker.vendorData = vendor;
+      mapMarkers.push(marker);
+    });
+  }
+
+  // Filter Marker di Peta
+  function filterMapMarkers(status) {
+    document.querySelectorAll('#btn-filter-all, #btn-filter-mangkal, #btn-filter-jalan').forEach(btn => {
+      btn.className = 'px-4 py-1.5 rounded-full text-xs font-bold text-gray-600 hover:text-brand-orange transition-all';
+    });
+
+    if (status === 'all') {
+      document.getElementById('btn-filter-all').className = 'px-4 py-1.5 rounded-full text-xs font-black bg-brand-orange text-white shadow-sm transition-all';
+      renderVendorMarkers(vendorsData);
+    } else {
+      const filtered = vendorsData.filter(v => v.status === status);
+      if (status === 'Mangkal') {
+        document.getElementById('btn-filter-mangkal').className = 'px-4 py-1.5 rounded-full text-xs font-black bg-emerald-500 text-white shadow-sm transition-all';
+      } else {
+        document.getElementById('btn-filter-jalan').className = 'px-4 py-1.5 rounded-full text-xs font-black bg-amber-500 text-white shadow-sm transition-all';
+      }
+      renderVendorMarkers(filtered);
+    }
+  }
+
+  // AI Assistant Functions
   async function askAiPrompt(query) {
     document.getElementById('ai-user-query').value = query;
     await executeAiQuery(query);
@@ -359,25 +519,25 @@
 
   async function executeAiQuery(query) {
     const resultBox = document.getElementById('ai-result-content');
-    resultBox.innerHTML = `<p class="text-gray-500 animate-pulse">Sedang mencari rekomendasi jajanan terbaik untukmu...</p>`;
+    resultBox.innerHTML = `<p class="text-brand-orange font-bold animate-pulse">✨ Menganalisis rekomendasi jajanan terbaik...</p>`;
 
     try {
       const response = await fetch(`/api/rekomendasi?q=${encodeURIComponent(query)}`);
       const data = await response.json();
 
       if (data.recommendations && data.recommendations.length > 0) {
-        let html = `<p class="font-semibold text-gray-800">${data.message}:</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">`;
+        let html = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 text-left">`;
         data.recommendations.forEach(item => {
           html += `
-            <div class="p-3 bg-white rounded-xl border border-orange-200 shadow-sm">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-gray-900 text-sm">${item.name}</span>
-                <span class="text-xs font-extrabold text-brand-orange">Rp ${item.price.toLocaleString('id-ID')}</span>
+            <div class="p-4 bg-orange-50/50 rounded-2xl border border-orange-100 flex items-center space-x-3">
+              <img src="${item.image}" class="w-14 h-14 rounded-xl object-cover">
+              <div class="flex-1 min-w-0">
+                <h5 class="text-sm font-extrabold text-gray-900 truncate">${item.name}</h5>
+                <p class="text-xs text-gray-500">📍 ${item.location}</p>
+                <p class="text-xs font-black text-brand-orange mt-0.5">Rp ${item.price.toLocaleString('id-ID')}</p>
               </div>
-              <p class="text-xs text-gray-500 mt-1">📍 ${item.seller} • ${item.status}</p>
-              <p class="text-[11px] text-gray-600 mt-1 line-clamp-1">${item.description}</p>
-              <a href="/menu?id=${item.id}" class="inline-block mt-2 text-xs font-bold text-brand-orange hover:underline">
-                Lihat di Katalog &rarr;
+              <a href="/menu?id=${item.id}" class="px-3 py-1.5 rounded-full bg-brand-orange text-white text-xs font-bold hover:bg-brand-orange-hover shrink-0">
+                Lihat
               </a>
             </div>
           `;
@@ -385,11 +545,16 @@
         html += `</div>`;
         resultBox.innerHTML = html;
       } else {
-        resultBox.innerHTML = `<p class="text-gray-600">Tidak ada jajanan yang cocok dengan kata kunci tersebut. Coba cari "manis" atau "pedas".</p>`;
+        resultBox.innerHTML = `<p class="text-gray-500">Tidak ada jajanan yang cocok. Coba cari "manis" atau "pedas".</p>`;
       }
     } catch (err) {
       console.error(err);
-      resultBox.innerHTML = `<p class="text-red-500">Gagal menghubungi layanan rekomendasi.</p>`;
+      resultBox.innerHTML = `<p class="text-red-500">Gagal memuat rekomendasi.</p>`;
     }
   }
+
+  // Load Map saat DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    initTrackingMap();
+  });
 </script>

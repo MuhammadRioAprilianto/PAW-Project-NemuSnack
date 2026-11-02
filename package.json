@@ -16,7 +16,7 @@
     "jajanan-kaki-lima",
     "middleware-logger"
   ],
-  "author": "Muhammad Rio Aprilianto - 20240140204",
+  "author": "NemuSnack Team",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.10",
