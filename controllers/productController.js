@@ -51,6 +51,38 @@ const productController = {
         error: error.message
       });
     }
+  },
+
+  /**
+   * Mengambil data satu produk berdasarkan ID
+   * Endpoint: GET /api/produk/:id
+   */
+  getProductById(req, res) {
+    try {
+      const { id } = req.params;
+      const product = productModel.getProductById(id);
+
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: `Produk dengan ID ${id} tidak ditemukan`,
+          data: null
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `Data produk ${product.name} (ID: ${id}) berhasil diambil`,
+        data: product
+      });
+    } catch (error) {
+      console.error('Error pada getProductById API:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Gagal mengambil data produk berdasarkan ID',
+        error: error.message
+      });
+    }
   }
 };
 

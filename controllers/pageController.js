@@ -39,11 +39,13 @@ const pageController = {
 
   /**
    * Menampilkan halaman menu
-   * Menyediakan seluruh data produk dari model
+   * Menyediakan seluruh data produk dari model, serta mendukung query pencarian by ID
    */
   getMenuPage(req, res) {
     try {
       const products = productModel.getAllProducts();
+      const requestedId = req.query.id ? parseInt(req.query.id, 10) : null;
+      const selectedProduct = requestedId ? productModel.getProductById(requestedId) : null;
 
       res.render('pages/menu', {
         title: `Menu Kebab - ${appConfig.appName}`,
@@ -51,7 +53,9 @@ const pageController = {
         appTagline: appConfig.appTagline,
         products,
         formatCurrency,
-        currentPath: '/menu'
+        currentPath: '/menu',
+        requestedId,
+        selectedProduct
       });
     } catch (error) {
       console.error('Error saat merender halaman menu:', error);
