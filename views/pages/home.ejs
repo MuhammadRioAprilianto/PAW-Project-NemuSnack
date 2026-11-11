@@ -286,7 +286,7 @@
                 </div>
 
                 <div class="flex items-center space-x-2">
-                  <a href="/menu?id=<%= product.id %>" 
+                  <a href="/produk/<%= product.id %>" 
                      class="px-5 py-2.5 rounded-full font-bold text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-md shadow-brand-orange/20 transition-all">
                     Lihat Lapak
                   </a>
@@ -471,7 +471,7 @@
           <p style="font-size: 11px; color: #6B7280; margin: 0 0 6px 0;">📍 ${vendor.location}</p>
           <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F3F4F6; padding-top: 6px;">
             <span style="font-size: 13px; font-weight: 900; color: #FF532A;">Rp ${vendor.price.toLocaleString('id-ID')}</span>
-            <a href="/menu?id=${vendor.id}" style="font-size: 11px; font-weight: 800; color: white; background: #FF532A; padding: 4px 12px; border-radius: 20px; text-decoration: none;">
+            <a href="/produk/${vendor.id}" style="font-size: 11px; font-weight: 800; color: white; background: #FF532A; padding: 4px 12px; border-radius: 20px; text-decoration: none;">
               Detail
             </a>
           </div>
@@ -536,8 +536,8 @@
                 <p class="text-xs text-gray-500">📍 ${item.location}</p>
                 <p class="text-xs font-black text-brand-orange mt-0.5">Rp ${item.price.toLocaleString('id-ID')}</p>
               </div>
-              <a href="/menu?id=${item.id}" class="px-3 py-1.5 rounded-full bg-brand-orange text-white text-xs font-bold hover:bg-brand-orange-hover shrink-0">
-                Lihat
+              <a href="/produk/${item.id}" class="px-3 py-1.5 rounded-full bg-brand-orange text-white text-xs font-bold hover:bg-brand-orange-hover shrink-0">
+                Lihat Detail
               </a>
             </div>
           `;

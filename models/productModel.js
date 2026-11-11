@@ -1,147 +1,284 @@
 /**
- * Model Data Jajanan & Lapak PKL - NemuSnack
- * Mengelola data katalog jajanan kaki lima, lokasi koordinat lapak, status pergerakan, dan rating.
+ * Model Data Produk & Jajanan PKL - NemuSnack
+ * Mengelola operasi database PostgreSQL untuk produk jajanan kaki lima
  */
 
-const products = [
-  {
-    id: 1,
-    name: "Pisang Cokelat Lumer Pak Yono",
-    seller: "Lapak Gerobak Pak Yono",
-    category: "Manis",
-    price: 12000,
-    rating: 4.9,
-    reviewsCount: 148,
-    status: "Mangkal",
-    location: "Jl. Kaliurang km 5 (Depan Apotek)",
-    route: "Mangkal tetap mulai pukul 16.00 - 22.00 WIB",
-    lat: -7.7650,
-    lng: 110.3785,
-    whatsapp: "6281234567890",
-    description: "Pisang cokelat lumer legendaris berbalut kulit lumpia renyah dengan lelehan cokelat melimpah dan taburan keju gurih khas Pak Yono.",
-    image: "/assets/images/snack-piscok.jpg"
-  },
-  {
-    id: 2,
-    name: "Telur Gulung Crispy Mas Danang",
-    seller: "Telur Gulung Mas Danang",
-    category: "Gurih",
-    price: 10000,
-    rating: 4.8,
-    reviewsCount: 210,
-    status: "Sedang Berjalan",
-    location: "Sekitar Pogung Raya -> Flamboyan",
-    route: "Rute sore: Gerbang Asrama -> Pogung Baru -> Pogung Raya",
-    lat: -7.7625,
-    lng: 110.3805,
-    whatsapp: "6281234567891",
-    description: "Telur gulung gurih berbalut bihun renyah dan sosis dengan taburan bumbu balado pedas manis serta saus cabai racikan mantap.",
-    image: "/assets/images/snack-telur-gulung.jpg"
-  },
-  {
-    id: 3,
-    name: "Tahu Gejrot Pedas Nampol Bu Siti",
-    seller: "Tahu Gejrot Cirebon Bu Siti",
-    category: "Pedas",
-    price: 10000,
-    rating: 4.9,
-    reviewsCount: 320,
-    status: "Mangkal",
-    location: "Depan Gerbang Barat Kampus",
-    route: "Buka setiap sore mulai 15.30 WIB sampai habis",
-    lat: -7.7680,
-    lng: 110.3770,
-    whatsapp: "6281234567892",
-    description: "Tahu pong kopong renyah disiram kuah gula merah asam segar dengan ulekan cabai rawit hijau segar yang pedas nendang.",
-    image: "/assets/images/snack-tahu-gejrot.jpg"
-  },
-  {
-    id: 4,
-    name: "Cireng Isi Ayam Suwir Mang Asep",
-    seller: "Cireng Crispy Mang Asep",
-    category: "Pedas",
-    price: 15000,
-    rating: 4.7,
-    reviewsCount: 185,
-    status: "Mangkal",
-    location: "Pertigaan Mirota Kampus",
-    route: "Standby dekat halte bus kampus",
-    lat: -7.7705,
-    lng: 110.3815,
-    whatsapp: "6281234567893",
-    description: "Cireng renyah di luar kenyal di dalam dengan isian daging ayam suwir melimpah berbumbu rica-rica pedas harum daun jeruk.",
-    image: "/assets/images/snack-cireng.jpg"
-  },
-  {
-    id: 5,
-    name: "Jasuke Manis Keju Mozzarella Mbak Rina",
-    seller: "Jasuke Lovers Mbak Rina",
-    category: "Manis",
-    price: 12000,
-    rating: 4.8,
-    reviewsCount: 95,
-    status: "Mangkal",
-    location: "Pojok Lapangan Lembah",
-    route: "Mangkal setiap hari 16.00 - 21.30 WIB",
-    lat: -7.7690,
-    lng: 110.3840,
-    whatsapp: "6281234567894",
-    description: "Jagung manis pipil kukus hangat berpadu mentega wangi, susu kental manis legit, dan parutan keju mozzarella lumer melimpah.",
-    image: "/assets/images/snack-jasuke.jpg"
-  },
-  {
-    id: 6,
-    name: "Martabak Mini Aneka Topping Bang Jali",
-    seller: "Martabak Mini Bang Jali",
-    category: "Manis",
-    price: 15000,
-    rating: 4.9,
-    reviewsCount: 410,
-    status: "Sedang Berjalan",
-    location: "Rute Lingkar Luar Kampus Terpadu",
-    route: "Rute keliling: Kos Bougenville -> Lembah -> Pogung Baru",
-    lat: -7.7610,
-    lng: 110.3820,
-    whatsapp: "6281234567895",
-    description: "Martabak manis mini bersarang lembut dengan aneka pilihan topping meses cokelat, keju parut, kacang sangrai, dan susu kental manis.",
-    image: "/assets/images/snack-martabak.jpg"
-  }
-];
+const db = require('../config/db');
 
 const productModel = {
   /**
-   * Mengambil seluruh data jajanan PKL
-   * @returns {Array} Daftar jajanan
+   * Mengambil seluruh data jajanan PKL beserta rating dan data pedagang
+   * @returns {Promise<Array>}
    */
-  getAllProducts() {
-    return products;
+  async getAllProducts() {
+    const sql = `
+      SELECT 
+        p.*,
+        u.name AS seller,
+        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        COUNT(r.id)::int AS "reviewsCount"
+      FROM products p
+      LEFT JOIN users u ON p.seller_id = u.id
+      LEFT JOIN reviews r ON p.id = r.product_id
+      GROUP BY p.id, u.name
+      ORDER BY p.id ASC;
+    `;
+    const result = await db.query(sql);
+    return result.rows.map(row => ({
+      ...row,
+      price: Number(row.price),
+      rating: parseFloat(row.rating) || 5.0,
+      lat: row.lat ? parseFloat(row.lat) : -7.7660,
+      lng: row.lng ? parseFloat(row.lng) : 110.3800
+    }));
   },
 
   /**
-   * Mengambil jajanan berdasarkan ID
-   * @param {number|string} id - ID produk
-   * @returns {Object|null} Objek produk atau null jika tidak ditemukan
+   * Mengambil data jajanan berdasarkan ID lengkap dengan ulasan
+   * @param {number|string} id 
+   * @returns {Promise<Object|null>}
    */
-  getProductById(id) {
+  async getProductById(id) {
     const numericId = parseInt(id, 10);
-    return products.find((item) => item.id === numericId) || null;
+    if (isNaN(numericId)) return null;
+
+    const sql = `
+      SELECT 
+        p.*,
+        u.name AS seller,
+        u.email AS seller_email,
+        u.phone AS seller_phone,
+        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        COUNT(r.id)::int AS "reviewsCount"
+      FROM products p
+      LEFT JOIN users u ON p.seller_id = u.id
+      LEFT JOIN reviews r ON p.id = r.product_id
+      WHERE p.id = $1
+      GROUP BY p.id, u.name, u.email, u.phone;
+    `;
+    const result = await db.query(sql, [numericId]);
+    if (result.rows.length === 0) return null;
+
+    const row = result.rows[0];
+    return {
+      ...row,
+      price: Number(row.price),
+      rating: parseFloat(row.rating) || 5.0,
+      lat: row.lat ? parseFloat(row.lat) : -7.7660,
+      lng: row.lng ? parseFloat(row.lng) : 110.3800
+    };
   },
 
   /**
-   * Mencari jajanan berdasarkan keyword
-   * @param {string} query - Kata kunci pencarian
-   * @returns {Array} Daftar jajanan yang cocok
+   * Menambahkan data produk baru ke database (Operasi Create)
+   * @param {Object} data 
+   * @returns {Promise<Object>}
    */
-  searchProducts(query) {
-    if (!query) return products;
-    const lower = query.toLowerCase();
-    return products.filter((p) => 
-      p.name.toLowerCase().includes(lower) ||
-      p.category.toLowerCase().includes(lower) ||
-      p.description.toLowerCase().includes(lower) ||
-      p.seller.toLowerCase().includes(lower) ||
-      p.location.toLowerCase().includes(lower)
-    );
+  async createProduct(data) {
+    const {
+      seller_id,
+      name,
+      category = 'Lainnya',
+      price = 0,
+      status = 'Mangkal',
+      location = '',
+      route = '',
+      lat = -7.7660,
+      lng = 110.3800,
+      whatsapp = '',
+      description = '',
+      image = '/assets/images/kebab-placeholder.svg'
+    } = data;
+
+    const sql = `
+      INSERT INTO products (
+        seller_id, name, category, price, status, location, route, lat, lng, whatsapp, description, image
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      RETURNING *;
+    `;
+    const params = [
+      seller_id,
+      name,
+      category,
+      parseInt(price, 10) || 0,
+      status,
+      location,
+      route,
+      parseFloat(lat) || -7.7660,
+      parseFloat(lng) || 110.3800,
+      whatsapp,
+      description,
+      image
+    ];
+
+    const result = await db.query(sql, params);
+    return result.rows[0];
+  },
+
+  /**
+   * Memperbarui data produk berdasarkan ID (Operasi Update)
+   * @param {number|string} id 
+   * @param {Object} data 
+   * @returns {Promise<Object|null>}
+   */
+  async updateProduct(id, data) {
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) return null;
+
+    // Ambil data produk lama terlebih dahulu
+    const existing = await this.getProductById(numericId);
+    if (!existing) return null;
+
+    const updated = {
+      name: data.name !== undefined ? data.name : existing.name,
+      category: data.category !== undefined ? data.category : existing.category,
+      price: data.price !== undefined ? (parseInt(data.price, 10) || 0) : existing.price,
+      status: data.status !== undefined ? data.status : existing.status,
+      location: data.location !== undefined ? data.location : existing.location,
+      route: data.route !== undefined ? data.route : existing.route,
+      lat: data.lat !== undefined ? (parseFloat(data.lat) || -7.7660) : existing.lat,
+      lng: data.lng !== undefined ? (parseFloat(data.lng) || 110.3800) : existing.lng,
+      whatsapp: data.whatsapp !== undefined ? data.whatsapp : existing.whatsapp,
+      description: data.description !== undefined ? data.description : existing.description,
+      image: data.image !== undefined ? data.image : existing.image
+    };
+
+    const sql = `
+      UPDATE products
+      SET 
+        name = $1,
+        category = $2,
+        price = $3,
+        status = $4,
+        location = $5,
+        route = $6,
+        lat = $7,
+        lng = $8,
+        whatsapp = $9,
+        description = $10,
+        image = $11,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $12
+      RETURNING *;
+    `;
+    const params = [
+      updated.name,
+      updated.category,
+      updated.price,
+      updated.status,
+      updated.location,
+      updated.route,
+      updated.lat,
+      updated.lng,
+      updated.whatsapp,
+      updated.description,
+      updated.image,
+      numericId
+    ];
+
+    const result = await db.query(sql, params);
+    return result.rows[0];
+  },
+
+  /**
+   * Menghapus produk berdasarkan ID (Operasi Delete)
+   * @param {number|string} id 
+   * @returns {Promise<boolean>}
+   */
+  async deleteProduct(id) {
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) return false;
+
+    const result = await db.query('DELETE FROM products WHERE id = $1 RETURNING id;', [numericId]);
+    return result.rowCount > 0;
+  },
+
+  /**
+   * Mengambil produk berdasarkan seller_id (Untuk Dashboard Penjual)
+   * @param {number} sellerId 
+   * @returns {Promise<Array>}
+   */
+  async getProductsBySeller(sellerId) {
+    const sql = `
+      SELECT 
+        p.*,
+        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        COUNT(r.id)::int AS "reviewsCount"
+      FROM products p
+      LEFT JOIN reviews r ON p.id = r.product_id
+      WHERE p.seller_id = $1
+      GROUP BY p.id
+      ORDER BY p.id DESC;
+    `;
+    const result = await db.query(sql, [sellerId]);
+    return result.rows.map(row => ({
+      ...row,
+      price: Number(row.price),
+      rating: parseFloat(row.rating) || 5.0,
+      lat: row.lat ? parseFloat(row.lat) : -7.7660,
+      lng: row.lng ? parseFloat(row.lng) : 110.3800
+    }));
+  },
+
+  /**
+   * Memperbarui status operasional dan lokasi dagang untuk semua produk penjual
+   * @param {number} sellerId 
+   * @param {Object} param1 
+   */
+  async updateSellerLocationAndStatus(sellerId, { status, location, route, lat, lng }) {
+    const sql = `
+      UPDATE products
+      SET 
+        status = COALESCE($1, status),
+        location = COALESCE($2, location),
+        route = COALESCE($3, route),
+        lat = COALESCE($4, lat),
+        lng = COALESCE($5, lng),
+        updated_at = CURRENT_TIMESTAMP
+      WHERE seller_id = $6
+      RETURNING *;
+    `;
+    const result = await db.query(sql, [status, location, route, lat, lng, sellerId]);
+    return result.rows;
+  },
+
+  /**
+   * Pencarian produk berdasarkan query string (nama, kategori, deskripsi, lokasi, nama penjual)
+   * Digunakan oleh fitur pencarian katalog dan asisten rekomendasi AI
+   * @param {string} query 
+   * @returns {Promise<Array>}
+   */
+  async searchProducts(query) {
+    if (!query) {
+      return this.getAllProducts();
+    }
+    const lower = `%${query.toLowerCase()}%`;
+    const sql = `
+      SELECT 
+        p.*,
+        u.name AS seller,
+        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        COUNT(r.id)::int AS "reviewsCount"
+      FROM products p
+      LEFT JOIN users u ON p.seller_id = u.id
+      LEFT JOIN reviews r ON p.id = r.product_id
+      WHERE 
+        LOWER(p.name) LIKE $1 OR
+        LOWER(p.category) LIKE $1 OR
+        LOWER(p.description) LIKE $1 OR
+        LOWER(p.location) LIKE $1 OR
+        LOWER(u.name) LIKE $1
+      GROUP BY p.id, u.name
+      ORDER BY p.id ASC;
+    `;
+    const result = await db.query(sql, [lower]);
+    return result.rows.map(row => ({
+      ...row,
+      price: Number(row.price),
+      rating: parseFloat(row.rating) || 5.0,
+      lat: row.lat ? parseFloat(row.lat) : -7.7660,
+      lng: row.lng ? parseFloat(row.lng) : 110.3800
+    }));
   }
 };
 

@@ -31,151 +31,85 @@
   </div>
 </section>
 
-<!-- SECTION: CONTROL PANEL (Pencarian by ID & Kotak Pantau Route / Response API) -->
+<!-- SECTION: CONTROL PANEL & MIDDLEWARE LOGGER LAUNCHER -->
 <section class="py-8 bg-[#FAF8F5] border-b border-gray-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
     
-    <!-- 1. FORM PENCARIAN BY ID -->
-    <div class="bg-white p-6 sm:p-7 rounded-[2rem] border border-gray-100 shadow-card">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-        <div>
-          <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
+    <div class="bg-white p-6 sm:p-7 rounded-[2rem] border border-gray-100 shadow-card flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      
+      <!-- Kiri: Pencarian & Uji Cepat ID -->
+      <div class="flex-grow space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-black text-gray-900 flex items-center">
             <svg class="w-5 h-5 text-brand-orange mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
             Pencarian Jajanan Berdasarkan ID
           </h2>
-          <p class="text-xs text-gray-500 mt-0.5">
-            Cari data produk spesifik untuk pengujian route endpoint <code class="bg-orange-100 text-brand-orange px-2 py-0.5 rounded-md font-mono text-xs font-bold">GET /api/produk/:id</code>
-          </p>
-        </div>
-
-        <button type="button" 
-                onclick="resetMenuFilter()"
-                class="inline-flex items-center justify-center px-4 py-2 rounded-full text-xs font-bold text-gray-600 hover:text-brand-orange bg-gray-50 hover:bg-orange-50 border border-gray-200 transition-colors">
-          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-          </svg>
-          Reset / Tampilkan Semua
-        </button>
-      </div>
-
-      <!-- Input Form (Pill Shape) -->
-      <form id="search-id-form" onsubmit="handleIdSearch(event)" class="flex flex-col sm:flex-row items-stretch gap-3">
-        <div class="relative flex-grow">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-            <span class="font-mono font-bold text-sm text-brand-orange">#ID</span>
-          </div>
-          <input type="number" 
-                 id="search-id-input" 
-                 min="1" 
-                 placeholder="Ketik nomor ID (contoh: 1, 2, 3...)"
-                 value="<%= typeof requestedId !== 'undefined' && requestedId ? requestedId : '' %>"
-                 class="w-full pl-14 pr-4 py-3.5 rounded-full border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-sm outline-none transition-all"
-                 required>
-        </div>
-
-        <button type="submit" 
-                class="inline-flex items-center justify-center px-8 py-3.5 rounded-full font-black text-sm text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/20 active:scale-95 transition-all">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-          Cari &amp; Ambil API
-        </button>
-      </form>
-
-      <!-- Preset Quick Pills -->
-      <div class="mt-4 pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2">
-        <span class="text-xs font-bold text-gray-500 mr-1">Uji Cepat:</span>
-        <% if (typeof products !== 'undefined' && products.length > 0) { %>
-          <% products.forEach((p) => { %>
-            <button type="button" 
-                    onclick="fetchProductById(<%= p.id %>)"
-                    class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-orange-50 hover:bg-brand-orange hover:text-white text-gray-800 border border-orange-200 transition-all flex items-center">
-              <span class="font-mono mr-1 text-brand-orange font-bold">#<%= p.id %></span> <%= p.name %>
-            </button>
-          <% }); %>
-        <% } %>
-        <button type="button" 
-                onclick="fetchProductById(99)"
-                class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-red-50 hover:bg-red-600 hover:text-white text-red-700 border border-red-200 transition-all flex items-center"
-                title="Uji coba response 404">
-          <span class="font-mono mr-1 font-bold">#99</span> Tes 404
-        </button>
-      </div>
-    </div>
-
-    <!-- 2. KOTAK KHUSUS PEMANTAU ROUTE & RESPONSE API (LIVE API INSPECTOR BOX) -->
-    <div id="api-inspector-container" class="rounded-[2rem] overflow-hidden shadow-2xl border border-gray-800 bg-gray-950 text-gray-100 transition-all duration-300">
-      
-      <!-- Top Inspector Bar -->
-      <div class="bg-black/60 px-5 sm:px-7 py-3.5 border-b border-gray-800 flex flex-wrap items-center justify-between gap-3">
-        
-        <div class="flex items-center space-x-3">
-          <div class="flex items-center space-x-1.5">
-            <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
-          </div>
-          <span class="text-xs sm:text-sm font-bold text-gray-200 tracking-wide flex items-center">
-            <svg class="w-4 h-4 text-brand-orange mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-            </svg>
-            Live Route &amp; Response API Inspector
-          </span>
-        </div>
-
-        <!-- Badges (Method, Route URL, Status Code) -->
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
-            HTTP GET
-          </span>
-
-          <span id="inspector-route-badge" class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-gray-800 text-brand-amber border border-gray-700">
-            /api/produk
-          </span>
-
-          <span id="inspector-status-badge" class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
-            200 OK
-          </span>
-
           <button type="button" 
-                  onclick="copyJsonResponse()"
-                  class="px-3 py-1 rounded-md text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 transition-colors flex items-center"
-                  id="copy-btn">
-            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-            </svg>
-            <span id="copy-btn-text">Salin JSON</span>
+                  onclick="resetMenuFilter()"
+                  class="text-xs font-bold text-gray-500 hover:text-brand-orange transition-colors">
+            Reset / Tampilkan Semua
           </button>
         </div>
 
+        <form id="search-id-form" onsubmit="handleIdSearch(event)" class="flex items-stretch gap-2">
+          <div class="relative flex-grow">
+            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none font-mono font-bold text-xs text-brand-orange">#ID</span>
+            <input type="number" 
+                   id="search-id-input" 
+                   min="1" 
+                   placeholder="Ketik nomor ID jajanan (contoh: 1, 2, 3...)"
+                   value="<%= typeof requestedId !== 'undefined' && requestedId ? requestedId : '' %>"
+                   class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 text-xs sm:text-sm outline-none transition-all">
+          </div>
+          <button type="submit" 
+                  class="px-6 py-3 rounded-full font-black text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-md transition-all shrink-0">
+            Cari &amp; Ambil
+          </button>
+        </form>
+
+        <!-- Preset Quick Pills -->
+        <div class="flex flex-wrap items-center gap-1.5 pt-1">
+          <span class="text-[11px] font-bold text-gray-400 mr-1">Uji Cepat:</span>
+          <% if (typeof products !== 'undefined' && products.length > 0) { %>
+            <% products.slice(0, 4).forEach((p) => { %>
+              <button type="button" 
+                      onclick="fetchProductById(<%= p.id %>)"
+                      class="px-3 py-1 rounded-full text-xs font-bold bg-orange-50 hover:bg-brand-orange hover:text-white text-gray-800 border border-orange-200 transition-all">
+                #<%= p.id %> <%= p.name %>
+              </button>
+            <% }); %>
+          <% } %>
+          <button type="button" 
+                  onclick="fetchProductById(99)"
+                  class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 hover:bg-red-600 hover:text-white text-red-700 border border-red-200 transition-all"
+                  title="Uji coba response 404">
+            #99 (Tes 404)
+          </button>
+        </div>
       </div>
 
-      <!-- Action Description & Meta Header -->
-      <div class="px-5 sm:px-7 py-3 bg-gray-900 border-b border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-gray-300 gap-2">
-        <div class="flex items-center space-x-2">
-          <span class="text-gray-400 font-semibold">Aksi yang Sedang Dilakukan:</span>
-          <span id="inspector-action-desc" class="font-bold text-brand-amber">
-            Mengambil data katalog seluruh jajanan PKL NemuSnack
-          </span>
+      <!-- Kanan: Card Aksi Middleware Logger Drawer -->
+      <div class="lg:w-96 p-5 rounded-2xl bg-gray-950 text-white border border-gray-800 shadow-xl space-y-3 shrink-0">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-mono font-bold text-brand-orange uppercase">Middleware Logger Panel</span>
+          </div>
+          <span class="text-[10px] font-mono bg-gray-800 text-gray-300 px-2 py-0.5 rounded border border-gray-700">Side Drawer</span>
         </div>
-        <div class="flex items-center space-x-3 text-gray-400 text-[11px]">
-          <span>Waktu: <span id="inspector-time" class="font-mono text-gray-200">-</span></span>
-          <span>•</span>
-          <a id="inspector-raw-link" href="/api/produk" target="_blank" class="text-brand-orange hover:underline flex items-center">
-            Buka URL Endpoint Langsung
-            <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- JSON Viewer Body -->
-      <div class="p-5 sm:p-7 overflow-x-auto max-h-[380px] font-mono text-xs sm:text-sm bg-black/60">
-        <pre id="inspector-json-content" class="text-emerald-300 leading-relaxed font-mono whitespace-pre-wrap break-all">// Memuat data Response API...</pre>
+        <p class="text-xs text-gray-300">
+          Uji seluruh aksi HTTP <span class="font-bold text-cyan-400">GET</span>, <span class="font-bold text-emerald-400">POST</span>, <span class="font-bold text-amber-400">PUT</span>, dan <span class="font-bold text-rose-400">DELETE</span> secara live dan pantau respon API di konsol samping.
+        </p>
+        <button type="button"
+                onclick="toggleLoggerDrawer(true)"
+                class="w-full py-2.5 px-4 rounded-xl font-black text-xs text-white bg-gradient-to-r from-brand-orange to-amber-500 hover:from-brand-orange-hover hover:to-amber-600 shadow-lg shadow-brand-orange/20 transition-all flex items-center justify-center space-x-2">
+          <span>⚡ Buka Logger &amp; CRUD Console</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </button>
       </div>
 
     </div>
@@ -282,18 +216,15 @@
                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                     </svg>
-                    <span>Cek Route API</span>
+                    <span>Cek API</span>
                   </button>
 
-                  <!-- Datangi Lapak -->
-                  <button type="button"
-                          onclick="showLapakModal('<%= product.name %>', '<%= product.seller %>', '<%= formatCurrency(product.price) %>', '<%= product.location %>', '<%= product.status %>')"
-                          class="w-full inline-flex items-center justify-center px-3 py-2.5 rounded-full font-bold text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-md shadow-brand-orange/20 transition-all duration-200">
-                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    </svg>
-                    <span>Datangi</span>
-                  </button>
+                  <!-- Buka Detail & Ulasan -->
+                  <a href="/produk/<%= product.id %>"
+                     class="w-full inline-flex items-center justify-center px-3 py-2.5 rounded-full font-bold text-xs text-white bg-brand-orange hover:bg-brand-orange-hover shadow-md shadow-brand-orange/20 transition-all duration-200">
+                    <span>Detail &amp; Ulas</span>
+                    <span class="ml-1">→</span>
+                  </a>
                 </div>
               </div>
 
@@ -339,93 +270,14 @@
   </div>
 </div>
 
-<!-- SCRIPT LIVE ROUTE & API INSPECTOR -->
+<!-- SCRIPT HALAMAN KATALOG & SINKRONISASI LOGGER -->
 <script>
-  let currentJsonData = null;
-
-  function getCurrentFormattedTime() {
-    const now = new Date();
-    return now.toLocaleTimeString('id-ID', { hour12: false }) + '.' + String(now.getMilliseconds()).padStart(3, '0');
-  }
-
-  function updateInspector({ route, statusCode, actionDesc, jsonData, isSuccess }) {
-    currentJsonData = jsonData;
-    
-    const routeBadge = document.getElementById('inspector-route-badge');
-    if (routeBadge) routeBadge.textContent = route;
-
-    const statusBadge = document.getElementById('inspector-status-badge');
-    if (statusBadge) {
-      if (isSuccess) {
-        statusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center';
-        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> ${statusCode} OK`;
-      } else {
-        statusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-red-500/20 text-red-400 border border-red-500/30 flex items-center';
-        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-400 mr-1.5"></span> ${statusCode} Not Found`;
-      }
-    }
-
-    const actionDescEl = document.getElementById('inspector-action-desc');
-    if (actionDescEl) actionDescEl.textContent = actionDesc;
-
-    const timeEl = document.getElementById('inspector-time');
-    if (timeEl) timeEl.textContent = getCurrentFormattedTime();
-
-    const rawLink = document.getElementById('inspector-raw-link');
-    if (rawLink) {
-      rawLink.href = route;
-      rawLink.textContent = `Buka ${route}`;
-    }
-
-    const jsonPre = document.getElementById('inspector-json-content');
-    if (jsonPre) {
-      jsonPre.textContent = JSON.stringify(jsonData, null, 2);
-      if (isSuccess) {
-        jsonPre.className = 'text-emerald-300 leading-relaxed font-mono whitespace-pre-wrap break-all';
-      } else {
-        jsonPre.className = 'text-red-300 leading-relaxed font-mono whitespace-pre-wrap break-all';
-      }
-    }
-  }
-
   async function fetchProductById(id) {
-    const route = `/api/produk/${id}`;
-    const actionDesc = `Mengambil data jajanan spesifik (ID: ${id}) via endpoint GET ${route}`;
+    const searchInput = document.getElementById('search-id-input');
+    if (searchInput) searchInput.value = id;
 
-    const statusBadge = document.getElementById('inspector-status-badge');
-    if (statusBadge) {
-      statusBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
-      statusBadge.textContent = 'Memuat...';
-    }
-
-    try {
-      const response = await fetch(route);
-      const data = await response.json();
-
-      updateInspector({
-        route,
-        statusCode: response.status,
-        actionDesc: data.message || actionDesc,
-        jsonData: data,
-        isSuccess: response.ok
-      });
-
-      filterGridByProductId(id, data.data);
-
-      const inspectorEl = document.getElementById('api-inspector-container');
-      if (inspectorEl && window.innerWidth < 768) {
-        inspectorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-    } catch (error) {
-      console.error('Fetch error:', error);
-      updateInspector({
-        route,
-        statusCode: 500,
-        actionDesc: `Terjadi error saat menghubungi ${route}`,
-        jsonData: { success: false, message: error.message },
-        isSuccess: false
-      });
+    if (typeof executeLoggerGet === 'function') {
+      await executeLoggerGet(id);
     }
   }
 
@@ -436,10 +288,12 @@
     const desc = document.getElementById('filter-status-desc');
 
     if (productData) {
-      banner.classList.remove('hidden');
-      banner.className = 'mb-8 p-4 rounded-2xl bg-orange-50 border border-brand-orange/40 flex items-center justify-between transition-all';
-      title.textContent = `Hasil Ditemukan: ${productData.name} (ID: ${id})`;
-      desc.textContent = `Penjual: ${productData.seller} • Status: ${productData.status}.`;
+      if (banner) {
+        banner.classList.remove('hidden');
+        banner.className = 'mb-8 p-4 rounded-2xl bg-orange-50 border border-brand-orange/40 flex items-center justify-between transition-all';
+      }
+      if (title) title.textContent = `Hasil Ditemukan: ${productData.name} (ID: ${id})`;
+      if (desc) desc.textContent = `Penjual: ${productData.seller} • Status: ${productData.status}.`;
 
       cards.forEach(card => {
         const cardId = card.getAttribute('data-product-id');
@@ -453,10 +307,12 @@
         }
       });
     } else {
-      banner.classList.remove('hidden');
-      banner.className = 'mb-8 p-4 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-between transition-all';
-      title.textContent = `Jajanan ID #${id} Tidak Ditemukan (404)`;
-      desc.textContent = `Sistem mengembalikan response 404 Not Found. Tidak ada lapak dengan ID ${id}.`;
+      if (banner) {
+        banner.classList.remove('hidden');
+        banner.className = 'mb-8 p-4 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-between transition-all';
+      }
+      if (title) title.textContent = `Jajanan ID #${id} Tidak Ditemukan (404)`;
+      if (desc) desc.textContent = `Sistem mengembalikan response 404 Not Found. Tidak ada lapak dengan ID ${id}.`;
 
       cards.forEach(card => {
         card.classList.add('opacity-30', 'scale-95');
@@ -504,18 +360,8 @@
       card.classList.remove('opacity-30', 'scale-95', 'ring-4', 'ring-brand-orange', 'shadow-2xl');
     });
 
-    try {
-      const response = await fetch('/api/produk');
-      const data = await response.json();
-      updateInspector({
-        route: '/api/produk',
-        statusCode: 200,
-        actionDesc: 'Mengambil data katalog seluruh jajanan PKL NemuSnack',
-        jsonData: data,
-        isSuccess: true
-      });
-    } catch (err) {
-      console.error(err);
+    if (typeof executeLoggerGet === 'function') {
+      await executeLoggerGet(null);
     }
   }
 

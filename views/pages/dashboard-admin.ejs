@@ -1,0 +1,316 @@
+<!-- Dashboard Monitoring & Manajemen Admin - NemuSnack -->
+<section class="py-10 bg-[#FAF8F5]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    
+    <!-- Header Banner -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-black tracking-wide mb-2">
+          <span>🛡️ PANEL ADMINISTRATOR</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">
+          Dashboard Monitoring &amp; Manajemen
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1">
+          Pantau metrik aplikasi, kelola akun pengguna 3 role, serta awasi riwayat event dan log sistem secara terpusat.
+        </p>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="/api/produk" target="_blank" class="px-4 py-2.5 rounded-full text-xs font-black text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all">
+          JSON API Produk
+        </a>
+        <a href="/api/status" target="_blank" class="px-4 py-2.5 rounded-full text-xs font-black text-emerald-700 bg-emerald-100 hover:bg-emerald-200 transition-all flex items-center">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Status API
+        </a>
+      </div>
+    </div>
+
+    <!-- Alert Notifikasi -->
+    <% if (typeof msg !== 'undefined' && msg) { %>
+      <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 font-bold flex items-center space-x-2">
+        <span>✓</span> <span><%= msg %></span>
+      </div>
+    <% } %>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-800 font-bold flex items-center space-x-2">
+        <span>✕</span> <span><%= error %></span>
+      </div>
+    <% } %>
+
+    <!-- 1. STATS OVERVIEW CARDS (6 Metrik Utama) -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      
+      <!-- Total Pengguna -->
+      <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-bold text-gray-400 uppercase">Total User</span>
+        <div class="mt-2 flex items-baseline justify-between">
+          <span class="text-2xl sm:text-3xl font-black text-gray-900"><%= stats.totalUsers %></span>
+          <span class="text-xl">👥</span>
+        </div>
+        <span class="text-[10px] text-gray-500 mt-1">Akun terdaftar</span>
+      </div>
+
+      <!-- Total Penjual -->
+      <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-bold text-amber-500 uppercase">Pedagang</span>
+        <div class="mt-2 flex items-baseline justify-between">
+          <span class="text-2xl sm:text-3xl font-black text-amber-600"><%= stats.totalSellers %></span>
+          <span class="text-xl">🏪</span>
+        </div>
+        <span class="text-[10px] text-gray-500 mt-1">Lapak aktif</span>
+      </div>
+
+      <!-- Total Pembeli -->
+      <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-bold text-emerald-500 uppercase">Pembeli</span>
+        <div class="mt-2 flex items-baseline justify-between">
+          <span class="text-2xl sm:text-3xl font-black text-emerald-600"><%= stats.totalBuyers %></span>
+          <span class="text-xl">🛒</span>
+        </div>
+        <span class="text-[10px] text-gray-500 mt-1">Pelanggan kuliner</span>
+      </div>
+
+      <!-- Total Produk -->
+      <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-bold text-brand-orange uppercase">Katalog Produk</span>
+        <div class="mt-2 flex items-baseline justify-between">
+          <span class="text-2xl sm:text-3xl font-black text-brand-orange"><%= stats.totalProducts %></span>
+          <span class="text-xl">🍢</span>
+        </div>
+        <span class="text-[10px] text-gray-500 mt-1">Menu di database</span>
+      </div>
+
+      <!-- Total Ulasan -->
+      <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-bold text-amber-500 uppercase">Total Ulasan</span>
+        <div class="mt-2 flex items-baseline justify-between">
+          <span class="text-2xl sm:text-3xl font-black text-amber-500"><%= stats.totalReviews %></span>
+          <span class="text-xl">⭐</span>
+        </div>
+        <span class="text-[10px] text-gray-500 mt-1">Rating &amp; ulasan</span>
+      </div>
+
+      <!-- Total Request Logs -->
+      <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-bold text-purple-600 uppercase">HTTP Requests</span>
+        <div class="mt-2 flex items-baseline justify-between">
+          <span class="text-2xl sm:text-3xl font-black text-purple-700"><%= stats.totalLogs %></span>
+          <span class="text-xl">📊</span>
+        </div>
+        <span class="text-[10px] text-gray-500 mt-1">Total aksi tercatat</span>
+      </div>
+
+    </div>
+
+    <!-- 2. PENGELOLAAN USER (MANAGE USERS) -->
+    <div class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+        <div>
+          <h2 class="text-xl font-black text-gray-900 flex items-center">
+            <span class="mr-2">👥</span> Manajemen Pengguna (Users)
+          </h2>
+          <p class="text-xs text-gray-500 mt-0.5">Kelola akun, alihkan hak akses (role), atau hapus akun pengguna.</p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-gray-100 text-xs font-bold text-gray-600">
+          <%= users.length %> Pengguna Terdaftar
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="bg-gray-50 text-gray-500 uppercase tracking-wider border-b border-gray-200">
+              <th class="py-3 px-4 rounded-l-xl">ID</th>
+              <th class="py-3 px-4">Nama</th>
+              <th class="py-3 px-4">Email</th>
+              <th class="py-3 px-4">Role Saat Ini</th>
+              <th class="py-3 px-4">Telepon</th>
+              <th class="py-3 px-4">Ubah Role</th>
+              <th class="py-3 px-4 rounded-r-xl text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <% users.forEach(u => { %>
+              <tr class="hover:bg-orange-50/30 transition-colors">
+                <td class="py-3 px-4 font-mono font-bold text-gray-400">#<%= u.id %></td>
+                <td class="py-3 px-4 font-bold text-gray-900">
+                  <%= u.name %>
+                  <% if (u.productCount > 0) { %>
+                    <span class="ml-1 text-[10px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-bold">
+                      <%= u.productCount %> produk
+                    </span>
+                  <% } %>
+                </td>
+                <td class="py-3 px-4 text-gray-600 font-mono"><%= u.email %></td>
+                <td class="py-3 px-4">
+                  <% if (u.role === 'admin') { %>
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-purple-100 text-purple-700">ADMIN</span>
+                  <% } else if (u.role === 'penjual') { %>
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-100 text-amber-800">PENJUAL</span>
+                  <% } else { %>
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800">PEMBELI</span>
+                  <% } %>
+                </td>
+                <td class="py-3 px-4 text-gray-500"><%= u.phone || '-' %></td>
+                
+                <!-- Form Ubah Role -->
+                <td class="py-3 px-4">
+                  <form action="/admin/users/<%= u.id %>/role" method="POST" class="flex items-center space-x-1.5">
+                    <select name="role" class="px-2 py-1 rounded-lg border border-gray-200 text-xs font-semibold focus:outline-none focus:border-purple-500">
+                      <option value="pembeli" <%= u.role === 'pembeli' ? 'selected' : '' %>>Pembeli</option>
+                      <option value="penjual" <%= u.role === 'penjual' ? 'selected' : '' %>>Penjual</option>
+                      <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                    </select>
+                    <button type="submit" class="px-2 py-1 rounded-lg bg-gray-900 text-white font-bold text-[10px] hover:bg-purple-700 transition-colors">
+                      Simpan
+                    </button>
+                  </form>
+                </td>
+
+                <!-- Form Hapus User -->
+                <td class="py-3 px-4 text-center">
+                  <% if (currentUser && currentUser.id !== u.id) { %>
+                    <form action="/admin/users/<%= u.id %>/delete" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user <%= u.name %>? Seluruh data terkait akan dihapus.')">
+                      <button type="submit" class="px-2.5 py-1 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white font-bold text-[11px] transition-colors">
+                        Hapus
+                      </button>
+                    </form>
+                  <% } else { %>
+                    <span class="text-gray-300 text-[11px] italic">Akun Anda</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. PEMANTAUAN AKSI & EVENT SISTEM (ACTIVITY & REQUEST LOGS) -->
+    <div class="bg-gray-950 text-gray-100 p-6 sm:p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h2 class="text-xl font-black text-white flex items-center">
+              Event &amp; Activity Log Monitor
+            </h2>
+          </div>
+          <p class="text-xs text-gray-400 mt-1">
+            Catatan request HTTP dan aksi pengguna yang tercatat secara real-time di middleware-logger.
+          </p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-gray-800 text-xs font-mono text-emerald-400 border border-gray-700">
+          50 Event Terbaru
+        </span>
+      </div>
+
+      <div class="overflow-x-auto max-h-[420px] font-mono text-xs">
+        <table class="w-full text-left">
+          <thead class="sticky top-0 bg-gray-900 text-gray-400 uppercase tracking-wider text-[11px] border-b border-gray-800">
+            <tr>
+              <th class="py-2.5 px-3">Waktu (Timestamp)</th>
+              <th class="py-2.5 px-3">Metode</th>
+              <th class="py-2.5 px-3">Endpoint / Path</th>
+              <th class="py-2.5 px-3">Status</th>
+              <th class="py-2.5 px-3">Aktor (Role)</th>
+              <th class="py-2.5 px-3">IP Client</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-800/60">
+            <% if (recentLogs && recentLogs.length > 0) { %>
+              <% recentLogs.forEach(l => { %>
+                <tr class="hover:bg-gray-900 transition-colors">
+                  <td class="py-2 px-3 text-gray-400 text-[11px] whitespace-nowrap">
+                    <%= new Date(l.created_at).toLocaleString('id-ID') %>
+                  </td>
+                  <td class="py-2 px-3 whitespace-nowrap">
+                    <% if (l.method === 'GET') { %>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400">GET</span>
+                    <% } else if (l.method === 'POST') { %>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-500/20 text-green-400">POST</span>
+                    <% } else if (l.method === 'PUT') { %>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-yellow-500/20 text-yellow-400">PUT</span>
+                    <% } else if (l.method === 'DELETE') { %>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400">DELETE</span>
+                    <% } else { %>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-700 text-gray-300"><%= l.method %></span>
+                    <% } %>
+                  </td>
+                  <td class="py-2 px-3 text-gray-200 font-bold truncate max-w-xs">
+                    <%= l.path %>
+                  </td>
+                  <td class="py-2 px-3 whitespace-nowrap">
+                    <% if (l.status_code >= 400) { %>
+                      <span class="text-red-400 font-bold"><%= l.status_code %></span>
+                    <% } else if (l.status_code >= 300) { %>
+                      <span class="text-yellow-400 font-bold"><%= l.status_code %></span>
+                    <% } else { %>
+                      <span class="text-emerald-400 font-bold"><%= l.status_code || 200 %></span>
+                    <% } %>
+                  </td>
+                  <td class="py-2 px-3 whitespace-nowrap">
+                    <% if (l.user_email) { %>
+                      <span class="text-brand-orange font-bold"><%= l.user_email %></span>
+                      <span class="text-gray-500 text-[10px]">(<%= l.user_role %>)</span>
+                    <% } else { %>
+                      <span class="text-gray-500 italic">Guest / Anon</span>
+                    <% } %>
+                  </td>
+                  <td class="py-2 px-3 text-gray-400 text-[11px] whitespace-nowrap">
+                    <%= l.ip || '127.0.0.1' %>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="py-6 text-center text-gray-500">Belum ada riwayat aktivitas tercatat</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. MODERASI KATALOG PRODUK -->
+    <div class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+        <div>
+          <h2 class="text-xl font-black text-gray-900 flex items-center">
+            <span class="mr-2">🍢</span> Moderasi Seluruh Katalog Jajanan
+          </h2>
+          <p class="text-xs text-gray-500 mt-0.5">Admin berhak meninjau dan menghapus produk jika melanggar ketentuan.</p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-gray-100 text-xs font-bold text-gray-600">
+          <%= products.length %> Produk Terbit
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% products.forEach(p => { %>
+          <div class="p-4 rounded-2xl border border-gray-100 bg-[#FAF8F5] flex items-center space-x-3 justify-between">
+            <div class="flex items-center space-x-3 min-w-0">
+              <img src="<%= p.image %>" class="w-12 h-12 rounded-xl object-cover shrink-0" onerror="this.src='/assets/images/snack-placeholder.svg'">
+              <div class="min-w-0">
+                <h4 class="text-xs font-black text-gray-900 truncate"><%= p.name %></h4>
+                <p class="text-[11px] text-gray-500 truncate">📍 <%= p.seller || 'Pedagang' %></p>
+                <p class="text-[11px] font-black text-brand-orange mt-0.5"><%= formatCurrency(p.price) %></p>
+              </div>
+            </div>
+
+            <form action="/admin/products/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Hapus produk <%= p.name %>?')">
+              <button type="submit" class="p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors" title="Hapus Produk">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+  </div>
+</section>

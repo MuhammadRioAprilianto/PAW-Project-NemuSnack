@@ -1,0 +1,1119 @@
+<!-- DRAWER MIDDLEWARE LOGGER & LIVE API INSPECTOR (GET, POST, PUT, DELETE) -->
+
+<!-- 1. Floating Dock Button di Samping (Selalu Terlihat untuk Membuka/Expand Drawer) -->
+<div id="logger-dock-tab" class="fixed right-0 top-1/2 -translate-y-1/2 z-40 transition-all duration-300">
+  <button type="button"
+          onclick="toggleLoggerDrawer(true)"
+          class="group flex items-center bg-gray-900/95 hover:bg-gray-900 text-white pl-3.5 pr-2.5 py-3 rounded-l-2xl border-l-2 border-y-2 border-brand-orange shadow-2xl backdrop-blur-md transition-all hover:pl-4 focus:outline-none"
+          title="Buka Middleware Logger Console (GET, POST, PUT, DELETE)">
+    
+    <!-- Animasi Denyut / Pulse Indikator -->
+    <span class="relative flex h-2.5 w-2.5 mr-2.5">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+    </span>
+
+    <div class="flex flex-col text-left">
+      <div class="flex items-center space-x-1.5">
+        <span class="text-xs font-black tracking-wide text-brand-orange">⚡ LOGGER API</span>
+      </div>
+      <div class="flex items-center space-x-1 mt-0.5 text-[9px] font-mono font-bold text-gray-400">
+        <span class="text-cyan-400">GET</span>
+        <span>•</span>
+        <span class="text-emerald-400">POST</span>
+        <span>•</span>
+        <span class="text-amber-400">PUT</span>
+        <span>•</span>
+        <span class="text-rose-400">DEL</span>
+      </div>
+    </div>
+
+    <!-- Arrow icon -->
+    <svg class="w-4 h-4 ml-2 text-gray-400 group-hover:text-brand-orange group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </button>
+</div>
+
+<!-- 2. Backdrop Overlay -->
+<div id="logger-drawer-backdrop" 
+     onclick="toggleLoggerDrawer(false)"
+     class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+</div>
+
+<!-- 3. Off-Canvas Drawer Container -->
+<aside id="logger-drawer-panel"
+       class="fixed top-0 right-0 h-full w-full sm:w-[560px] md:w-[620px] max-w-full z-50 bg-[#0d1117] text-gray-100 shadow-2xl border-l border-gray-800 flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out">
+  
+  <!-- Drawer Header -->
+  <div class="p-4 sm:p-5 bg-gray-950 border-b border-gray-800 flex items-center justify-between shrink-0">
+    <div class="flex items-center space-x-3">
+      <!-- Traffic lights -->
+      <div class="flex items-center space-x-1.5">
+        <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+        <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+      </div>
+      <div>
+        <h2 class="text-sm sm:text-base font-black text-white flex items-center space-x-2">
+          <span>⚡ Middleware Logger Console</span>
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-brand-orange/20 text-brand-orange border border-brand-orange/30">v2.0 Real-Time</span>
+        </h2>
+        <p class="text-[11px] text-gray-400">
+          Uji &amp; inspeksi HTTP request CRUD <span class="text-gray-200 font-mono">(GET, POST, PUT, DELETE)</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Tombol Sembunyikan / Close -->
+    <button type="button"
+            onclick="toggleLoggerDrawer(false)"
+            class="p-2 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white border border-gray-800 transition-colors flex items-center space-x-1 text-xs font-bold"
+            title="Sembunyikan Panel ke Samping">
+      <span class="hidden sm:inline">Sembunyikan</span>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- HTTP Method Switcher Tabs -->
+  <div class="p-3 bg-gray-900/90 border-b border-gray-800 shrink-0">
+    <div class="grid grid-cols-5 gap-1.5 text-xs font-mono font-bold">
+      <!-- Tab GET -->
+      <button type="button" 
+              onclick="switchLoggerTab('GET')" 
+              id="logger-tab-btn-GET"
+              class="py-2 px-1 rounded-xl text-center transition-all bg-blue-500/20 text-blue-400 border border-blue-500/40 shadow-sm flex flex-col items-center justify-center">
+        <span>GET</span>
+        <span class="text-[9px] font-normal text-blue-300 opacity-80">Ambil Data</span>
+      </button>
+
+      <!-- Tab POST -->
+      <button type="button" 
+              onclick="switchLoggerTab('POST')" 
+              id="logger-tab-btn-POST"
+              class="py-2 px-1 rounded-xl text-center transition-all bg-gray-800 text-gray-400 hover:text-white border border-transparent flex flex-col items-center justify-center">
+        <span>POST</span>
+        <span class="text-[9px] font-normal opacity-70">Tambah</span>
+      </button>
+
+      <!-- Tab PUT -->
+      <button type="button" 
+              onclick="switchLoggerTab('PUT')" 
+              id="logger-tab-btn-PUT"
+              class="py-2 px-1 rounded-xl text-center transition-all bg-gray-800 text-gray-400 hover:text-white border border-transparent flex flex-col items-center justify-center">
+        <span>PUT</span>
+        <span class="text-[9px] font-normal opacity-70">Perbarui</span>
+      </button>
+
+      <!-- Tab DELETE -->
+      <button type="button" 
+              onclick="switchLoggerTab('DELETE')" 
+              id="logger-tab-btn-DELETE"
+              class="py-2 px-1 rounded-xl text-center transition-all bg-gray-800 text-gray-400 hover:text-white border border-transparent flex flex-col items-center justify-center">
+        <span>DELETE</span>
+        <span class="text-[9px] font-normal opacity-70">Hapus</span>
+      </button>
+
+      <!-- Tab LOGS -->
+      <button type="button" 
+              onclick="switchLoggerTab('LOGS')" 
+              id="logger-tab-btn-LOGS"
+              class="py-2 px-1 rounded-xl text-center transition-all bg-gray-800 text-gray-400 hover:text-white border border-transparent flex flex-col items-center justify-center">
+        <span>LOGS</span>
+        <span class="text-[9px] font-normal opacity-70">Riwayat DB</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable Body (Forms + Live Inspector) -->
+  <div class="flex-grow overflow-y-auto p-4 sm:p-5 space-y-4">
+    
+    <!-- ============================================== -->
+    <!-- PANEL 1: GET (Ambil Semua / Cari by ID)       -->
+    <!-- ============================================== -->
+    <div id="logger-panel-GET" class="space-y-3">
+      <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-xs space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-gray-200 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>
+            Aksi HTTP GET Produk
+          </span>
+          <span class="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/50">
+            GET /api/produk[/:id]
+          </span>
+        </div>
+
+        <!-- Tombol Ambil Semua -->
+        <div class="flex items-center gap-2">
+          <button type="button"
+                  onclick="executeLoggerGet(null)"
+                  class="flex-1 py-2.5 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+            Ambil Seluruh Katalog (/api/produk)
+          </button>
+        </div>
+
+        <!-- Form Cari by ID -->
+        <div class="pt-2 border-t border-gray-800 flex items-center gap-2">
+          <div class="relative flex-grow">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-xs text-brand-orange font-bold">#ID:</span>
+            <input type="number" 
+                   id="logger-get-id-input"
+                   min="1" 
+                   placeholder="Contoh: 1, 2, 3..." 
+                   class="w-full pl-11 pr-3 py-2 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 placeholder-gray-500 focus:border-cyan-400 focus:outline-none">
+          </div>
+          <button type="button"
+                  onclick="executeLoggerGetFromInput()"
+                  class="py-2 px-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-cyan-400 hover:text-white font-bold text-xs border border-gray-700 transition-colors flex items-center">
+            Cari by ID
+          </button>
+        </div>
+
+        <!-- Quick chips -->
+        <div class="flex flex-wrap items-center gap-1.5 pt-1 text-[11px]">
+          <span class="text-gray-500 text-[10px]">Uji Cepat ID:</span>
+          <button type="button" onclick="executeLoggerGet(1)" class="px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-600 text-gray-300 hover:text-white transition-colors">#1 Pisang Cokelat</button>
+          <button type="button" onclick="executeLoggerGet(2)" class="px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-600 text-gray-300 hover:text-white transition-colors">#2 Telur Gulung</button>
+          <button type="button" onclick="executeLoggerGet(3)" class="px-2 py-0.5 rounded bg-gray-800 hover:bg-cyan-600 text-gray-300 hover:text-white transition-colors">#3 Cireng Salju</button>
+          <button type="button" onclick="executeLoggerGet(99)" class="px-2 py-0.5 rounded bg-red-950/60 hover:bg-red-800 text-red-300 hover:text-white border border-red-800/40 transition-colors" title="Uji Respon 404">#99 (Tes 404)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PANEL 2: POST (Tambah Jajanan Baru)           -->
+    <!-- ============================================== -->
+    <div id="logger-panel-POST" class="space-y-3 hidden">
+      <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-xs space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-gray-200 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
+            Aksi HTTP POST Produk Baru
+          </span>
+          <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50">
+            POST /api/produk
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <p class="text-[11px] text-gray-400">
+            Kirim payload JSON untuk menambahkan jajanan baru ke database PostgreSQL.
+          </p>
+          <button type="button" 
+                  onclick="fillSamplePostData()"
+                  class="text-[10px] text-brand-orange hover:underline font-bold flex items-center shrink-0">
+            ✨ Isi Contoh Cepat
+          </button>
+        </div>
+
+        <form id="logger-post-form" onsubmit="executeLoggerPost(event)" class="space-y-2.5">
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1">Nama Jajanan <span class="text-red-400">*</span></label>
+            <input type="text" 
+                   id="logger-post-name" 
+                   required 
+                   placeholder="Contoh: Batagor Kuah Pedas Spesial"
+                   class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 placeholder-gray-600 focus:border-emerald-400 focus:outline-none">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Kategori</label>
+              <select id="logger-post-category" 
+                      class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-emerald-400 focus:outline-none">
+                <option value="Gurih">Gurih</option>
+                <option value="Pedas">Pedas</option>
+                <option value="Manis">Manis</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Harga (Rp) <span class="text-red-400">*</span></label>
+              <input type="number" 
+                     id="logger-post-price" 
+                     required 
+                     min="1000" 
+                     step="500" 
+                     placeholder="12000"
+                     class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 placeholder-gray-600 focus:border-emerald-400 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Status Lapak</label>
+              <select id="logger-post-status" 
+                      class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-emerald-400 focus:outline-none">
+                <option value="Mangkal">Mangkal</option>
+                <option value="Sedang Berjalan">Sedang Berjalan</option>
+                <option value="Istirahat">Istirahat</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Lokasi / Lapak</label>
+              <input type="text" 
+                     id="logger-post-location" 
+                     placeholder="Depan Kampus UMY"
+                     class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 placeholder-gray-600 focus:border-emerald-400 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1">Deskripsi Singkat</label>
+            <input type="text" 
+                   id="logger-post-desc" 
+                   placeholder="Tahu bakso ikan renyah dengan bumbu kacang pedas mantap"
+                   class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 placeholder-gray-600 focus:border-emerald-400 focus:outline-none">
+          </div>
+
+          <button type="submit"
+                  class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/30 transition-all flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            </svg>
+            Kirim Request POST /api/produk
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PANEL 3: PUT (Perbarui Jajanan Berdasarkan ID) -->
+    <!-- ============================================== -->
+    <div id="logger-panel-PUT" class="space-y-3 hidden">
+      <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-xs space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-gray-200 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-amber-400 mr-2"></span>
+            Aksi HTTP PUT (Update Data)
+          </span>
+          <span class="text-[11px] font-mono text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/50">
+            PUT /api/produk/:id
+          </span>
+        </div>
+
+        <!-- Pilih Produk yang akan diupdate -->
+        <div>
+          <label class="block text-[11px] text-gray-400 mb-1">Pilih Produk Jajanan yang Ingin Diperbarui:</label>
+          <div class="flex items-center gap-2">
+            <select id="logger-put-product-select" 
+                    onchange="loadSelectedProductToPutForm()"
+                    class="flex-1 px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+              <option value="">-- Muat Daftar Produk --</option>
+            </select>
+            <button type="button" 
+                    onclick="refreshProductDropdowns()"
+                    class="px-2.5 py-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs border border-gray-700" 
+                    title="Muat Ulang Dropdown">
+              🔄
+            </button>
+          </div>
+        </div>
+
+        <form id="logger-put-form" onsubmit="executeLoggerPut(event)" class="space-y-2.5 pt-1">
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1">Nama Jajanan</label>
+            <input type="text" 
+                   id="logger-put-name" 
+                   required
+                   class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Kategori</label>
+              <select id="logger-put-category" 
+                      class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+                <option value="Gurih">Gurih</option>
+                <option value="Pedas">Pedas</option>
+                <option value="Manis">Manis</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Harga Baru (Rp)</label>
+              <input type="number" 
+                     id="logger-put-price" 
+                     required
+                     min="1000" 
+                     class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Status Lapak</label>
+              <select id="logger-put-status" 
+                      class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+                <option value="Mangkal">Mangkal</option>
+                <option value="Sedang Berjalan">Sedang Berjalan</option>
+                <option value="Istirahat">Istirahat</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Lokasi</label>
+              <input type="text" 
+                     id="logger-put-location" 
+                     class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1">Deskripsi Tambahan</label>
+            <input type="text" 
+                   id="logger-put-desc" 
+                   class="w-full px-3 py-1.5 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-amber-400 focus:outline-none">
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <button type="button"
+                    onclick="fillSamplePutChange()"
+                    class="py-2 px-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-amber-300 text-xs border border-gray-700 transition-colors">
+              ✨ Ubah Harga Promo
+            </button>
+            <button type="submit"
+                    class="flex-1 py-2 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+              </svg>
+              Kirim Request PUT
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PANEL 4: DELETE (Hapus Jajanan)                -->
+    <!-- ============================================== -->
+    <div id="logger-panel-DELETE" class="space-y-3 hidden">
+      <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-xs space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-gray-200 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-rose-400 mr-2"></span>
+            Aksi HTTP DELETE Produk
+          </span>
+          <span class="text-[11px] font-mono text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded border border-rose-800/50">
+            DELETE /api/produk/:id
+          </span>
+        </div>
+
+        <div class="p-3 rounded-xl bg-rose-950/30 border border-rose-900/50 text-rose-300 text-[11px] space-y-1">
+          <div class="font-bold flex items-center">
+            <svg class="w-4 h-4 mr-1 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            Perhatian Operasi DELETE
+          </div>
+          <p>
+            Request DELETE akan menghapus data jajanan dari tabel PostgreSQL secara permanen dan mencatat respon kode status HTTP 200 di middleware logger.
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-[11px] text-gray-400 mb-1">Pilih Produk yang Ingin Dihapus:</label>
+          <div class="flex items-center gap-2">
+            <select id="logger-del-product-select" 
+                    class="flex-1 px-3 py-2 rounded-xl bg-gray-950 border border-gray-700 text-xs text-gray-100 focus:border-rose-400 focus:outline-none">
+              <option value="">-- Pilih ID Produk --</option>
+            </select>
+            <button type="button" 
+                    onclick="refreshProductDropdowns()"
+                    class="px-2.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs border border-gray-700" 
+                    title="Muat Ulang Dropdown">
+              🔄
+            </button>
+          </div>
+        </div>
+
+        <button type="button"
+                onclick="executeLoggerDelete()"
+                class="w-full py-2.5 px-4 rounded-xl bg-rose-700 hover:bg-rose-600 text-white font-bold text-xs shadow-lg shadow-rose-900/40 transition-all flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+          Konfirmasi &amp; Kirim DELETE /api/produk/:id
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- PANEL 5: LOGS (Riwayat Log DB dari Middleware)-->
+    <!-- ============================================== -->
+    <div id="logger-panel-LOGS" class="space-y-3 hidden">
+      <div class="p-3.5 rounded-2xl bg-gray-900/80 border border-gray-800 text-xs space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-gray-200 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-purple-400 mr-2"></span>
+            Riwayat Log Aktivitas di Database (activity_logs)
+          </span>
+          <button type="button"
+                  onclick="fetchLoggerRecentLogs()"
+                  class="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-purple-300 text-[11px] font-bold border border-gray-700 flex items-center space-x-1">
+            <span>🔄 Refresh</span>
+          </button>
+        </div>
+
+        <p class="text-[11px] text-gray-400">
+          Setiap request HTTP yang diterima Express ditangkap oleh <code class="text-brand-orange font-mono">loggerMiddleware</code> dan dicatat ke PostgreSQL:
+        </p>
+
+        <!-- Log List Table Container -->
+        <div class="overflow-x-auto max-h-[280px] rounded-xl border border-gray-800 bg-gray-950 font-mono text-[11px]">
+          <table class="w-full text-left">
+            <thead class="sticky top-0 bg-gray-900 text-gray-400 uppercase text-[10px] border-b border-gray-800">
+              <tr>
+                <th class="py-2 px-2.5">Metode</th>
+                <th class="py-2 px-2.5">Path Endpoint</th>
+                <th class="py-2 px-2.5">Status</th>
+                <th class="py-2 px-2.5">Aksi / Deskripsi</th>
+                <th class="py-2 px-2.5">Waktu</th>
+              </tr>
+            </thead>
+            <tbody id="logger-logs-tbody" class="divide-y divide-gray-800/60 text-gray-300">
+              <tr>
+                <td colspan="5" class="py-4 text-center text-gray-500">
+                  Memuat data riwayat log dari server...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- LIVE INSPECTOR & RESPONSE VIEWER (TERMINAL)    -->
+    <!-- ============================================== -->
+    <div class="rounded-2xl overflow-hidden border border-gray-800 bg-gray-950 shadow-xl space-y-0">
+      
+      <!-- Top Inspector Bar -->
+      <div class="bg-black/70 px-3.5 py-2.5 border-b border-gray-800 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center space-x-2">
+          <span class="text-[11px] font-bold text-gray-300 uppercase tracking-wider flex items-center">
+            <svg class="w-3.5 h-3.5 text-brand-orange mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+            </svg>
+            Live HTTP Inspector
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <!-- Method Badge -->
+          <span id="drawer-badge-method" class="px-2 py-0.5 rounded text-[10px] font-mono font-black bg-blue-500/20 text-blue-400 border border-blue-500/30">
+            HTTP GET
+          </span>
+
+          <!-- Route Badge -->
+          <span id="drawer-badge-route" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-gray-800 text-amber-300 border border-gray-700 truncate max-w-[140px]">
+            /api/produk
+          </span>
+
+          <!-- Status Code Badge -->
+          <span id="drawer-badge-status" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span>
+            200 OK
+          </span>
+
+          <!-- Copy Button -->
+          <button type="button" 
+                  onclick="copyLoggerResponseJson()"
+                  id="drawer-copy-btn"
+                  class="px-2.5 py-0.5 rounded text-[10px] font-semibold bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 transition-colors flex items-center">
+            <span id="drawer-copy-btn-text">Salin</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Meta & Simulated Terminal Log Line -->
+      <div class="px-3.5 py-2 bg-gray-900 border-b border-gray-800 text-[11px] space-y-1.5">
+        <div class="flex items-center justify-between text-gray-400">
+          <div class="truncate mr-2">
+            <span class="text-gray-500">Aksi:</span> 
+            <span id="drawer-action-desc" class="font-bold text-gray-200">Mengambil data katalog seluruh jajanan</span>
+          </div>
+          <div class="shrink-0 text-[10px] text-gray-400 font-mono flex items-center space-x-2">
+            <span>Durasi: <span id="drawer-duration" class="text-emerald-400 font-bold">12ms</span></span>
+            <span>•</span>
+            <span id="drawer-timestamp">14:00:00</span>
+          </div>
+        </div>
+
+        <!-- Terminal Log Preview Line (Format Persis Sesuai Middleware Logger) -->
+        <div class="bg-black/90 p-2 rounded-lg border border-gray-800 font-mono text-[10.5px] text-gray-300 overflow-x-auto whitespace-nowrap">
+          <span class="text-gray-500">$ logger:</span> 
+          <span id="drawer-terminal-log" class="text-emerald-300">
+            [2026-11-11T07:00:00.000Z] GET /api/produk - 200 (12ms)
+          </span>
+        </div>
+      </div>
+
+      <!-- Request Payload Box (Khusus POST & PUT jika ada) -->
+      <div id="drawer-payload-container" class="hidden px-3.5 py-2 bg-gray-900/60 border-b border-gray-800 text-[11px]">
+        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1 flex items-center">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"></span>
+          Request Payload (Body JSON):
+        </div>
+        <pre id="drawer-payload-content" class="bg-black/70 p-2 rounded-lg border border-gray-800 font-mono text-[10.5px] text-amber-200 overflow-x-auto max-h-[120px] whitespace-pre-wrap break-all"></pre>
+      </div>
+
+      <!-- Response Body JSON Pre -->
+      <div class="p-3.5 font-mono text-xs bg-black/60 overflow-x-auto max-h-[300px]">
+        <div class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Response JSON Body:</div>
+        <pre id="drawer-json-content" class="text-emerald-300 leading-relaxed font-mono whitespace-pre-wrap break-all">// Tekan tombol aksi di atas untuk melihat respon API...</pre>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Drawer Footer Info -->
+  <div class="p-3 bg-gray-950 border-t border-gray-800 text-[11px] text-gray-400 flex items-center justify-between shrink-0">
+    <div class="flex items-center space-x-1.5">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span>PostgreSQL &amp; Express Logger Active</span>
+    </div>
+    <span class="font-mono text-[10px] text-gray-500">PAW Week 9 MVC CRUD</span>
+  </div>
+
+</aside>
+
+<!-- SCRIPT UNTUK PENGATURAN DRAWER MIDDLEWARE LOGGER -->
+<script>
+  let latestLoggerJsonData = null;
+  let cachedProductsList = [];
+
+  // Toggle Drawer Open / Close
+  function toggleLoggerDrawer(shouldOpen) {
+    const drawer = document.getElementById('logger-drawer-panel');
+    const backdrop = document.getElementById('logger-drawer-backdrop');
+    const dockTab = document.getElementById('logger-dock-tab');
+
+    if (!drawer || !backdrop) return;
+
+    if (shouldOpen) {
+      drawer.classList.remove('translate-x-full');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-100');
+      if (dockTab) dockTab.classList.add('opacity-0', 'pointer-events-none');
+
+      // Refresh product dropdowns saat drawer dibuka
+      refreshProductDropdowns();
+    } else {
+      drawer.classList.add('translate-x-full');
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      if (dockTab) dockTab.classList.remove('opacity-0', 'pointer-events-none');
+    }
+  }
+
+  // Keyboard Escape untuk menutup drawer
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      toggleLoggerDrawer(false);
+    }
+  });
+
+  // Switch Tab Method (GET, POST, PUT, DELETE, LOGS)
+  function switchLoggerTab(tabName) {
+    const tabs = ['GET', 'POST', 'PUT', 'DELETE', 'LOGS'];
+    tabs.forEach(t => {
+      const panel = document.getElementById(`logger-panel-${t}`);
+      const btn = document.getElementById(`logger-tab-btn-${t}`);
+      
+      if (t === tabName) {
+        if (panel) panel.classList.remove('hidden');
+        if (btn) {
+          btn.className = getActiveTabClass(t);
+        }
+      } else {
+        if (panel) panel.classList.add('hidden');
+        if (btn) {
+          btn.className = 'py-2 px-1 rounded-xl text-center transition-all bg-gray-800 text-gray-400 hover:text-white border border-transparent flex flex-col items-center justify-center';
+        }
+      }
+    });
+
+    if (tabName === 'LOGS') {
+      fetchLoggerRecentLogs();
+    }
+  }
+
+  function getActiveTabClass(tab) {
+    switch (tab) {
+      case 'GET': return 'py-2 px-1 rounded-xl text-center transition-all bg-blue-500/20 text-blue-400 border border-blue-500/40 shadow-sm flex flex-col items-center justify-center';
+      case 'POST': return 'py-2 px-1 rounded-xl text-center transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm flex flex-col items-center justify-center';
+      case 'PUT': return 'py-2 px-1 rounded-xl text-center transition-all bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm flex flex-col items-center justify-center';
+      case 'DELETE': return 'py-2 px-1 rounded-xl text-center transition-all bg-rose-500/20 text-rose-400 border border-rose-500/40 shadow-sm flex flex-col items-center justify-center';
+      case 'LOGS': return 'py-2 px-1 rounded-xl text-center transition-all bg-purple-500/20 text-purple-400 border border-purple-500/40 shadow-sm flex flex-col items-center justify-center';
+      default: return '';
+    }
+  }
+
+  // Update Tampilan Inspector Log di Bawah
+  function updateLoggerInspector({ method, route, statusCode, duration, actionDesc, requestPayload, responseData, isSuccess }) {
+    latestLoggerJsonData = responseData;
+    const now = new Date();
+    const timeFormatted = now.toLocaleTimeString('id-ID', { hour12: false }) + '.' + String(now.getMilliseconds()).padStart(3, '0');
+    const isoTimestamp = now.toISOString();
+
+    // 1. Method Badge
+    const methodBadge = document.getElementById('drawer-badge-method');
+    if (methodBadge) {
+      methodBadge.textContent = `HTTP ${method}`;
+      if (method === 'GET') methodBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-black bg-blue-500/20 text-blue-400 border border-blue-500/30';
+      else if (method === 'POST') methodBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+      else if (method === 'PUT') methodBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-black bg-amber-500/20 text-amber-400 border border-amber-500/30';
+      else if (method === 'DELETE') methodBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-black bg-rose-500/20 text-rose-400 border border-rose-500/30';
+    }
+
+    // 2. Route Badge
+    const routeBadge = document.getElementById('drawer-badge-route');
+    if (routeBadge) {
+      routeBadge.textContent = route;
+      routeBadge.title = route;
+    }
+
+    // 3. Status Badge
+    const statusBadge = document.getElementById('drawer-badge-status');
+    if (statusBadge) {
+      if (isSuccess) {
+        statusBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center';
+        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1 animate-pulse"></span> ${statusCode} OK`;
+      } else {
+        statusBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center';
+        statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-1"></span> ${statusCode} ${statusCode === 404 ? 'Not Found' : 'Error'}`;
+      }
+    }
+
+    // 4. Meta Action & Duration
+    const descEl = document.getElementById('drawer-action-desc');
+    if (descEl) descEl.textContent = actionDesc || `${method} ${route}`;
+
+    const durationEl = document.getElementById('drawer-duration');
+    if (durationEl) durationEl.textContent = `${duration}ms`;
+
+    const timeEl = document.getElementById('drawer-timestamp');
+    if (timeEl) timeEl.textContent = timeFormatted;
+
+    // 5. Terminal Log String Simulation
+    const terminalEl = document.getElementById('drawer-terminal-log');
+    if (terminalEl) {
+      terminalEl.textContent = `[${isoTimestamp}] ${method} ${route} - ${statusCode} (${duration}ms)`;
+      terminalEl.className = isSuccess ? 'text-emerald-300 font-mono font-bold' : 'text-rose-300 font-mono font-bold';
+    }
+
+    // 6. Request Payload Box
+    const payloadContainer = document.getElementById('drawer-payload-container');
+    const payloadContent = document.getElementById('drawer-payload-content');
+    if (payloadContainer && payloadContent) {
+      if (requestPayload && (method === 'POST' || method === 'PUT')) {
+        payloadContainer.classList.remove('hidden');
+        payloadContent.textContent = JSON.stringify(requestPayload, null, 2);
+      } else {
+        payloadContainer.classList.add('hidden');
+        payloadContent.textContent = '';
+      }
+    }
+
+    // 7. Response JSON Pre
+    const jsonPre = document.getElementById('drawer-json-content');
+    if (jsonPre) {
+      jsonPre.textContent = JSON.stringify(responseData, null, 2);
+      jsonPre.className = isSuccess 
+        ? 'text-emerald-300 leading-relaxed font-mono whitespace-pre-wrap break-all'
+        : 'text-rose-300 leading-relaxed font-mono whitespace-pre-wrap break-all';
+    }
+  }
+
+  // EKSEKUSI 1: GET
+  async function executeLoggerGet(id = null) {
+    const route = id ? `/api/produk/${id}` : '/api/produk';
+    const actionDesc = id ? `Mengambil detail jajanan ID #${id} via GET` : 'Mengambil katalog seluruh jajanan via GET';
+    const startTime = performance.now();
+
+    try {
+      const res = await fetch(route);
+      const duration = Math.round(performance.now() - startTime);
+      const data = await res.json();
+
+      updateLoggerInspector({
+        method: 'GET',
+        route,
+        statusCode: res.status,
+        duration,
+        actionDesc: data.message || actionDesc,
+        responseData: data,
+        isSuccess: res.ok
+      });
+
+      // Jika kita berada di halaman menu.ejs dan ada fungsi filter
+      if (typeof filterGridByProductId === 'function') {
+        if (id) {
+          filterGridByProductId(id, data.data);
+        } else if (typeof resetMenuFilter === 'function') {
+          // Hanya bersihkan filter
+          const banner = document.getElementById('filter-status-banner');
+          if (banner) banner.classList.add('hidden');
+          const cards = document.querySelectorAll('.product-card');
+          cards.forEach(card => card.style.display = 'flex');
+        }
+      }
+
+    } catch (err) {
+      const duration = Math.round(performance.now() - startTime);
+      updateLoggerInspector({
+        method: 'GET',
+        route,
+        statusCode: 500,
+        duration,
+        actionDesc: 'Gagal terhubung ke endpoint API GET',
+        responseData: { success: false, message: err.message },
+        isSuccess: false
+      });
+    }
+  }
+
+  function executeLoggerGetFromInput() {
+    const input = document.getElementById('logger-get-id-input');
+    if (input && input.value) {
+      executeLoggerGet(parseInt(input.value.trim(), 10));
+    } else {
+      executeLoggerGet(null);
+    }
+  }
+
+  // EKSEKUSI 2: POST
+  async function executeLoggerPost(e) {
+    if (e) e.preventDefault();
+    const route = '/api/produk';
+    const startTime = performance.now();
+
+    const payload = {
+      name: document.getElementById('logger-post-name').value.trim(),
+      category: document.getElementById('logger-post-category').value,
+      price: parseInt(document.getElementById('logger-post-price').value, 10),
+      status: document.getElementById('logger-post-status').value,
+      location: document.getElementById('logger-post-location').value.trim(),
+      description: document.getElementById('logger-post-desc').value.trim(),
+      whatsapp: '6281234567890'
+    };
+
+    try {
+      const res = await fetch(route, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const duration = Math.round(performance.now() - startTime);
+      const data = await res.json();
+
+      updateLoggerInspector({
+        method: 'POST',
+        route,
+        statusCode: res.status,
+        duration,
+        actionDesc: data.message || 'Tambah jajanan baru via POST',
+        requestPayload: payload,
+        responseData: data,
+        isSuccess: res.ok
+      });
+
+      if (res.ok) {
+        refreshProductDropdowns();
+        // Beri tahu pengguna
+        alert(`Berhasil! Jajanan "${payload.name}" berhasil dibuat (Status ${res.status}). Response dicatat oleh middleware logger.`);
+        // Jika ada di /menu, reload halaman setelah 1 detik
+        if (window.location.pathname === '/menu') {
+          setTimeout(() => { window.location.reload(); }, 1200);
+        }
+      }
+    } catch (err) {
+      const duration = Math.round(performance.now() - startTime);
+      updateLoggerInspector({
+        method: 'POST',
+        route,
+        statusCode: 500,
+        duration,
+        actionDesc: 'Gagal mengirim request POST',
+        requestPayload: payload,
+        responseData: { success: false, message: err.message },
+        isSuccess: false
+      });
+    }
+  }
+
+  function fillSamplePostData() {
+    const randomPrices = [10000, 12000, 15000, 18000, 20000];
+    const sampleFoods = [
+      { name: 'Batagor Kuah Pedas Spesial', cat: 'Pedas', loc: 'Jl. Kaliurang km 5', desc: 'Batagor tahu ikan tenggiri renyah disiram kuah cabe gurih' },
+      { name: 'Kue Leker Cokelat Keju Crispy', cat: 'Manis', loc: 'Depan Sanata Dharma', desc: 'Leker renyah manis lumer bertabur meises cokelat dan parutan keju' },
+      { name: 'Cireng Krispi Bumbu Rujak', cat: 'Gurih', loc: 'Jl. Gejayan Yogyakarta', desc: 'Cireng aci renyah dengan cocolan sambal rujak gula jawa asam manis pedas' },
+      { name: 'Jasuke Jagung Manis Keju Mozzarella', cat: 'Manis', loc: 'Alun-Alun Kidul', desc: 'Jagung manis pipil kukus dengan susu kental manis dan lelehan mozzarella' }
+    ];
+    const pick = sampleFoods[Math.floor(Math.random() * sampleFoods.length)];
+    const price = randomPrices[Math.floor(Math.random() * randomPrices.length)];
+
+    document.getElementById('logger-post-name').value = pick.name;
+    document.getElementById('logger-post-category').value = pick.cat;
+    document.getElementById('logger-post-price').value = price;
+    document.getElementById('logger-post-status').value = 'Mangkal';
+    document.getElementById('logger-post-location').value = pick.loc;
+    document.getElementById('logger-post-desc').value = pick.desc;
+  }
+
+  // EKSEKUSI 3: PUT
+  async function executeLoggerPut(e) {
+    if (e) e.preventDefault();
+    const select = document.getElementById('logger-put-product-select');
+    const id = select ? select.value : null;
+
+    if (!id) {
+      alert('Silakan pilih salah satu produk jajanan yang ingin diperbarui!');
+      return;
+    }
+
+    const route = `/api/produk/${id}`;
+    const startTime = performance.now();
+
+    const payload = {
+      name: document.getElementById('logger-put-name').value.trim(),
+      category: document.getElementById('logger-put-category').value,
+      price: parseInt(document.getElementById('logger-put-price').value, 10),
+      status: document.getElementById('logger-put-status').value,
+      location: document.getElementById('logger-put-location').value.trim(),
+      description: document.getElementById('logger-put-desc').value.trim()
+    };
+
+    try {
+      const res = await fetch(route, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const duration = Math.round(performance.now() - startTime);
+      const data = await res.json();
+
+      updateLoggerInspector({
+        method: 'PUT',
+        route,
+        statusCode: res.status,
+        duration,
+        actionDesc: data.message || `Perbarui produk ID #${id} via PUT`,
+        requestPayload: payload,
+        responseData: data,
+        isSuccess: res.ok
+      });
+
+      if (res.ok) {
+        refreshProductDropdowns();
+        alert(`Berhasil! Data jajanan (ID #${id}) berhasil diperbarui (Status ${res.status}). Response dicatat oleh middleware logger.`);
+        if (window.location.pathname === '/menu') {
+          setTimeout(() => { window.location.reload(); }, 1200);
+        }
+      }
+    } catch (err) {
+      const duration = Math.round(performance.now() - startTime);
+      updateLoggerInspector({
+        method: 'PUT',
+        route,
+        statusCode: 500,
+        duration,
+        actionDesc: `Gagal mengirim request PUT ke ${route}`,
+        requestPayload: payload,
+        responseData: { success: false, message: err.message },
+        isSuccess: false
+      });
+    }
+  }
+
+  function fillSamplePutChange() {
+    const priceInput = document.getElementById('logger-put-price');
+    const descInput = document.getElementById('logger-put-desc');
+    const statusInput = document.getElementById('logger-put-status');
+
+    if (priceInput && priceInput.value) {
+      priceInput.value = Math.max(5000, parseInt(priceInput.value, 10) - 2000);
+    }
+    if (statusInput) {
+      statusInput.value = 'Sedang Berjalan';
+    }
+    if (descInput) {
+      descInput.value = (descInput.value || '') + ' (Update Promo Diskon Jajanan Hari Ini!)';
+    }
+  }
+
+  function loadSelectedProductToPutForm() {
+    const select = document.getElementById('logger-put-product-select');
+    if (!select || !select.value) return;
+
+    const selectedId = parseInt(select.value, 10);
+    const product = cachedProductsList.find(p => p.id === selectedId);
+
+    if (product) {
+      document.getElementById('logger-put-name').value = product.name || '';
+      document.getElementById('logger-put-category').value = product.category || 'Gurih';
+      document.getElementById('logger-put-price').value = product.price || 10000;
+      document.getElementById('logger-put-status').value = product.status || 'Mangkal';
+      document.getElementById('logger-put-location').value = product.location || '';
+      document.getElementById('logger-put-desc').value = product.description || '';
+    }
+  }
+
+  // EKSEKUSI 4: DELETE
+  async function executeLoggerDelete() {
+    const select = document.getElementById('logger-del-product-select');
+    const id = select ? select.value : null;
+
+    if (!id) {
+      alert('Silakan pilih produk yang ingin dihapus!');
+      return;
+    }
+
+    const selectedProduct = cachedProductsList.find(p => p.id === parseInt(id, 10));
+    const confirmName = selectedProduct ? selectedProduct.name : `ID #${id}`;
+
+    if (!confirm(`Apakah Anda yakin ingin MENGHAPUS jajanan "${confirmName}" dari database PostgreSQL?`)) {
+      return;
+    }
+
+    const route = `/api/produk/${id}`;
+    const startTime = performance.now();
+
+    try {
+      const res = await fetch(route, { method: 'DELETE' });
+      const duration = Math.round(performance.now() - startTime);
+      const data = await res.json();
+
+      updateLoggerInspector({
+        method: 'DELETE',
+        route,
+        statusCode: res.status,
+        duration,
+        actionDesc: data.message || `Hapus jajanan ID #${id} via DELETE`,
+        responseData: data,
+        isSuccess: res.ok
+      });
+
+      if (res.ok) {
+        refreshProductDropdowns();
+        alert(`Berhasil! Jajanan "${confirmName}" telah dihapus dari database (Status ${res.status}). Dicatat oleh middleware logger.`);
+        if (window.location.pathname === '/menu') {
+          setTimeout(() => { window.location.reload(); }, 1200);
+        }
+      }
+    } catch (err) {
+      const duration = Math.round(performance.now() - startTime);
+      updateLoggerInspector({
+        method: 'DELETE',
+        route,
+        statusCode: 500,
+        duration,
+        actionDesc: `Gagal mengirim request DELETE ke ${route}`,
+        responseData: { success: false, message: err.message },
+        isSuccess: false
+      });
+    }
+  }
+
+  // REFRESH PRODUCT DROPDOWNS (untuk PUT & DELETE)
+  async function refreshProductDropdowns() {
+    try {
+      const res = await fetch('/api/produk');
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data)) {
+        cachedProductsList = json.data;
+        const putSelect = document.getElementById('logger-put-product-select');
+        const delSelect = document.getElementById('logger-del-product-select');
+
+        let optionsHtml = '<option value="">-- Pilih Produk Jajanan --</option>';
+        cachedProductsList.forEach(p => {
+          optionsHtml += `<option value="${p.id}">#${p.id} - ${p.name} (Rp ${Number(p.price).toLocaleString('id-ID')})</option>`;
+        });
+
+        if (putSelect) {
+          const currentVal = putSelect.value;
+          putSelect.innerHTML = optionsHtml;
+          if (currentVal) putSelect.value = currentVal;
+        }
+
+        if (delSelect) {
+          const currentVal = delSelect.value;
+          delSelect.innerHTML = optionsHtml;
+          if (currentVal) delSelect.value = currentVal;
+        }
+
+        // Jika form PUT kosong dan ada produk, otomatis isi pertama
+        if (putSelect && !putSelect.value && cachedProductsList.length > 0) {
+          putSelect.value = cachedProductsList[0].id;
+          loadSelectedProductToPutForm();
+        }
+      }
+    } catch (e) {
+      console.warn('Gagal memuat produk untuk dropdown:', e);
+    }
+  }
+
+  // RIWAYAT ACTIVITY LOGS DARI DATABASE
+  async function fetchLoggerRecentLogs() {
+    const tbody = document.getElementById('logger-logs-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-400">Mengambil data log dari tabel activity_logs...</td></tr>`;
+
+    try {
+      const res = await fetch('/api/logs?limit=25');
+      const json = await res.json();
+
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        tbody.innerHTML = json.data.map(l => {
+          let methodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-500/20 text-blue-400">GET</span>`;
+          if (l.method === 'POST') methodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-400">POST</span>`;
+          else if (l.method === 'PUT') methodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/20 text-amber-400">PUT</span>`;
+          else if (l.method === 'DELETE') methodBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-500/20 text-rose-400">DELETE</span>`;
+
+          let statusColor = l.status_code >= 400 ? 'text-red-400 font-bold' : (l.status_code >= 300 ? 'text-yellow-400' : 'text-emerald-400');
+          const time = new Date(l.created_at).toLocaleTimeString('id-ID', { hour12: false });
+
+          return `
+            <tr class="hover:bg-gray-900/60 transition-colors">
+              <td class="py-1.5 px-2.5 whitespace-nowrap">${methodBadge}</td>
+              <td class="py-1.5 px-2.5 font-bold text-gray-200 truncate max-w-[130px]" title="${l.path}">${l.path}</td>
+              <td class="py-1.5 px-2.5 whitespace-nowrap ${statusColor}">${l.status_code}</td>
+              <td class="py-1.5 px-2.5 text-gray-400 truncate max-w-[150px]" title="${l.action || '-'}">${l.action || '-'}</td>
+              <td class="py-1.5 px-2.5 whitespace-nowrap text-gray-500 text-[10px]">${time}</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Belum ada catatan log aktivitas</td></tr>`;
+      }
+    } catch (e) {
+      tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-rose-400">Gagal mengambil riwayat log: ${e.message}</td></tr>`;
+    }
+  }
+
+  // Salin JSON
+  function copyLoggerResponseJson() {
+    if (!latestLoggerJsonData) return;
+    navigator.clipboard.writeText(JSON.stringify(latestLoggerJsonData, null, 2)).then(() => {
+      const btnText = document.getElementById('drawer-copy-btn-text');
+      if (btnText) {
+        btnText.textContent = 'Tersalin!';
+        setTimeout(() => { btnText.textContent = 'Salin'; }, 2000);
+      }
+    });
+  }
+
+  // Load awal
+  document.addEventListener('DOMContentLoaded', () => {
+    refreshProductDropdowns();
+  });
+</script>

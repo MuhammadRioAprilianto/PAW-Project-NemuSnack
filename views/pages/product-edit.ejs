@@ -1,0 +1,116 @@
+<!-- Halaman Edit Jajanan - NemuSnack -->
+<section class="py-12 bg-[#FAF8F5]">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6">
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 p-8 sm:p-10 shadow-card space-y-6">
+      
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-100 text-brand-orange text-xs font-black tracking-wide mb-1.5">
+            <span>✏️ EDIT MENU JAJANAN</span>
+          </div>
+          <h1 class="text-2xl font-black text-gray-900 tracking-tight">
+            Perbarui Data: <%= product.name %>
+          </h1>
+          <p class="text-xs text-gray-500">ID Produk: #<%= product.id %></p>
+        </div>
+
+        <a href="/penjual/dashboard" class="px-4 py-2 rounded-full text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
+          ← Kembali ke Dashboard
+        </a>
+      </div>
+
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700 font-bold">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/penjual/products/<%= product.id %>/edit" method="POST" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              Nama Jajanan *
+            </label>
+            <input type="text" name="name" value="<%= product.name %>" required class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              Kategori Rasa
+            </label>
+            <select name="category" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
+              <option value="Manis" <%= product.category === 'Manis' ? 'selected' : '' %>>🥞 Manis &amp; Lumer</option>
+              <option value="Pedas" <%= product.category === 'Pedas' ? 'selected' : '' %>>🌶️ Pedas Nampol</option>
+              <option value="Gurih" <%= product.category === 'Gurih' ? 'selected' : '' %>>🍢 Gurih &amp; Renyah</option>
+              <option value="Minuman" <%= product.category === 'Minuman' ? 'selected' : '' %>>🥤 Minuman Segar</option>
+              <option value="Lainnya" <%= product.category === 'Lainnya' ? 'selected' : '' %>>🍽️ Lainnya</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              Harga Satuan (Rupiah) *
+            </label>
+            <input type="number" name="price" value="<%= product.price %>" required min="500" step="500" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              Status Lapak Menu Ini
+            </label>
+            <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
+              <option value="Mangkal" <%= product.status === 'Mangkal' ? 'selected' : '' %>>📍 Mangkal</option>
+              <option value="Sedang Berjalan" <%= product.status === 'Sedang Berjalan' ? 'selected' : '' %>>🚶 Sedang Berjalan</option>
+              <option value="Tutup" <%= product.status === 'Tutup' ? 'selected' : '' %>>💤 Libur / Tutup</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              URL Foto Produk
+            </label>
+            <input type="text" name="image" value="<%= product.image %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              WhatsApp Pemesanan
+            </label>
+            <input type="text" name="whatsapp" value="<%= product.whatsapp || '' %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              Lokasi / Titik Mangkal
+            </label>
+            <input type="text" name="location" value="<%= product.location || '' %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+          </div>
+
+          <div>
+            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+              Rute Keliling
+            </label>
+            <input type="text" name="route" value="<%= product.route || '' %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Deskripsi Jajanan
+          </label>
+          <textarea name="description" rows="3" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange"><%= product.description %></textarea>
+        </div>
+
+        <div class="pt-4 flex items-center space-x-3">
+          <button type="submit" class="px-8 py-3.5 rounded-full font-black text-sm text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/30 transition-all">
+            Simpan Perubahan
+          </button>
+          <a href="/penjual/dashboard" class="px-6 py-3.5 rounded-full font-bold text-xs text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all">
+            Batal
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>

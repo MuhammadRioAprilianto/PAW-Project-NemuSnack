@@ -1,0 +1,125 @@
+<!-- Halaman Masuk Akun (Login) - NemuSnack -->
+<section class="py-16 sm:py-24">
+  <div class="max-w-md mx-auto px-4 sm:px-6">
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 p-8 sm:p-10 shadow-2xl shadow-orange-500/5 relative">
+      
+      <!-- Brand Header -->
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 rounded-3xl bg-brand-orange text-white flex items-center justify-center mx-auto mb-4 shadow-lg shadow-brand-orange/30">
+          <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          Selamat Datang Kembali
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1">
+          Masuk ke akun NemuSnack untuk melanjutkan
+        </p>
+      </div>
+
+      <!-- Alerts -->
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center space-x-2">
+          <svg class="w-4 h-4 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          <span class="font-bold"><%= error %></span>
+        </div>
+      <% } %>
+
+      <% if (typeof success !== 'undefined' && success) { %>
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-700 flex items-center space-x-2">
+          <svg class="w-4 h-4 shrink-0 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span class="font-bold"><%= success %></span>
+        </div>
+      <% } %>
+
+      <!-- Form Login -->
+      <form action="/login" method="POST" class="space-y-4">
+        <input type="hidden" name="redirect" value="<%= typeof redirect !== 'undefined' ? redirect : '' %>">
+
+        <div>
+          <label for="email" class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Email Akun
+          </label>
+          <input type="email" 
+                 id="email" 
+                 name="email" 
+                 required 
+                 placeholder="nama@email.com"
+                 class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all">
+        </div>
+
+        <div>
+          <label for="password" class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Password
+          </label>
+          <input type="password" 
+                 id="password" 
+                 name="password" 
+                 required 
+                 placeholder="••••••••"
+                 class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all">
+        </div>
+
+        <button type="submit" 
+                class="w-full py-3.5 rounded-full font-black text-sm text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40 transition-all duration-200 active:scale-95">
+          Masuk Sekarang
+        </button>
+      </form>
+
+      <!-- Quick Fill Helper for Demo / Testing (3 Roles) -->
+      <div class="mt-8 pt-6 border-t border-gray-100">
+        <p class="text-[11px] font-black uppercase text-gray-400 tracking-wider text-center mb-3">
+          ⚡ Akun Demo Pengujian Cepat
+        </p>
+        <div class="grid grid-cols-3 gap-2">
+          <!-- Button Demo Admin -->
+          <button type="button" 
+                  onclick="fillDemo('admin@nemusnack.id', 'password123')"
+                  class="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-center transition-all">
+            <span class="block text-base">🛡️</span>
+            <span class="block text-[10px] font-extrabold text-purple-800">Admin</span>
+          </button>
+
+          <!-- Button Demo Penjual -->
+          <button type="button" 
+                  onclick="fillDemo('pakyono@nemusnack.id', 'password123')"
+                  class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-center transition-all">
+            <span class="block text-base">🏪</span>
+            <span class="block text-[10px] font-extrabold text-amber-800">Penjual</span>
+          </button>
+
+          <!-- Button Demo Pembeli -->
+          <button type="button" 
+                  onclick="fillDemo('budi@gmail.com', 'password123')"
+                  class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-center transition-all">
+            <span class="block text-base">🛒</span>
+            <span class="block text-[10px] font-extrabold text-emerald-800">Pembeli</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="mt-6 text-center">
+        <p class="text-xs text-gray-500">
+          Belum punya akun? 
+          <a href="/register" class="font-bold text-brand-orange hover:underline">
+            Daftar di sini
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  function fillDemo(email, pass) {
+    document.getElementById('email').value = email;
+    document.getElementById('password').value = pass;
+  }
+</script>

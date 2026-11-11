@@ -1,0 +1,312 @@
+<!-- Dashboard Pedagang / Penjual - NemuSnack -->
+<section class="py-10 bg-[#FAF8F5]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    
+    <!-- Top Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card">
+      <div>
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-black tracking-wide mb-2">
+          <span>🏪 LAPAK PEDAGANG KAKI LIMA</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">
+          <%= seller.name %>
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-500 mt-1">
+          Kelola katalog produk jajananmu, perbarui posisi mangkal / rute keliling, dan pantau feedback pembeli.
+        </p>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="#tambah-produk" class="px-6 py-3 rounded-full text-xs font-black text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/30 transition-all flex items-center">
+          <span class="text-base mr-1.5">+</span> Tambah Menu Jajanan
+        </a>
+      </div>
+    </div>
+
+    <!-- Alert Notifikasi -->
+    <% if (typeof msg !== 'undefined' && msg) { %>
+      <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 font-bold flex items-center space-x-2">
+        <span>✓</span> <span><%= msg %></span>
+      </div>
+    <% } %>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="p-4 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-800 font-bold flex items-center space-x-2">
+        <span>✕</span> <span><%= error %></span>
+      </div>
+    <% } %>
+
+    <!-- 1. KONTROL STATUS BEKERJA & POSISI BERDAGANG (LIVE TRACKING SETTINGS) -->
+    <div class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+        <div>
+          <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
+            <span class="mr-2">📍</span> Status Bekerja &amp; Titik Posisi Lapak
+          </h2>
+          <p class="text-xs text-gray-500 mt-0.5">
+            Perubahan status dan lokasi ini langsung tersinkronisasi ke Peta Pelacakan Publik NemuSnack.
+          </p>
+        </div>
+
+        <div>
+          <% if (currentCart.status === 'Mangkal') { %>
+            <span class="px-3 py-1.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 flex items-center">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Mangkal
+            </span>
+          <% } else if (currentCart.status === 'Sedang Berjalan') { %>
+            <span class="px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 text-amber-800 flex items-center">
+              🚶 Sedang Berjalan
+            </span>
+          <% } else { %>
+            <span class="px-3 py-1.5 rounded-full text-xs font-black bg-gray-100 text-gray-700">
+              💤 Libur / Tutup
+            </span>
+          <% } %>
+        </div>
+      </div>
+
+      <form action="/penjual/status-location" method="POST" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Status Operasional -->
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Status Operasional
+          </label>
+          <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
+            <option value="Mangkal" <%= currentCart.status === 'Mangkal' ? 'selected' : '' %>>📍 Mangkal Menetap</option>
+            <option value="Sedang Berjalan" <%= currentCart.status === 'Sedang Berjalan' ? 'selected' : '' %>>🚶 Sedang Berjalan (Keliling)</option>
+            <option value="Tutup" <%= currentCart.status === 'Tutup' ? 'selected' : '' %>>💤 Libur / Tutup Lapak</option>
+          </select>
+        </div>
+
+        <!-- Alamat / Patokan Mangkal -->
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Patokan Lokasi Mangkal
+          </label>
+          <input type="text" 
+                 name="location" 
+                 value="<%= currentCart.location || '' %>"
+                 placeholder="Contoh: Jl. Kaliurang km 5 (Depan Apotek)" 
+                 class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+        </div>
+
+        <!-- Rute Keliling -->
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Rute Keliling / Jam Operasional
+          </label>
+          <input type="text" 
+                 name="route" 
+                 value="<%= currentCart.route || '' %>"
+                 placeholder="Contoh: Buka 16.00 - 22.00 WIB" 
+                 class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+        </div>
+
+        <!-- Tombol Update -->
+        <div class="flex items-end">
+          <button type="submit" class="w-full py-3 rounded-full font-black text-xs text-white bg-gray-900 hover:bg-brand-orange shadow-md transition-all">
+            Perbarui Status Lapak
+          </button>
+        </div>
+
+        <input type="hidden" name="lat" value="<%= currentCart.lat || -7.7660 %>">
+        <input type="hidden" name="lng" value="<%= currentCart.lng || 110.3800 %>">
+      </form>
+    </div>
+
+    <!-- 2. DAFTAR PRODUK JAJANAN & OPERASI CRUD -->
+    <div class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+        <div>
+          <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
+            <span class="mr-2">🍢</span> Kelola Menu Jajanan Lapak (<%= products.length %> Menu)
+          </h2>
+          <p class="text-xs text-gray-500 mt-0.5">Operasi CRUD menu jajanan terhubung langsung ke database PostgreSQL.</p>
+        </div>
+
+        <span class="text-xs font-bold text-gray-500">
+          Penjual: <span class="text-brand-orange"><%= seller.name %></span>
+        </span>
+      </div>
+
+      <% if (products && products.length > 0) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% products.forEach(p => { %>
+            <div class="p-5 rounded-3xl border border-gray-100 bg-[#FAF8F5] flex flex-col justify-between group hover:shadow-card transition-all">
+              <div>
+                <div class="relative h-44 rounded-2xl overflow-hidden mb-4 bg-gray-200">
+                  <img src="<%= p.image %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='/assets/images/snack-placeholder.svg'">
+                  <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-black bg-white/95 shadow-sm text-gray-800">
+                    <%= p.category %>
+                  </span>
+                  <span class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-400 text-white shadow-sm">
+                    ★ <%= p.rating %> (<%= p.reviewsCount %>)
+                  </span>
+                </div>
+
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-[10px] font-mono font-bold text-gray-400">ID #<%= p.id %></span>
+                  <span class="text-xs font-black text-brand-orange"><%= formatCurrency(p.price) %></span>
+                </div>
+
+                <h3 class="text-base font-black text-gray-900 mb-1"><%= p.name %></h3>
+                <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed"><%= p.description %></p>
+              </div>
+
+              <!-- Action Buttons (Edit & Delete) -->
+              <div class="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between gap-2">
+                <a href="/produk/<%= p.id %>" target="_blank" class="text-xs font-bold text-gray-600 hover:text-brand-orange">
+                  Lihat Detail ↗
+                </a>
+
+                <div class="flex items-center space-x-2">
+                  <a href="/penjual/products/<%= p.id %>/edit" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-gray-800 hover:bg-orange-50 border border-gray-200 transition-colors">
+                    Edit
+                  </a>
+
+                  <form action="/penjual/products/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Hapus menu jajanan <%= p.name %> dari database?')">
+                    <button type="submit" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors">
+                      Hapus
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="text-center py-12 bg-orange-50/30 rounded-3xl border border-orange-100">
+          <p class="text-4xl mb-2">🍢</p>
+          <p class="text-sm font-bold text-gray-800">Belum ada menu jajanan yang ditambahkan</p>
+          <p class="text-xs text-gray-500 mt-1">Gunakan formulir di bawah untuk menambahkan menu pertama lapak Anda.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- 3. FORMULIR TAMBAH PRODUK BARU (CREATE) -->
+    <div id="tambah-produk" class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card space-y-6">
+      <div class="border-b border-gray-100 pb-4">
+        <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
+          <span class="mr-2">➕</span> Tambah Menu Jajanan Baru ke Database (Create)
+        </h2>
+        <p class="text-xs text-gray-500 mt-0.5">
+          Data akan disimpan permanen ke database PostgreSQL dan langsung dapat diakses lewat REST API.
+        </p>
+      </div>
+
+      <form action="/penjual/products" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Nama Jajanan *
+          </label>
+          <input type="text" name="name" required placeholder="Contoh: Pisang Keju Cokelat Krispi" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Kategori Rasa
+          </label>
+          <select name="category" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
+            <option value="Manis">🥞 Manis &amp; Lumer</option>
+            <option value="Pedas">🌶️ Pedas Nampol</option>
+            <option value="Gurih">🍢 Gurih &amp; Renyah</option>
+            <option value="Minuman">🥤 Minuman Segar</option>
+            <option value="Lainnya">🍽️ Lainnya</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Harga Satuan (Rupiah) *
+          </label>
+          <input type="number" name="price" required min="500" step="500" placeholder="Contoh: 12000" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            URL Gambar Jajanan
+          </label>
+          <input type="text" name="image" value="/assets/images/kebab-placeholder.svg" placeholder="/assets/images/... atau URL luar" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Status Lapak Menu Ini
+          </label>
+          <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
+            <option value="Mangkal">📍 Mangkal</option>
+            <option value="Sedang Berjalan">🚶 Sedang Berjalan</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Nomor WhatsApp Pesanan
+          </label>
+          <input type="text" name="whatsapp" value="<%= seller.phone || '' %>" placeholder="6281234567890" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
+            Deskripsi Kelezatan Menu
+          </label>
+          <textarea name="description" rows="3" placeholder="Jelaskan cita rasa, bahan racikan, dan keunikan jajanan..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange"></textarea>
+        </div>
+
+        <input type="hidden" name="location" value="<%= currentCart.location || 'Area Kampus' %>">
+        <input type="hidden" name="route" value="<%= currentCart.route || 'Standby sore' %>">
+        <input type="hidden" name="lat" value="<%= currentCart.lat || -7.7660 %>">
+        <input type="hidden" name="lng" value="<%= currentCart.lng || 110.3800 %>">
+
+        <div class="md:col-span-2 pt-2">
+          <button type="submit" class="px-8 py-3.5 rounded-full font-black text-sm text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/30 transition-all">
+            Simpan Menu Baru ke Database
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 4. DAFTAR ULASAN & RATING DARI PEMBELI -->
+    <div class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card space-y-6">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
+            <span class="mr-2">⭐</span> Ulasan &amp; Rating dari Pembeli (<%= reviews.length %> Ulasan)
+          </h2>
+          <p class="text-xs text-gray-500 mt-0.5">Ulasan otentik yang diberikan oleh pembeli yang sudah mencoba jajanan Anda.</p>
+        </div>
+      </div>
+
+      <% if (reviews && reviews.length > 0) { %>
+        <div class="space-y-4">
+          <% reviews.forEach(r => { %>
+            <div class="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-100 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div class="space-y-1.5 flex-1">
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-black text-gray-900"><%= r.reviewer_name %></span>
+                  <span class="text-[11px] text-gray-400">• <%= new Date(r.created_at).toLocaleDateString('id-ID') %></span>
+                </div>
+                <div class="flex items-center text-amber-500 text-xs font-extrabold">
+                  <% for(let i=0; i < r.rating; i++) { %>★<% } %>
+                  <span class="text-gray-700 font-bold ml-1.5"><%= r.rating %>/5</span>
+                </div>
+                <p class="text-xs text-gray-600 leading-relaxed italic">"<%= r.comment %>"</p>
+              </div>
+
+              <div class="shrink-0 flex items-center space-x-2 bg-white px-3 py-1.5 rounded-xl border border-gray-100">
+                <img src="<%= r.product_image %>" class="w-8 h-8 rounded-lg object-cover" onerror="this.src='/assets/images/snack-placeholder.svg'">
+                <span class="text-xs font-extrabold text-gray-800"><%= r.product_name %></span>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="text-center py-8 text-gray-400 text-xs">
+          Belum ada ulasan yang masuk untuk produk jajanan lapak ini.
+        </div>
+      <% } %>
+    </div>
+
+  </div>
+</section>
