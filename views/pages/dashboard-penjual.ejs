@@ -6,7 +6,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card">
       <div>
         <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-black tracking-wide mb-2">
-          <span>🏪 LAPAK PEDAGANG KAKI LIMA</span>
+          <span> LAPAK PEDAGANG KAKI LIMA</span>
         </div>
         <h1 class="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">
           <%= seller.name %>
@@ -41,7 +41,7 @@
       <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
         <div>
           <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
-            <span class="mr-2">📍</span> Status Bekerja &amp; Titik Posisi Lapak
+             Status Bekerja &amp; Titik Posisi Lapak
           </h2>
           <p class="text-xs text-gray-500 mt-0.5">
             Perubahan status dan lokasi ini langsung tersinkronisasi ke Peta Pelacakan Publik NemuSnack.
@@ -55,13 +55,13 @@
             </span>
           <% } else if (currentCart.seller_status === 'Sedang Berjalan' || currentCart.seller_status === 'Berjalan') { %>
             <span class="px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 text-amber-800 flex items-center">
-              🚶 Berjalan
+               Berjalan
             </span>
           <% } else if (currentCart.seller_status === 'Libur') { %>
-            <span class="px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-700">🌙 Libur</span>
+            <span class="px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-700"> Libur</span>
           <% } else { %>
             <span class="px-3 py-1.5 rounded-full text-xs font-black bg-gray-100 text-gray-700">
-              💤 Tutup
+               Tutup
             </span>
           <% } %>
         </div>
@@ -74,10 +74,10 @@
             Status Operasional
           </label>
           <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
-            <option value="Mangkal" <%= currentCart.seller_status === 'Mangkal' ? 'selected' : '' %>>📍 Mangkal</option>
-            <option value="Sedang Berjalan" <%= ['Sedang Berjalan', 'Berjalan'].includes(currentCart.seller_status) ? 'selected' : '' %>>🚶 Berjalan</option>
+            <option value="Mangkal" <%= currentCart.seller_status === 'Mangkal' ? 'selected' : '' %>> Mangkal</option>
+            <option value="Sedang Berjalan" <%= ['Sedang Berjalan', 'Berjalan'].includes(currentCart.seller_status) ? 'selected' : '' %>> Berjalan</option>
             <option value="Tutup" <%= currentCart.seller_status === 'Tutup' ? 'selected' : '' %>>⛔ Tutup</option>
-            <option value="Libur" <%= currentCart.seller_status === 'Libur' ? 'selected' : '' %>>🌙 Libur</option>
+            <option value="Libur" <%= currentCart.seller_status === 'Libur' ? 'selected' : '' %>> Libur</option>
           </select>
         </div>
 
@@ -139,7 +139,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div>
           <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
-            <span class="mr-2">🍢</span> Kelola Menu Jajanan Lapak (<%= products.length %> Menu)
+             Kelola Menu Jajanan Lapak (<%= products.length %> Menu)
           </h2>
           <p class="text-xs text-gray-500 mt-0.5">Operasi CRUD menu jajanan terhubung langsung ke database PostgreSQL.</p>
         </div>
@@ -197,7 +197,7 @@
         </div>
       <% } else { %>
         <div class="text-center py-12 bg-orange-50/30 rounded-3xl border border-orange-100">
-          <p class="text-4xl mb-2">🍢</p>
+
           <p class="text-sm font-bold text-gray-800">Belum ada menu jajanan yang ditambahkan</p>
           <p class="text-xs text-gray-500 mt-1">Gunakan formulir di bawah untuk menambahkan menu pertama lapak Anda.</p>
         </div>
@@ -208,7 +208,7 @@
     <div id="tambah-produk" class="bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card space-y-6">
       <div class="border-b border-gray-100 pb-4">
         <h2 class="text-lg sm:text-xl font-black text-gray-900 flex items-center">
-          <span class="mr-2">➕</span> Tambah Menu Jajanan Baru ke Database (Create)
+           Tambah Menu Jajanan Baru ke Database (Create)
         </h2>
         <p class="text-xs text-gray-500 mt-0.5">
           Data akan disimpan permanen ke database PostgreSQL dan langsung dapat diakses lewat REST API.
@@ -228,11 +228,11 @@
             Kategori Rasa
           </label>
           <select name="category" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
-            <option value="Manis">🥞 Manis &amp; Lumer</option>
-            <option value="Pedas">🌶️ Pedas Nampol</option>
-            <option value="Gurih">🍢 Gurih &amp; Renyah</option>
-            <option value="Minuman">🥤 Minuman Segar</option>
-            <option value="Lainnya">🍽️ Lainnya</option>
+            <option value="Manis"> Manis &amp; Lumer</option>
+            <option value="Pedas"> Pedas Nampol</option>
+            <option value="Gurih"> Gurih &amp; Renyah</option>
+            <option value="Minuman"> Minuman Segar</option>
+            <option value="Lainnya"> Lainnya</option>
           </select>
         </div>
 

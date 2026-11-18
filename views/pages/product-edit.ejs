@@ -2,7 +2,7 @@
 <section class="py-12 bg-[#FAF8F5]">
   <div class="max-w-3xl mx-auto px-4 sm:px-6">
     <div class="bg-white rounded-[2.5rem] border border-gray-100 p-8 sm:p-10 shadow-card space-y-6">
-      
+
       <div class="flex items-center justify-between border-b border-gray-100 pb-4">
         <div>
           <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-100 text-brand-orange text-xs font-black tracking-wide mb-1.5">
@@ -11,7 +11,6 @@
           <h1 class="text-2xl font-black text-gray-900 tracking-tight">
             Perbarui Data: <%= product.name %>
           </h1>
-          <p class="text-xs text-gray-500">ID Produk: #<%= product.id %></p>
         </div>
 
         <a href="/penjual/dashboard" class="px-4 py-2 rounded-full text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">
@@ -39,11 +38,11 @@
               Kategori Rasa
             </label>
             <select name="category" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
-              <option value="Manis" <%= product.category === 'Manis' ? 'selected' : '' %>>🥞 Manis &amp; Lumer</option>
-              <option value="Pedas" <%= product.category === 'Pedas' ? 'selected' : '' %>>🌶️ Pedas Nampol</option>
-              <option value="Gurih" <%= product.category === 'Gurih' ? 'selected' : '' %>>🍢 Gurih &amp; Renyah</option>
-              <option value="Minuman" <%= product.category === 'Minuman' ? 'selected' : '' %>>🥤 Minuman Segar</option>
-              <option value="Lainnya" <%= product.category === 'Lainnya' ? 'selected' : '' %>>🍽️ Lainnya</option>
+              <option value="Manis" <%= product.category === 'Manis' ? 'selected' : '' %>> Manis &amp; Lumer</option>
+              <option value="Pedas" <%= product.category === 'Pedas' ? 'selected' : '' %>> Pedas Nampol</option>
+              <option value="Gurih" <%= product.category === 'Gurih' ? 'selected' : '' %>> Gurih &amp; Renyah</option>
+              <option value="Minuman" <%= product.category === 'Minuman' ? 'selected' : '' %>> Minuman Segar</option>
+              <option value="Lainnya" <%= product.category === 'Lainnya' ? 'selected' : '' %>> Lainnya</option>
             </select>
           </div>
 

@@ -74,26 +74,27 @@ const determineActionName = (method, url) => {
 
   // API Produk
   if (url === '/api/produk') {
-    if (method === 'GET') return 'Ambil Seluruh Katalog Jajanan (GET)';
-    if (method === 'POST') return 'Tambah Jajanan Baru (POST)';
+    if (method === 'GET') return 'Lihat katalog jajanan';
+    if (method === 'POST') return 'Tambah jajanan';
   }
   if (url.startsWith('/api/produk/')) {
-    if (url.endsWith('/reviews') && method === 'POST') return `Kirim Ulasan & Rating Jajanan (${url})`;
-    if (method === 'GET') return `Ambil Detail Jajanan by ID (${url})`;
-    if (method === 'PUT') return `Perbarui Data Jajanan (${url})`;
-    if (method === 'DELETE') return `Hapus Data Jajanan (${url})`;
+    if (url.endsWith('/reviews') && method === 'POST') return 'Kirim ulasan dan rating';
+    if (method === 'GET') return 'Lihat detail jajanan';
+    if (method === 'PUT') return 'Perbarui data jajanan';
+    if (method === 'DELETE') return 'Hapus jajanan';
   }
 
   // API lainnya
-  if (url === '/api/chat' || url.startsWith('/api/chat')) return 'Interaksi AI Assistant Chatbot (POST)';
-  if (url.startsWith('/api/rekomendasi')) return 'Pencarian Rekomendasi Jajanan AI (GET)';
-  if (url.startsWith('/api/status')) return 'Pemeriksaan Status Server API (GET)';
+  if (url === '/api/lapak/peta') return 'Muat lokasi lapak aktif';
+  if (url === '/api/chat' || url.startsWith('/api/chat')) return 'Kirim pesan ke Asisten NemuSnack';
+  if (url.startsWith('/api/rekomendasi')) return 'Minta rekomendasi jajanan';
+  if (url.startsWith('/api/status')) return 'Periksa ketersediaan layanan';
   if (url.startsWith('/api/logs')) return 'Ambil Riwayat Activity Logs (GET)';
 
   // Penjual Dashboard & Operasi
-  if (url === '/penjual/dashboard') return 'Akses Dashboard Lapak Penjual (GET)';
-  if (url === '/penjual/status-location') return 'Perbarui Status Bekerja & Posisi Lapak (POST)';
-  if (url === '/penjual/products') return 'Tambah Menu Jajanan Penjual (POST)';
+  if (url === '/penjual/dashboard') return 'Buka dashboard lapak';
+  if (url === '/penjual/status-location') return 'Perbarui status dan lokasi lapak';
+  if (url === '/penjual/products') return 'Tambah menu jajanan';
   if (url.startsWith('/penjual/products/') && url.endsWith('/edit')) return method === 'POST' ? 'Simpan Perubahan Menu Penjual (POST)' : 'Buka Form Edit Menu (GET)';
   if (url.startsWith('/penjual/products/') && url.endsWith('/delete')) return 'Hapus Menu Jajanan Penjual (POST)';
 
@@ -197,7 +198,10 @@ const loggerMiddleware = (req, res, next) => {
                           req.originalUrl.endsWith('.png') ||
                           req.originalUrl.endsWith('.jpg');
 
-    if (!isStaticAsset) {
+    // Pembacaan riwayat tidak dicatat kembali agar logger tidak memenuhi riwayatnya sendiri.
+    const isLoggerRead = req.path.startsWith('/api/logs');
+    const isMapRefresh = req.method === 'GET' && req.path === '/api/lapak/peta';
+    if (!isStaticAsset && !isLoggerRead && !isMapRefresh) {
       const user = req.session ? req.session.user : null;
       const userId = user ? user.id : null;
       const userEmail = user ? user.email : null;

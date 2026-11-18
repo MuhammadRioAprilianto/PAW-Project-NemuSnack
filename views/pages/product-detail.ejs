@@ -1,7 +1,7 @@
 <!-- Halaman Detail Produk & Ulasan Pembeli - NemuSnack -->
 <section class="py-12 bg-[#FAF8F5]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-    
+
     <!-- Breadcrumb -->
     <nav class="flex items-center space-x-2 text-xs font-bold text-gray-500">
       <a href="/" class="hover:text-brand-orange">Home</a>
@@ -26,7 +26,7 @@
 
     <!-- 1. KONTEN UTAMA PRODUK (Grid 2 Kolom) -->
     <div class="bg-white rounded-[2.5rem] border border-gray-100 p-6 sm:p-10 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-10">
-      
+
       <!-- Kolom Kiri: Gambar Produk -->
       <div class="lg:col-span-6 flex flex-col">
         <div class="relative w-full h-80 sm:h-[420px] rounded-3xl overflow-hidden bg-gray-100 border border-gray-100 shadow-sm">
@@ -34,21 +34,21 @@
                alt="<%= product.name %>" 
                class="w-full h-full object-cover"
                onerror="this.src='/assets/images/snack-placeholder.svg'">
-          
+
           <!-- Status Pill -->
           <% if (product.status === 'Mangkal') { %>
             <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-emerald-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md flex items-center">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Sedang Mangkal
+              <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Berjalan
             </span>
           <% } else if (product.status === 'Sedang Berjalan' || product.status === 'Berjalan') { %>
             <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-amber-800 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md flex items-center">
-              🚶 Berjalan
+              Berjalan
             </span>
           <% } else if (product.status === 'Libur') { %>
-            <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-slate-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md">🌙 Libur</span>
+            <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-slate-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md">Libur</span>
           <% } else { %>
             <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-gray-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md">
-              ⛔ Tutup
+              Tutup
             </span>
           <% } %>
 
@@ -63,9 +63,7 @@
         <div>
           <!-- Seller Info -->
           <div class="flex items-center space-x-2 text-xs font-bold text-gray-500 mb-2">
-            <span>📍 <%= seller ? seller.shop_name : (product.shop_name || product.seller || 'Lapak Pedagang') %></span>
-            <span>•</span>
-            <span class="font-mono text-gray-400">ID Produk: #<%= product.id %></span>
+            <span><%= seller ? seller.shop_name : (product.shop_name || product.seller || 'Lapak Pedagang') %></span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-3">
@@ -111,7 +109,7 @@
             <a href="https://wa.me/<%= product.whatsapp.replace(/[^0-9]/g, '') %>?text=Halo%20<%= encodeURIComponent(product.seller || '') %>,%20saya%20tertarik%20dengan%20<%= encodeURIComponent(product.name) %>%20di%20NemuSnack!" 
                target="_blank" 
                class="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-full font-black text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/30 transition-all">
-              <span class="text-lg mr-2">💬</span> Hubungi Pedagang via WhatsApp
+          Hubungi Pedagang via WhatsApp
             </a>
           <% } %>
 
@@ -129,7 +127,7 @@
     <div class="bg-white rounded-[2.5rem] border border-gray-100 p-6 sm:p-8 shadow-card space-y-4">
       <div class="border-b border-gray-100 pb-3">
         <h2 class="text-lg font-black text-gray-900 flex items-center">
-          <span class="mr-2">🗺️</span> Peta Titik Lapak Pedagang
+          Peta Titik Lapak Pedagang
         </h2>
         <p class="text-xs text-gray-500 mt-0.5">Lokasi lapak: <%= seller ? seller.seller_location : product.location %></p>
       </div>
@@ -142,7 +140,7 @@
 
     <!-- 3. BAGIAN ULASAN & RATING DARI PEMBELI -->
     <div class="bg-white rounded-[2.5rem] border border-gray-100 p-6 sm:p-8 shadow-card space-y-8">
-      
+
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
         <div>
           <h2 class="text-xl font-black text-gray-900 flex items-center">

@@ -2,7 +2,7 @@
 <section class="py-16 sm:py-20">
   <div class="max-w-md mx-auto px-4 sm:px-6">
     <div class="bg-white rounded-[2.5rem] border border-gray-100 p-8 sm:p-10 shadow-2xl shadow-orange-500/5 relative">
-      
+
       <!-- Header -->
       <div class="text-center mb-8">
         <div class="w-16 h-16 rounded-3xl bg-brand-orange text-white flex items-center justify-center mx-auto mb-4 shadow-lg shadow-brand-orange/30">
@@ -30,7 +30,7 @@
 
       <!-- Form Register -->
       <form action="/register" method="POST" class="space-y-4">
-        
+
         <!-- Pilihan Role (Penjual vs Pembeli) -->
         <div>
           <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2">
@@ -39,14 +39,14 @@
           <div class="grid grid-cols-2 gap-3">
             <label class="relative flex flex-col items-center p-3 rounded-2xl border-2 cursor-pointer transition-all border-brand-orange bg-orange-50/50" id="role-penjual-label">
               <input type="radio" name="role" value="penjual" checked class="sr-only" onchange="toggleRoleUI('penjual')">
-              <span class="text-2xl mb-1">🏪</span>
+
               <span class="text-xs font-black text-gray-900">Penjual / PKL</span>
               <span class="text-[10px] text-gray-500 text-center">Kelola lapak & jajanan</span>
             </label>
 
             <label class="relative flex flex-col items-center p-3 rounded-2xl border-2 cursor-pointer transition-all border-gray-200 hover:border-gray-300" id="role-pembeli-label">
               <input type="radio" name="role" value="pembeli" class="sr-only" onchange="toggleRoleUI('pembeli')">
-              <span class="text-2xl mb-1">🛒</span>
+
               <span class="text-xs font-black text-gray-900">Pembeli</span>
               <span class="text-[10px] text-gray-500 text-center">Jelajahi & beri ulasan</span>
             </label>

@@ -9,11 +9,11 @@
           <% if (seller.seller_status === 'Mangkal') { %>
             <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black">● Mangkal</span>
           <% } else if (seller.seller_status === 'Sedang Berjalan' || seller.seller_status === 'Berjalan') { %>
-            <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-black">🚶 Berjalan</span>
+            <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-black">Berjalan</span>
           <% } else if (seller.seller_status === 'Libur') { %>
-            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black">🌙 Libur</span>
+            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black">Libur</span>
           <% } else { %>
-            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-black">⛔ Tutup</span>
+            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-black">Tutup</span>
           <% } %>
           <span class="px-3 py-1 rounded-full bg-orange-50 text-orange-800 text-xs font-black"><%= seller.productCount %> menu</span>
         </div>
@@ -24,7 +24,7 @@
         <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
           <span class="font-extrabold text-amber-600"><%= seller.rating > 0 ? `★ ${Number(seller.rating).toFixed(1)} / 5` : 'Belum ada rating' %></span>
           <span class="text-gray-500"><%= seller.reviewsCount %> ulasan pembeli</span>
-          <span class="text-gray-600">📍 <%= seller.seller_location %></span>
+          <span class="text-gray-600"><%= seller.seller_location %></span>
         </div>
         <% if (seller.phone) { %>
           <a href="https://wa.me/<%= seller.phone.replace(/[^0-9]/g, '') %>" target="_blank" rel="noopener" class="mt-5 inline-flex w-fit items-center px-5 py-2.5 rounded-full bg-emerald-600 text-white text-xs font-black hover:bg-emerald-700">Hubungi Pedagang via WhatsApp</a>

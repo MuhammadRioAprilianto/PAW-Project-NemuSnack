@@ -195,7 +195,7 @@ async function runChatTests() {
     // 5b. Halaman Penuh Chat (/chat)
     const resChatPage = await request({ method: 'GET', path: '/chat' });
     console.log(`   5b. GET /chat    : Status ${resChatPage.statusCode}`);
-    if (!resChatPage.body.includes('NemuSnack Assistant') || !resChatPage.body.includes('ai-user-query')) {
+    if (!resChatPage.body.includes('Asisten NemuSnack') || !resChatPage.body.includes('ai-user-query')) {
       throw new Error('Halaman khusus /chat tidak memuat form percakapan chatbot');
     }
     console.log('       ✓ Halaman mandiri /chat berhasil ter-render dengan komponen chatbot');

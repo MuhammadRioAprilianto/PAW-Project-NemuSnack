@@ -1,6 +1,6 @@
 /**
  * Controller Chat AI Assistant - NemuSnack
- * Mengatur penerimaan request chat pengguna, pemanggilan Gemini Service, dan penyusunan response JSON
+ * Mengatur penerimaan pesan pengguna dan penyusunan response JSON asisten
  */
 
 const { askGemini } = require('../services/gemini.service');
@@ -15,7 +15,7 @@ const chatController = {
     try {
       const { message } = req.body;
 
-      // Panggil Service Gemini dengan pesan yang sudah tervalidasi oleh middleware
+      // Panggil layanan asisten dengan pesan yang sudah tervalidasi oleh middleware
       const reply = await askGemini(message);
 
       return res.status(200).json({
@@ -28,13 +28,12 @@ const chatController = {
     } catch (error) {
       console.error('Controller Chat AI Error:', error.message);
 
-      // Status 503 jika API key belum dikonfigurasi, atau 500 untuk error internal lainnya
+      // API tidak tersedia jika konfigurasi layanan belum siap.
       const statusCode = error.message.includes('GEMINI_API_KEY') ? 503 : 500;
 
       return res.status(statusCode).json({
         success: false,
-        message: error.message || 'Terjadi kesalahan saat memproses permintaan AI Assistant',
-        error: error.message
+        message: 'Asisten sedang mengalami kendala. Silakan coba kembali nanti.'
       });
     }
   }

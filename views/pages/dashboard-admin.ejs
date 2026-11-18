@@ -1,12 +1,12 @@
 <!-- Dashboard Monitoring & Manajemen Admin - NemuSnack -->
 <section class="py-10 bg-[#FAF8F5]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-    
+
     <!-- Header Banner -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card">
       <div>
         <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-black tracking-wide mb-2">
-          <span>🛡️ PANEL ADMINISTRATOR</span>
+          <span> PANEL ADMINISTRATOR</span>
         </div>
         <h1 class="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">
           Dashboard Monitoring &amp; Manajemen
@@ -41,13 +41,13 @@
 
     <!-- 1. STATS OVERVIEW CARDS (6 Metrik Utama) -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-      
+
       <!-- Total Pengguna -->
       <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between">
         <span class="text-xs font-bold text-gray-400 uppercase">Total User</span>
         <div class="mt-2 flex items-baseline justify-between">
           <span class="text-2xl sm:text-3xl font-black text-gray-900"><%= stats.totalUsers %></span>
-          <span class="text-xl">👥</span>
+
         </div>
         <span class="text-[10px] text-gray-500 mt-1">Akun terdaftar</span>
       </div>
@@ -57,7 +57,7 @@
         <span class="text-xs font-bold text-amber-500 uppercase">Pedagang</span>
         <div class="mt-2 flex items-baseline justify-between">
           <span class="text-2xl sm:text-3xl font-black text-amber-600"><%= stats.totalSellers %></span>
-          <span class="text-xl">🏪</span>
+
         </div>
         <span class="text-[10px] text-gray-500 mt-1">Lapak aktif</span>
       </div>
@@ -67,7 +67,7 @@
         <span class="text-xs font-bold text-emerald-500 uppercase">Pembeli</span>
         <div class="mt-2 flex items-baseline justify-between">
           <span class="text-2xl sm:text-3xl font-black text-emerald-600"><%= stats.totalBuyers %></span>
-          <span class="text-xl">🛒</span>
+
         </div>
         <span class="text-[10px] text-gray-500 mt-1">Pelanggan kuliner</span>
       </div>
@@ -77,7 +77,7 @@
         <span class="text-xs font-bold text-brand-orange uppercase">Katalog Produk</span>
         <div class="mt-2 flex items-baseline justify-between">
           <span class="text-2xl sm:text-3xl font-black text-brand-orange"><%= stats.totalProducts %></span>
-          <span class="text-xl">🍢</span>
+
         </div>
         <span class="text-[10px] text-gray-500 mt-1">Menu di database</span>
       </div>
@@ -97,7 +97,7 @@
         <span class="text-xs font-bold text-purple-600 uppercase">HTTP Requests</span>
         <div class="mt-2 flex items-baseline justify-between">
           <span class="text-2xl sm:text-3xl font-black text-purple-700"><%= stats.totalLogs %></span>
-          <span class="text-xl">📊</span>
+
         </div>
         <span class="text-[10px] text-gray-500 mt-1">Total aksi tercatat</span>
       </div>
@@ -109,7 +109,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div>
           <h2 class="text-xl font-black text-gray-900 flex items-center">
-            <span class="mr-2">👥</span> Manajemen Pengguna (Users)
+             Manajemen Pengguna (Users)
           </h2>
           <p class="text-xs text-gray-500 mt-0.5">Kelola akun, alihkan hak akses (role), atau hapus akun pengguna.</p>
         </div>
@@ -154,7 +154,7 @@
                   <% } %>
                 </td>
                 <td class="py-3 px-4 text-gray-500"><%= u.phone || '-' %></td>
-                
+
                 <!-- Form Ubah Role -->
                 <td class="py-3 px-4">
                   <form action="/admin/users/<%= u.id %>/role" method="POST" class="flex items-center space-x-1.5">
@@ -279,7 +279,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div>
           <h2 class="text-xl font-black text-gray-900 flex items-center">
-            <span class="mr-2">🍢</span> Moderasi Seluruh Katalog Jajanan
+             Moderasi Seluruh Katalog Jajanan
           </h2>
           <p class="text-xs text-gray-500 mt-0.5">Admin berhak meninjau dan menghapus produk jika melanggar ketentuan.</p>
         </div>
@@ -295,7 +295,7 @@
               <img src="<%= p.image %>" class="w-12 h-12 rounded-xl object-cover shrink-0" onerror="this.src='/assets/images/snack-placeholder.svg'">
               <div class="min-w-0">
                 <h4 class="text-xs font-black text-gray-900 truncate"><%= p.name %></h4>
-                <p class="text-[11px] text-gray-500 truncate">📍 <%= p.seller || 'Pedagang' %></p>
+                <p class="text-[11px] text-gray-500 truncate"> <%= p.seller || 'Pedagang' %></p>
                 <p class="text-[11px] font-black text-brand-orange mt-0.5"><%= formatCurrency(p.price) %></p>
               </div>
             </div>

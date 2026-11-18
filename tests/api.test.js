@@ -186,6 +186,13 @@ async function runTests() {
 
   const resMenu = await request({ method: 'GET', path: '/menu' });
   console.log(`   GET /menu (Katalog)    : ${resMenu.statusCode} OK (Length: ${resMenu.body.length} bytes)`);
+  assert(!resMenu.body.includes('Cek API') && !resMenu.body.includes('ID: '), 'Kartu katalog tidak boleh menampilkan kontrol uji atau ID produk');
+  const menuSearch = await request({ method: 'GET', path: '/menu?q=Telur%20Gulung' });
+  assert.strictEqual(menuSearch.statusCode, 200, 'Pencarian nama produk harus berhasil');
+  assert(menuSearch.body.includes('Telur Gulung Crispy Mas Danang'), 'Pencarian nama harus menampilkan produk yang cocok');
+  assert(!menuSearch.body.includes('Pisang Cokelat Lumer Pak Yono'), 'Pencarian nama tidak boleh menampilkan produk yang tidak cocok');
+  const idOnlySearch = await request({ method: 'GET', path: '/menu?q=1' });
+  assert(idOnlySearch.body.includes('Jajanan tidak ditemukan'), 'Pencarian harus memakai nama produk, bukan nomor ID');
 
   const resDetail = await request({ method: 'GET', path: '/produk/1' });
   console.log(`   GET /produk/1 (Detail) : ${resDetail.statusCode} OK (Length: ${resDetail.body.length} bytes)`);
@@ -253,6 +260,19 @@ async function runTests() {
   assert(sellerDashboard.body.includes('Choose File'), 'Dashboard harus menyediakan input unggah gambar');
   assert(sellerDashboard.body.includes('route_points'), 'Dashboard harus menyediakan koordinat rute');
   console.log('   ✓ Dashboard memuat peta draggable, titik rute, dan unggah gambar');
+  const locationUpdate = await request({
+    method: 'POST',
+    path: '/penjual/status-location',
+    headers: { Cookie: cookies }
+  }, {
+    status: sellerProfile.seller_status,
+    location: sellerProfile.seller_location,
+    route: sellerProfile.seller_route,
+    lat: sellerProfile.seller_lat,
+    lng: sellerProfile.seller_lng,
+    route_points: JSON.stringify(sellerProfile.seller_route_points || [])
+  });
+  assert.strictEqual(locationUpdate.statusCode, 302, 'Perubahan lokasi penjual harus berhasil');
 
   const smokeImage = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/1ioAAAAASUVORK5CYII=', 'base64');
   let uploadedProduct = null;
@@ -299,11 +319,24 @@ async function runTests() {
 
   // 12. Test Middleware Logger Endpoint & Activity Logs
   console.log('\n12. [LOGGER] Menguji GET /api/logs (Riwayat Middleware Logger)...');
-  const resLogs = await request({ method: 'GET', path: '/api/logs?limit=5' });
+  const resLogs = await request({ method: 'GET', path: '/api/logs?limit=50' });
   console.log(`   Status: ${resLogs.statusCode} (Expected: 200 OK)`);
   console.log(`   Total Log Diterima: ${resLogs.json.total}`);
   console.log(`   Log Terbaru: [${resLogs.json.data[0].method}] ${resLogs.json.data[0].path} - ${resLogs.json.data[0].status_code} (${resLogs.json.data[0].action})`);
   if (resLogs.statusCode !== 200 || !resLogs.json.success) throw new Error('GET /api/logs failed');
+  const createLog = resLogs.json.data.find(log => log.method === 'POST'
+    && log.path === '/api/produk'
+    && log.request_payload
+    && log.request_payload.name === 'Kebab Turki Keju Mozzarella Spesial Test');
+  assert(createLog, 'Logger harus mencatat POST beserta nama produk yang dikirim');
+  assert(createLog.response_data.message.includes('berhasil ditambahkan'), 'Logger harus menampilkan hasil POST yang berhasil');
+  const updateLog = resLogs.json.data.find(log => log.method === 'PUT' && log.path === `/api/produk/${createdId}`);
+  const deleteLog = resLogs.json.data.find(log => log.method === 'DELETE' && log.path === `/api/produk/${createdId}`);
+  assert(updateLog && updateLog.request_payload.price === 22000, 'Logger harus mencatat data PUT yang diperbarui');
+  assert(deleteLog && deleteLog.response_data.message.includes('berhasil dihapus'), 'Logger harus mencatat hasil DELETE');
+  const locationLog = resLogs.json.data.find(log => log.method === 'POST' && log.path === '/penjual/status-location');
+  assert(locationLog && locationLog.request_payload.lat !== undefined && locationLog.request_payload.lng !== undefined, 'Logger harus mencatat status dan koordinat lapak');
+  assert(!resLogs.json.data.some(log => String(log.path).startsWith('/api/logs')), 'Pembacaan log tidak boleh memenuhi riwayat aktivitas');
 
   console.log('\n======================================================');
   console.log('🎉 SELURUH PENGUJIAN FITUR BACKEND, FRONTEND & DB BERHASIL 100%!');

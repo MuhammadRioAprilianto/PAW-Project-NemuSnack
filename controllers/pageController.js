@@ -43,24 +43,26 @@ const pageController = {
   },
 
   /**
-   * Menampilkan halaman katalog jajanan & monitoring lapak
-   * Menyediakan seluruh data produk dari database, pencarian by ID, dan live route inspector
+   * Menampilkan halaman katalog jajanan dengan pencarian nama produk
    */
   async getMenuPage(req, res) {
     try {
-      const products = await productModel.getAllProducts();
-      const requestedId = req.query.id ? parseInt(req.query.id, 10) : null;
-      const selectedProduct = requestedId ? await productModel.getProductById(requestedId) : null;
+      const allProducts = await productModel.getAllProducts();
+      const query = (req.query.q || '').trim();
+      const normalizedQuery = query.toLocaleLowerCase('id-ID');
+      const products = normalizedQuery
+        ? allProducts.filter(product => String(product.name || '').toLocaleLowerCase('id-ID').includes(normalizedQuery))
+        : allProducts;
 
       res.render('pages/menu', {
         title: `Katalog Jajanan & Status Lapak - ${appConfig.appName}`,
         appName: appConfig.appName,
         appTagline: appConfig.appTagline,
         products,
+        query,
+        totalProducts: allProducts.length,
         formatCurrency,
-        currentPath: '/menu',
-        requestedId,
-        selectedProduct
+        currentPath: '/menu'
       });
     } catch (error) {
       console.error('Error saat merender halaman menu:', error);
