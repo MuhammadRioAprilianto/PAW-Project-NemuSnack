@@ -16,36 +16,6 @@ const db = require('../config/db');
 // In-Memory Ring Buffer untuk aksi terbaru (maksimal 50 log terakhir)
 const memoryLogs = [];
 
-// ANSI Color codes untuk visualisasi terminal yang rapi
-const colors = {
-  reset: '\x1b[0m',
-  cyan: '\x1b[36m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  red: '\x1b[31m',
-  magenta: '\x1b[35m',
-  blue: '\x1b[34m',
-  gray: '\x1b[90m'
-};
-
-const getStatusColor = (status) => {
-  if (status >= 500) return colors.red;
-  if (status >= 400) return colors.yellow;
-  if (status >= 300) return colors.cyan;
-  if (status >= 200) return colors.green;
-  return colors.reset;
-};
-
-const getMethodColor = (method) => {
-  switch (method) {
-    case 'GET': return colors.cyan;
-    case 'POST': return colors.green;
-    case 'PUT': return colors.yellow;
-    case 'DELETE': return colors.red;
-    default: return colors.magenta;
-  }
-};
-
 /**
  * Sanitasi data request agar password/kredensial rahasia tidak terekspos dalam log
  */
@@ -177,18 +147,15 @@ const loggerMiddleware = (req, res, next) => {
   res.on('finish', () => {
     const duration = Date.now() - startTime;
     const timestamp = requestDate.toISOString();
-    const methodColor = getMethodColor(req.method);
-    const statusColor = getStatusColor(res.statusCode);
 
-    // Format log terminal sesuai spesifikasi:
-    // [TIMESTAMP] METHOD PATH - STATUS (DURATION ms)
-    console.log(
-      `${colors.gray}[${timestamp}]${colors.reset} ` +
-      `${methodColor}${req.method}${colors.reset} ` +
-      `${req.originalUrl} - ` +
-      `${statusColor}${res.statusCode}${colors.reset} ` +
-      `${colors.gray}(${duration}ms)${colors.reset}`
-    );
+    // Satu baris JSON per request agar mudah dibaca dan diproses oleh log collector.
+    console.log(JSON.stringify({
+      timestamp,
+      method: req.method,
+      path: req.originalUrl,
+      statusCode: res.statusCode,
+      duration
+    }));
 
     // Filter aset statis
     const isStaticAsset = req.originalUrl.startsWith('/assets') || 
