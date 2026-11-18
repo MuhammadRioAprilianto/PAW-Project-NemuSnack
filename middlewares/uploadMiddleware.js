@@ -7,8 +7,11 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Pastikan folder public/uploads ada
-const uploadDir = path.join(__dirname, '../public/uploads');
+// Vercel menyediakan filesystem read-only kecuali /tmp. File di /tmp bersifat
+// sementara; penyimpanan permanen perlu dipindahkan ke object storage.
+const uploadDir = process.env.VERCEL === '1'
+  ? path.join('/tmp', 'nemusnack-uploads')
+  : path.join(__dirname, '../public/uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

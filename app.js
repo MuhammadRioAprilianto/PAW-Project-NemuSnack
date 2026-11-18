@@ -28,6 +28,10 @@ const sellerRoutes = require('./routes/sellerRoutes');
 // Inisialisasi Express
 const app = express();
 
+if (appConfig.env === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // 1. Pengaturan View Engine EJS & Layouts
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -50,7 +54,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 hari
       httpOnly: true,
-      secure: false // true jika menggunakan HTTPS di produksi
+      secure: appConfig.env === 'production'
     }
   })
 );
