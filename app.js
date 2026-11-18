@@ -20,6 +20,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 // Routes MVC
 const pageRoutes = require('./routes/pageRoutes');
 const apiRoutes = require('./routes/apiRoutes');
+const chatRoutes = require('./routes/chat.routes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const sellerRoutes = require('./routes/sellerRoutes');
@@ -81,6 +82,9 @@ app.use('/penjual', sellerRoutes);
 // Routes REST API CRUD (/api/status, /api/produk, /api/rekomendasi, dsb)
 app.use('/api', apiRoutes);
 
+// Route Endpoint AI Assistant Chatbot (/api/chat)
+app.use('/api/chat', chatRoutes);
+
 // Routes Halaman Publik & Pembeli (/, /menu, /produk/:id)
 app.use('/', pageRoutes);
 
@@ -128,6 +132,7 @@ if (require.main === module) {
     console.log(`  🌐 Local URL    : http://localhost:${appConfig.port}`);
     console.log(`  📋 API Status   : http://localhost:${appConfig.port}/api/status`);
     console.log(`  📦 API CRUD     : http://localhost:${appConfig.port}/api/produk`);
+    console.log(`  🤖 AI Chat API  : http://localhost:${appConfig.port}/api/chat`);
     console.log(`  🔐 Login/Auth   : http://localhost:${appConfig.port}/login`);
     console.log(`  🛠️ Admin Dash   : http://localhost:${appConfig.port}/admin/dashboard`);
     console.log(`  🏪 Penjual Dash : http://localhost:${appConfig.port}/penjual/dashboard`);

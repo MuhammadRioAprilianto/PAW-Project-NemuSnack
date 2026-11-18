@@ -16,6 +16,15 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'pembeli' CHECK (role IN ('admin', 'penjual', 'pembeli')),
     phone VARCHAR(30),
+    shop_name VARCHAR(150),
+    shop_description TEXT,
+    shop_image VARCHAR(255) DEFAULT '/assets/images/hero-nemusnack.jpg',
+    seller_status VARCHAR(50) DEFAULT 'Mangkal',
+    seller_location VARCHAR(255) DEFAULT 'Area Sekitar Kampus',
+    seller_route TEXT DEFAULT 'Standby sore hari',
+    seller_route_points JSONB NOT NULL DEFAULT '[]'::jsonb,
+    seller_lat NUMERIC(10, 7) DEFAULT -7.7660,
+    seller_lng NUMERIC(10, 7) DEFAULT 110.3800,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -73,16 +82,16 @@ CREATE TABLE activity_logs (
 -- ====================================================
 
 -- Insert Users
-INSERT INTO users (id, name, email, password, role, phone) VALUES
-(1, 'Admin NemuSnack', 'admin@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'admin', '081200000001'),
-(2, 'Lapak Gerobak Pak Yono', 'pakyono@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567890'),
-(3, 'Telur Gulung Mas Danang', 'masdanang@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567891'),
-(4, 'Tahu Gejrot Cirebon Bu Siti', 'busiti@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567892'),
-(5, 'Cireng Crispy Mang Asep', 'mangasep@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567893'),
-(6, 'Jasuke Lovers Mbak Rina', 'mbakrina@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567894'),
-(7, 'Martabak Mini Bang Jali', 'bangjali@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567895'),
-(8, 'Budi Santoso', 'budi@gmail.com', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'pembeli', '081299999991'),
-(9, 'Siti Rahma', 'siti@gmail.com', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'pembeli', '081299999992');
+INSERT INTO users (id, name, email, password, role, phone, shop_name, shop_description, shop_image, seller_status, seller_location, seller_route, seller_lat, seller_lng) VALUES
+(1, 'Admin NemuSnack', 'admin@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'admin', '081200000001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'Lapak Gerobak Pak Yono', 'pakyono@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567890', 'Lapak Gerobak Pak Yono', 'Spesialis pisang cokelat lumer legendaris berbalut kulit lumpia renyah dengan lelehan cokelat melimpah dan taburan keju gurih khas Pak Yono.', '/assets/images/snack-piscok.jpg', 'Mangkal', 'Jl. Kaliurang km 5 (Depan Apotek)', 'Mangkal tetap mulai pukul 16.00 - 22.00 WIB', -7.7650, 110.3785),
+(3, 'Telur Gulung Mas Danang', 'masdanang@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567891', 'Telur Gulung Mas Danang', 'Telur gulung gurih berbalut bihun renyah dan sosis dengan taburan bumbu balado pedas manis serta saus cabai racikan mantap.', '/assets/images/snack-telur-gulung.jpg', 'Sedang Berjalan', 'Sekitar Pogung Raya -> Flamboyan', 'Rute sore: Gerbang Asrama -> Pogung Baru -> Pogung Raya', -7.7625, 110.3805),
+(4, 'Tahu Gejrot Cirebon Bu Siti', 'busiti@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567892', 'Tahu Gejrot Cirebon Bu Siti', 'Tahu pong kopong renyah disiram kuah gula merah asam segar dengan ulekan cabai rawit hijau segar yang pedas nendang.', '/assets/images/snack-tahu-gejrot.jpg', 'Mangkal', 'Depan Gerbang Barat Kampus', 'Buka setiap sore mulai 15.30 WIB sampai habis', -7.7680, 110.3770),
+(5, 'Cireng Crispy Mang Asep', 'mangasep@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567893', 'Cireng Crispy Mang Asep', 'Cireng renyah di luar kenyal di dalam dengan isian daging ayam suwir melimpah berbumbu rica-rica pedas harum daun jeruk.', '/assets/images/snack-cireng.jpg', 'Mangkal', 'Pertigaan Mirota Kampus', 'Standby dekat halte bus kampus', -7.7705, 110.3815),
+(6, 'Jasuke Lovers Mbak Rina', 'mbakrina@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567894', 'Jasuke Lovers Mbak Rina', 'Jagung manis pipil kukus hangat berpadu mentega wangi, susu kental manis legit, dan parutan keju mozzarella lumer melimpah.', '/assets/images/snack-jasuke.jpg', 'Mangkal', 'Pojok Lapangan Lembah', 'Mangkal setiap hari 16.00 - 21.30 WIB', -7.7690, 110.3840),
+(7, 'Martabak Mini Bang Jali', 'bangjali@nemusnack.id', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'penjual', '6281234567895', 'Martabak Mini Bang Jali', 'Martabak manis mini bersarang lembut dengan aneka pilihan topping meses cokelat, keju parut, kacang sangrai, dan susu kental manis.', '/assets/images/snack-martabak.jpg', 'Sedang Berjalan', 'Rute Lingkar Luar Kampus Terpadu', 'Rute keliling: Kos Bougenville -> Lembah -> Pogung Baru', -7.7610, 110.3820),
+(8, 'Budi Santoso', 'budi@gmail.com', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'pembeli', '081299999991', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(9, 'Siti Rahma', 'siti@gmail.com', '$2b$10$Inr4yfXUZmXNVNyLuc01ROe1QXE5S1dYoOPnChYsq0gVxh6d4uM7W', 'pembeli', '081299999992', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
 

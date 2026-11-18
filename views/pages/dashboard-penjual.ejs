@@ -1,7 +1,7 @@
 <!-- Dashboard Pedagang / Penjual - NemuSnack -->
 <section class="py-10 bg-[#FAF8F5]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-    
+
     <!-- Top Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-[2.5rem] border border-gray-100 shadow-card">
       <div>
@@ -49,44 +49,47 @@
         </div>
 
         <div>
-          <% if (currentCart.status === 'Mangkal') { %>
+          <% if (currentCart.seller_status === 'Mangkal') { %>
             <span class="px-3 py-1.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 flex items-center">
               <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Mangkal
             </span>
-          <% } else if (currentCart.status === 'Sedang Berjalan') { %>
+          <% } else if (currentCart.seller_status === 'Sedang Berjalan' || currentCart.seller_status === 'Berjalan') { %>
             <span class="px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 text-amber-800 flex items-center">
-              🚶 Sedang Berjalan
+              🚶 Berjalan
             </span>
+          <% } else if (currentCart.seller_status === 'Libur') { %>
+            <span class="px-3 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-700">🌙 Libur</span>
           <% } else { %>
             <span class="px-3 py-1.5 rounded-full text-xs font-black bg-gray-100 text-gray-700">
-              💤 Libur / Tutup
+              💤 Tutup
             </span>
           <% } %>
         </div>
       </div>
 
-      <form action="/penjual/status-location" method="POST" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <form action="/penjual/status-location" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Status Operasional -->
         <div>
           <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
             Status Operasional
           </label>
           <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
-            <option value="Mangkal" <%= currentCart.status === 'Mangkal' ? 'selected' : '' %>>📍 Mangkal Menetap</option>
-            <option value="Sedang Berjalan" <%= currentCart.status === 'Sedang Berjalan' ? 'selected' : '' %>>🚶 Sedang Berjalan (Keliling)</option>
-            <option value="Tutup" <%= currentCart.status === 'Tutup' ? 'selected' : '' %>>💤 Libur / Tutup Lapak</option>
+            <option value="Mangkal" <%= currentCart.seller_status === 'Mangkal' ? 'selected' : '' %>>📍 Mangkal</option>
+            <option value="Sedang Berjalan" <%= ['Sedang Berjalan', 'Berjalan'].includes(currentCart.seller_status) ? 'selected' : '' %>>🚶 Berjalan</option>
+            <option value="Tutup" <%= currentCart.seller_status === 'Tutup' ? 'selected' : '' %>>⛔ Tutup</option>
+            <option value="Libur" <%= currentCart.seller_status === 'Libur' ? 'selected' : '' %>>🌙 Libur</option>
           </select>
         </div>
 
-        <!-- Alamat / Patokan Mangkal -->
+        <!-- Patokan untuk membantu pembeli mengenali lokasi -->
         <div>
           <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-            Patokan Lokasi Mangkal
+            Patokan Lokasi Lapak
           </label>
-          <input type="text" 
-                 name="location" 
-                 value="<%= currentCart.location || '' %>"
-                 placeholder="Contoh: Jl. Kaliurang km 5 (Depan Apotek)" 
+          <input type="text"
+                 name="location"
+                 value="<%= currentCart.seller_location || '' %>"
+                 placeholder="Contoh: Depan gerbang kampus"
                  class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
         </div>
 
@@ -95,22 +98,39 @@
           <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
             Rute Keliling / Jam Operasional
           </label>
-          <input type="text" 
-                 name="route" 
-                 value="<%= currentCart.route || '' %>"
-                 placeholder="Contoh: Buka 16.00 - 22.00 WIB" 
+          <input type="text"
+                 name="route"
+            value="<%= currentCart.seller_route || '' %>"
+                 placeholder="Contoh: Buka 16.00 - 22.00 WIB"
                  class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
         </div>
 
-        <!-- Tombol Update -->
-        <div class="flex items-end">
-          <button type="submit" class="w-full py-3 rounded-full font-black text-xs text-white bg-gray-900 hover:bg-brand-orange shadow-md transition-all">
-            Perbarui Status Lapak
-          </button>
+        <div class="md:col-span-2 space-y-2">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+            <div>
+              <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">Tentukan Titik Lapak di Peta</label>
+              <p class="text-xs text-gray-500">Seret pin ke posisi lapak. Pilih “Atur jalur” lalu klik peta untuk menambahkan titik rute berurutan.</p>
+            </div>
+            <label class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700">
+              <input id="route-edit-toggle" type="checkbox" class="rounded text-indigo-600">
+              Atur jalur rute
+            </label>
+          </div>
+          <div id="seller-location-map" class="w-full h-72 rounded-2xl overflow-hidden border border-gray-200"></div>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p id="seller-coordinate-label" class="text-xs font-mono text-gray-500"></p>
+            <button id="clear-route-points" type="button" class="text-xs font-bold text-indigo-700 hover:underline">Hapus titik rute</button>
+          </div>
         </div>
 
-        <input type="hidden" name="lat" value="<%= currentCart.lat || -7.7660 %>">
-        <input type="hidden" name="lng" value="<%= currentCart.lng || 110.3800 %>">
+        <input id="seller-lat" type="hidden" name="lat" value="<%= currentCart.seller_lat || -7.7660 %>">
+        <input id="seller-lng" type="hidden" name="lng" value="<%= currentCart.seller_lng || 110.3800 %>">
+        <input id="seller-route-points" type="hidden" name="route_points" value='<%- JSON.stringify(currentCart.seller_route_points || []).replace(/'/g, "&#39;") %>'>
+        <div class="md:col-span-2 flex justify-end">
+          <button type="submit" class="w-full sm:w-auto px-8 py-3 rounded-full font-black text-xs text-white bg-gray-900 hover:bg-brand-orange shadow-md transition-all">
+            Simpan Status &amp; Lokasi Lapak
+          </button>
+        </div>
       </form>
     </div>
 
@@ -140,7 +160,7 @@
                     <%= p.category %>
                   </span>
                   <span class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-400 text-white shadow-sm">
-                    ★ <%= p.rating %> (<%= p.reviewsCount %>)
+                    <%= p.rating > 0 ? `★ ${Number(p.rating).toFixed(1)}` : 'Belum ada rating' %> (<%= p.reviewsCount %>)
                   </span>
                 </div>
 
@@ -195,7 +215,7 @@
         </p>
       </div>
 
-      <form action="/penjual/products" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form action="/penjual/products" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
             Nama Jajanan *
@@ -223,22 +243,7 @@
           <input type="number" name="price" required min="500" step="500" placeholder="Contoh: 12000" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
         </div>
 
-        <div>
-          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-            URL Gambar Jajanan
-          </label>
-          <input type="text" name="image" value="/assets/images/kebab-placeholder.svg" placeholder="/assets/images/... atau URL luar" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
-        </div>
-
-        <div>
-          <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-            Status Lapak Menu Ini
-          </label>
-          <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
-            <option value="Mangkal">📍 Mangkal</option>
-            <option value="Sedang Berjalan">🚶 Sedang Berjalan</option>
-          </select>
-        </div>
+        <%- include('../partials/image-upload', { uploadId: 'new-product-image', uploadLabel: 'Foto Produk', currentImage: '/assets/images/snack-placeholder.svg' }) %>
 
         <div>
           <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
@@ -253,11 +258,6 @@
           </label>
           <textarea name="description" rows="3" placeholder="Jelaskan cita rasa, bahan racikan, dan keunikan jajanan..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange"></textarea>
         </div>
-
-        <input type="hidden" name="location" value="<%= currentCart.location || 'Area Kampus' %>">
-        <input type="hidden" name="route" value="<%= currentCart.route || 'Standby sore' %>">
-        <input type="hidden" name="lat" value="<%= currentCart.lat || -7.7660 %>">
-        <input type="hidden" name="lng" value="<%= currentCart.lng || 110.3800 %>">
 
         <div class="md:col-span-2 pt-2">
           <button type="submit" class="px-8 py-3.5 rounded-full font-black text-sm text-white bg-brand-orange hover:bg-brand-orange-hover shadow-lg shadow-brand-orange/30 transition-all">
@@ -310,3 +310,69 @@
 
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const mapElement = document.getElementById('seller-location-map');
+  if (!mapElement || !window.L) return;
+
+  const latInput = document.getElementById('seller-lat');
+  const lngInput = document.getElementById('seller-lng');
+  const routeInput = document.getElementById('seller-route-points');
+  const routeToggle = document.getElementById('route-edit-toggle');
+  const coordinateLabel = document.getElementById('seller-coordinate-label');
+  const startLat = Number(latInput.value) || -7.7660;
+  const startLng = Number(lngInput.value) || 110.3800;
+  const map = L.map(mapElement).setView([startLat, startLng], 16);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const shopPin = L.marker([startLat, startLng], { draggable: true }).addTo(map);
+  let routePoints = [];
+  try { routePoints = JSON.parse(routeInput.value || '[]'); } catch { routePoints = []; }
+  let routeLine = null;
+  let routePointMarkers = [];
+
+  const updateCoordinates = (position) => {
+    latInput.value = position.lat.toFixed(7);
+    lngInput.value = position.lng.toFixed(7);
+    coordinateLabel.textContent = `Koordinat lapak: ${latInput.value}, ${lngInput.value}`;
+  };
+  const drawRoute = () => {
+    if (routeLine) map.removeLayer(routeLine);
+    routePointMarkers.forEach(marker => map.removeLayer(marker));
+    routePointMarkers = [];
+    routeInput.value = JSON.stringify(routePoints);
+    if (routePoints.length > 1) {
+      routeLine = L.polyline(routePoints, { color: '#2563EB', weight: 7, opacity: 0.9, dashArray: '12 8' }).addTo(map);
+    }
+    routePoints.forEach((point, index) => {
+      const marker = L.circleMarker(point, {
+        radius: 8,
+        color: '#ffffff',
+        weight: 3,
+        fillColor: '#2563EB',
+        fillOpacity: 1
+      }).bindTooltip(`Titik rute ${index + 1}`).addTo(map);
+      routePointMarkers.push(marker);
+    });
+  };
+
+  updateCoordinates({ lat: startLat, lng: startLng });
+  shopPin.on('dragend', () => updateCoordinates(shopPin.getLatLng()));
+  map.on('click', event => {
+    if (!routeToggle.checked || routePoints.length >= 30) return;
+    routePoints.push([Number(event.latlng.lat.toFixed(7)), Number(event.latlng.lng.toFixed(7))]);
+    drawRoute();
+  });
+  document.getElementById('clear-route-points').addEventListener('click', () => {
+    routePoints = [];
+    drawRoute();
+  });
+  drawRoute();
+  window.setTimeout(() => map.invalidateSize(), 100);
+});
+</script>

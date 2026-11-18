@@ -85,6 +85,7 @@ const determineActionName = (method, url) => {
   }
 
   // API lainnya
+  if (url === '/api/chat' || url.startsWith('/api/chat')) return 'Interaksi AI Assistant Chatbot (POST)';
   if (url.startsWith('/api/rekomendasi')) return 'Pencarian Rekomendasi Jajanan AI (GET)';
   if (url.startsWith('/api/status')) return 'Pemeriksaan Status Server API (GET)';
   if (url.startsWith('/api/logs')) return 'Ambil Riwayat Activity Logs (GET)';
@@ -226,6 +227,7 @@ const loggerMiddleware = (req, res, next) => {
         method: req.method,
         path: req.originalUrl,
         statusCode: res.statusCode,
+        status_code: res.statusCode,
         duration,
         action: actionName,
         user_email: userEmail,

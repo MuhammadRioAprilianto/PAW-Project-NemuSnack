@@ -1,0 +1,132 @@
+<section class="py-10 bg-[#FAF8F5]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <a href="/lapak" class="inline-flex text-xs font-bold text-gray-500 hover:text-brand-orange">← Kembali ke direktori Lapak / PKL</a>
+
+    <article class="bg-white rounded-[2rem] border border-gray-100 shadow-card overflow-hidden grid grid-cols-1 lg:grid-cols-5">
+      <img src="<%= seller.shop_image %>" alt="Foto <%= seller.shop_name %>" class="w-full h-64 lg:h-full min-h-72 object-cover bg-gray-100" onerror="this.onerror=null;this.src='/assets/images/hero-nemusnack.jpg'">
+      <div class="p-6 sm:p-9 lg:col-span-4 flex flex-col justify-center">
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <% if (seller.seller_status === 'Mangkal') { %>
+            <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black">● Mangkal</span>
+          <% } else if (seller.seller_status === 'Sedang Berjalan' || seller.seller_status === 'Berjalan') { %>
+            <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-black">🚶 Berjalan</span>
+          <% } else if (seller.seller_status === 'Libur') { %>
+            <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black">🌙 Libur</span>
+          <% } else { %>
+            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-black">⛔ Tutup</span>
+          <% } %>
+          <span class="px-3 py-1 rounded-full bg-orange-50 text-orange-800 text-xs font-black"><%= seller.productCount %> menu</span>
+        </div>
+        <p class="text-xs font-black text-brand-orange uppercase tracking-widest">Profil Pedagang</p>
+        <h1 class="mt-1 text-3xl sm:text-4xl font-black tracking-tight text-gray-900"><%= seller.shop_name %></h1>
+        <p class="mt-1 text-sm text-gray-500"><%= seller.name %></p>
+        <p class="mt-4 text-sm text-gray-600 leading-relaxed"><%= seller.shop_description || 'Pedagang jajanan kaki lima mitra NemuSnack.' %></p>
+        <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+          <span class="font-extrabold text-amber-600"><%= seller.rating > 0 ? `★ ${Number(seller.rating).toFixed(1)} / 5` : 'Belum ada rating' %></span>
+          <span class="text-gray-500"><%= seller.reviewsCount %> ulasan pembeli</span>
+          <span class="text-gray-600">📍 <%= seller.seller_location %></span>
+        </div>
+        <% if (seller.phone) { %>
+          <a href="https://wa.me/<%= seller.phone.replace(/[^0-9]/g, '') %>" target="_blank" rel="noopener" class="mt-5 inline-flex w-fit items-center px-5 py-2.5 rounded-full bg-emerald-600 text-white text-xs font-black hover:bg-emerald-700">Hubungi Pedagang via WhatsApp</a>
+        <% } %>
+      </div>
+    </article>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 bg-white rounded-[2rem] border border-gray-100 shadow-card p-6 sm:p-8">
+        <div class="flex items-end justify-between gap-3 border-b border-gray-100 pb-4 mb-5">
+          <div>
+            <p class="text-xs font-black text-brand-orange uppercase tracking-widest">Katalog Lapak</p>
+            <h2 class="mt-1 text-2xl font-black text-gray-900">Menu yang dijual</h2>
+          </div>
+          <span class="text-xs text-gray-500"><%= seller.products.length %> produk</span>
+        </div>
+        <% if (seller.products.length) { %>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <% seller.products.forEach(product => { %>
+              <article class="rounded-2xl border border-gray-100 p-3 flex gap-3">
+                <img src="<%= product.image || '/assets/images/snack-placeholder.svg' %>" alt="<%= product.name %>" class="w-24 h-24 rounded-xl object-cover bg-gray-100 shrink-0" onerror="this.onerror=null;this.src='/assets/images/snack-placeholder.svg'">
+                <div class="min-w-0 flex-1">
+                  <span class="text-[10px] font-black uppercase tracking-wide text-brand-orange"><%= product.category %></span>
+                  <h3 class="mt-0.5 font-extrabold text-gray-900 leading-snug"><%= product.name %></h3>
+                  <p class="mt-1 text-xs text-gray-500 line-clamp-2"><%= product.description || 'Jajanan lezat dari lapak ini.' %></p>
+                  <div class="mt-2 flex items-center justify-between gap-2">
+                    <span class="font-black text-brand-orange"><%= formatCurrency(product.price) %></span>
+                    <span class="text-[11px] font-bold text-amber-600"><%= product.rating > 0 ? `★ ${Number(product.rating).toFixed(1)}` : 'Belum dinilai' %></span>
+                  </div>
+                  <a href="/produk/<%= product.id %>" class="inline-block mt-2 text-[11px] font-black text-gray-700 hover:text-brand-orange">Detail produk &amp; ulasan →</a>
+                </div>
+              </article>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <p class="py-10 text-center text-sm text-gray-500">Pedagang ini belum menambahkan produk.</p>
+        <% } %>
+      </div>
+
+      <div class="bg-white rounded-[2rem] border border-gray-100 shadow-card p-6">
+        <p class="text-xs font-black text-brand-orange uppercase tracking-widest">Lokasi Berdagang</p>
+        <h2 class="mt-1 text-xl font-black text-gray-900">Peta Lapak</h2>
+        <p class="mt-1 text-xs text-gray-500"><%= seller.seller_location %></p>
+        <div id="seller-profile-map" class="mt-4 h-72 rounded-2xl overflow-hidden border border-gray-100"></div>
+        <% if (seller.seller_route) { %>
+          <div class="mt-4 p-3 rounded-xl bg-blue-50 border border-blue-100">
+            <p class="text-[10px] font-black uppercase tracking-wide text-blue-800">Rute / Jam Operasional</p>
+            <p class="mt-1 text-xs text-blue-900"><%= seller.seller_route %></p>
+            <% if ((seller.seller_route_points || []).length > 1) { %><p class="mt-1 text-[10px] text-blue-700">Garis biru menunjukkan urutan titik rute.</p><% } %>
+          </div>
+        <% } %>
+        <% if (['Tutup', 'Libur'].includes(seller.seller_status)) { %>
+          <p class="mt-3 text-[11px] text-gray-500">Pin lokasi disembunyikan selama lapak tutup atau libur.</p>
+        <% } %>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-[2rem] border border-gray-100 shadow-card p-6 sm:p-8">
+      <div class="flex flex-wrap items-end justify-between gap-3 border-b border-gray-100 pb-4 mb-5">
+        <div>
+          <p class="text-xs font-black text-brand-orange uppercase tracking-widest">Ulasan Pembeli</p>
+          <h2 class="mt-1 text-2xl font-black text-gray-900">Rating &amp; pengalaman pelanggan</h2>
+        </div>
+        <span class="text-amber-600 font-black"><%= seller.rating > 0 ? `★ ${Number(seller.rating).toFixed(1)} / 5` : 'Belum ada rating' %></span>
+      </div>
+      <% if (reviews.length) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <% reviews.forEach(review => { %>
+            <article class="p-4 rounded-2xl bg-[#FAF8F5] border border-gray-100">
+              <div class="flex justify-between gap-3">
+                <p class="text-sm font-black text-gray-900"><%= review.reviewer_name %></p>
+                <span class="shrink-0 text-amber-500 font-black"><%= '★'.repeat(review.rating) %> <span class="text-xs text-gray-700"><%= review.rating %>/5</span></span>
+              </div>
+              <p class="mt-1 text-xs text-gray-500">Untuk <%= review.product_name %> · <%= new Date(review.created_at).toLocaleDateString('id-ID') %></p>
+              <p class="mt-3 text-sm text-gray-700 leading-relaxed">“<%= review.comment %>”</p>
+            </article>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <p class="py-8 text-center text-sm text-gray-500">Belum ada ulasan untuk lapak ini.</p>
+      <% } %>
+    </section>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const mapElement = document.getElementById('seller-profile-map');
+  if (!mapElement || !window.L) return;
+  const status = <%- JSON.stringify(seller.seller_status) %>;
+  const lat = <%- JSON.stringify(seller.lat) %>;
+  const lng = <%- JSON.stringify(seller.lng) %>;
+  const routePoints = <%- JSON.stringify(seller.seller_route_points || []) %>;
+  const map = L.map(mapElement).setView([lat, lng], 16);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap contributors' }).addTo(map);
+  if (!['Tutup', 'Libur'].includes(status)) {
+    L.marker([lat, lng]).addTo(map).bindPopup('<strong>Lokasi Lapak</strong><br><%= seller.shop_name.replace(/'/g, "\\'") %>').openPopup();
+    if (Array.isArray(routePoints) && routePoints.length > 1) {
+      L.polyline(routePoints, { color: '#2563EB', weight: 7, opacity: 0.9, dashArray: '14 8', lineCap: 'round' }).addTo(map);
+      routePoints.forEach((point, index) => L.circleMarker(point, { radius: 6, color: '#fff', weight: 2, fillColor: '#2563EB', fillOpacity: 1 }).bindTooltip(`Titik rute ${index + 1}`).addTo(map));
+    }
+  }
+  window.setTimeout(() => map.invalidateSize(), 100);
+});
+</script>

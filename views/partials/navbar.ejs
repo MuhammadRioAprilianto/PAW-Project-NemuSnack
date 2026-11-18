@@ -2,7 +2,7 @@
 <header class="sticky top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md transition-all duration-300 border-b border-gray-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
-      
+
       <!-- Brand Logo -->
       <a href="/" class="flex items-center space-x-3 group">
         <div class="w-11 h-11 rounded-2xl bg-brand-orange flex items-center justify-center text-white shadow-lg shadow-brand-orange/30 group-hover:scale-105 transition-transform duration-200">
@@ -19,29 +19,34 @@
 
       <!-- Desktop Navigation Links -->
       <nav class="hidden md:flex items-center space-x-1 lg:space-x-3">
-        <a href="/" 
+        <a href="/"
            class="px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 <%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'text-brand-orange bg-orange-100/60' : 'text-gray-700 hover:text-brand-orange hover:bg-orange-50' %>">
           Home
         </a>
 
-        <a href="/menu" 
+        <a href="/menu"
            class="px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 <%= (typeof currentPath !== 'undefined' && currentPath === '/menu') ? 'text-brand-orange bg-orange-100/60' : 'text-gray-700 hover:text-brand-orange hover:bg-orange-50' %>">
           Katalog Jajanan
         </a>
 
-        <a href="/#map-tracking" 
+        <a href="/lapak"
+           class="px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 <%= (typeof currentPath !== 'undefined' && currentPath === '/lapak') ? 'text-brand-orange bg-orange-100/60' : 'text-gray-700 hover:text-brand-orange hover:bg-orange-50' %>">
+          Lapak / PKL
+        </a>
+
+        <a href="/#map-tracking"
            class="px-3.5 py-2 rounded-full text-sm font-bold text-gray-700 hover:text-brand-orange hover:bg-orange-50 transition-all duration-200 flex items-center">
           <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
           Peta Lapak
         </a>
 
-        <a href="/#ai-assistant" 
+        <a href="/#ai-assistant"
            class="px-3.5 py-2 rounded-full text-sm font-bold text-gray-700 hover:text-brand-orange hover:bg-orange-50 transition-all duration-200 flex items-center">
           <span class="mr-1 text-xs">✨</span> Tanya AI
         </a>
 
         <!-- Tombol Cepat Buka Middleware Logger Console -->
-        <button type="button" 
+        <button type="button"
                 onclick="toggleLoggerDrawer(true)"
                 class="px-3 py-1.5 rounded-full text-xs font-black text-gray-800 bg-gray-100 hover:bg-brand-orange hover:text-white border border-gray-200 transition-all flex items-center space-x-1.5 shadow-sm"
                 title="Buka Middleware Logger Console (GET, POST, PUT, DELETE)">
@@ -52,12 +57,12 @@
         <!-- Link Khusus Role -->
         <% if (typeof currentUser !== 'undefined' && currentUser) { %>
           <% if (currentUser.role === 'admin') { %>
-            <a href="/admin/dashboard" 
+            <a href="/admin/dashboard"
                class="px-3.5 py-2 rounded-full text-sm font-black text-purple-700 bg-purple-100/80 hover:bg-purple-200 border border-purple-300 transition-all flex items-center">
               <span class="mr-1.5">🛡️</span> Admin Panel
             </a>
           <% } else if (currentUser.role === 'penjual') { %>
-            <a href="/penjual/dashboard" 
+            <a href="/penjual/dashboard"
                class="px-3.5 py-2 rounded-full text-sm font-black text-amber-800 bg-amber-100/80 hover:bg-amber-200 border border-amber-300 transition-all flex items-center">
               <span class="mr-1.5">🏪</span> Lapak Saya
             </a>
@@ -82,8 +87,8 @@
           </div>
 
           <!-- Tombol Logout -->
-          <a href="/logout" 
-             class="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" 
+          <a href="/logout"
+             class="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors"
              title="Keluar / Logout">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -91,11 +96,11 @@
           </a>
         <% } else { %>
           <!-- Belum Login -->
-          <a href="/login" 
+          <a href="/login"
              class="px-5 py-2.5 rounded-full text-xs font-black text-gray-700 hover:text-brand-orange hover:bg-orange-50 border border-gray-200 transition-all">
             Masuk
           </a>
-          <a href="/register" 
+          <a href="/register"
              class="px-5 py-2.5 rounded-full text-xs font-black text-white bg-brand-orange hover:bg-brand-orange-hover shadow-md shadow-brand-orange/20 transition-all">
             Daftar
           </a>
@@ -104,9 +109,9 @@
 
       <!-- Mobile Hamburger Button -->
       <div class="flex md:hidden items-center space-x-2">
-        <button id="mobile-menu-btn" 
-                type="button" 
-                class="p-2.5 rounded-full text-gray-700 hover:text-brand-orange hover:bg-orange-50 focus:outline-none" 
+        <button id="mobile-menu-btn"
+                type="button"
+                class="p-2.5 rounded-full text-gray-700 hover:text-brand-orange hover:bg-orange-50 focus:outline-none"
                 aria-label="Buka menu navigasi">
           <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
@@ -129,6 +134,9 @@
       <a href="/menu" class="block px-4 py-2.5 rounded-2xl text-base font-bold text-gray-700 hover:text-brand-orange hover:bg-orange-50">
         Katalog Jajanan
       </a>
+      <a href="/lapak" class="block px-4 py-2.5 rounded-2xl text-base font-bold text-gray-700 hover:text-brand-orange hover:bg-orange-50">
+        Lapak / PKL
+      </a>
       <a href="/#map-tracking" class="block px-4 py-2.5 rounded-2xl text-base font-bold text-gray-700 hover:text-brand-orange hover:bg-orange-50 flex items-center">
         <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
         Peta Lapak
@@ -136,7 +144,7 @@
       <a href="/#ai-assistant" class="block px-4 py-2.5 rounded-2xl text-base font-bold text-gray-700 hover:text-brand-orange hover:bg-orange-50">
         ✨ Tanya AI
       </a>
-      <button type="button" 
+      <button type="button"
               onclick="toggleLoggerDrawer(true)"
               class="w-full text-left px-4 py-2.5 rounded-2xl text-base font-bold text-gray-900 bg-orange-100/60 hover:bg-orange-100 flex items-center space-x-2">
         <span>⚡ Middleware Logger (GET/POST/PUT/DEL)</span>

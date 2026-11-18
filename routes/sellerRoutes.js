@@ -7,6 +7,16 @@ const express = require('express');
 const router = express.Router();
 const sellerController = require('../controllers/sellerController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const upload = require('../middlewares/uploadMiddleware');
+
+const handleProductImage = (req, res, next) => {
+  upload.single('image')(req, res, (error) => {
+    if (error) {
+      return res.redirect(`/penjual/dashboard?error=${encodeURIComponent(error.message)}`);
+    }
+    next();
+  });
+};
 
 // Proteksi seluruh route pedagang
 router.use(authMiddleware.isPenjual);
@@ -18,13 +28,13 @@ router.get('/dashboard', sellerController.getDashboard);
 router.post('/status-location', sellerController.updateStatusLocation);
 
 // Tambah Produk Baru
-router.post('/products', sellerController.createProduct);
+router.post('/products', handleProductImage, sellerController.createProduct);
 
 // Halaman Edit Produk
 router.get('/products/:id/edit', sellerController.getEditProductPage);
 
 // Simpan Update Produk
-router.post('/products/:id/edit', sellerController.updateProduct);
+router.post('/products/:id/edit', handleProductImage, sellerController.updateProduct);
 
 // Hapus Produk
 router.post('/products/:id/delete', sellerController.deleteProduct);

@@ -7,6 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "node tests/api.test.js",
+    "test:chat": "node tests/chat.test.js",
     "seed": "psql -d nemusnack_db -U rizoo -f seed.sql"
   },
   "keywords": [
@@ -21,6 +22,7 @@
   "author": "NemuSnack Team",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "bcryptjs": "^3.0.3",
     "connect-pg-simple": "^10.0.0",
     "dotenv": "^18.0.10",
@@ -28,6 +30,7 @@
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.19.0",
+    "multer": "^2.5.0",
     "pg": "^8.23.1"
   },
   "devDependencies": {

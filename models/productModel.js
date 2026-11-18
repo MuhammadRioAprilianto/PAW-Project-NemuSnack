@@ -4,6 +4,7 @@
  */
 
 const db = require('../config/db');
+const normalizeSellerStatus = require('../utils/sellerStatus');
 
 const productModel = {
   /**
@@ -15,21 +16,30 @@ const productModel = {
       SELECT 
         p.*,
         u.name AS seller,
-        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        COALESCE(u.shop_name, u.name) AS shop_name,
+        u.seller_status,
+        u.seller_location,
+        u.seller_route,
+        u.seller_lat,
+        u.seller_lng,
+        COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
         COUNT(r.id)::int AS "reviewsCount"
       FROM products p
       LEFT JOIN users u ON p.seller_id = u.id
       LEFT JOIN reviews r ON p.id = r.product_id
-      GROUP BY p.id, u.name
+      GROUP BY p.id, u.id
       ORDER BY p.id ASC;
     `;
     const result = await db.query(sql);
     return result.rows.map(row => ({
       ...row,
       price: Number(row.price),
-      rating: parseFloat(row.rating) || 5.0,
-      lat: row.lat ? parseFloat(row.lat) : -7.7660,
-      lng: row.lng ? parseFloat(row.lng) : 110.3800
+      status: normalizeSellerStatus(row.seller_status || row.status),
+      location: row.seller_location || row.location,
+      route: row.seller_route || row.route,
+      rating: parseFloat(row.rating) || 0,
+      lat: row.seller_lat ? parseFloat(row.seller_lat) : (row.lat ? parseFloat(row.lat) : -7.7660),
+      lng: row.seller_lng ? parseFloat(row.seller_lng) : (row.lng ? parseFloat(row.lng) : 110.3800)
     }));
   },
 
@@ -48,13 +58,19 @@ const productModel = {
         u.name AS seller,
         u.email AS seller_email,
         u.phone AS seller_phone,
-        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        COALESCE(u.shop_name, u.name) AS shop_name,
+        u.seller_status,
+        u.seller_location,
+        u.seller_route,
+        u.seller_lat,
+        u.seller_lng,
+        COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
         COUNT(r.id)::int AS "reviewsCount"
       FROM products p
       LEFT JOIN users u ON p.seller_id = u.id
       LEFT JOIN reviews r ON p.id = r.product_id
       WHERE p.id = $1
-      GROUP BY p.id, u.name, u.email, u.phone;
+      GROUP BY p.id, u.id;
     `;
     const result = await db.query(sql, [numericId]);
     if (result.rows.length === 0) return null;
@@ -63,9 +79,12 @@ const productModel = {
     return {
       ...row,
       price: Number(row.price),
-      rating: parseFloat(row.rating) || 5.0,
-      lat: row.lat ? parseFloat(row.lat) : -7.7660,
-      lng: row.lng ? parseFloat(row.lng) : 110.3800
+      status: normalizeSellerStatus(row.seller_status || row.status),
+      location: row.seller_location || row.location,
+      route: row.seller_route || row.route,
+      rating: parseFloat(row.rating) || 0,
+      lat: row.seller_lat ? parseFloat(row.seller_lat) : (row.lat ? parseFloat(row.lat) : -7.7660),
+      lng: row.seller_lng ? parseFloat(row.seller_lng) : (row.lng ? parseFloat(row.lng) : 110.3800)
     };
   },
 
@@ -202,21 +221,30 @@ const productModel = {
     const sql = `
       SELECT 
         p.*,
-        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        u.seller_status,
+        u.seller_location,
+        u.seller_route,
+        u.seller_lat,
+        u.seller_lng,
+        COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
         COUNT(r.id)::int AS "reviewsCount"
       FROM products p
+      LEFT JOIN users u ON p.seller_id = u.id
       LEFT JOIN reviews r ON p.id = r.product_id
       WHERE p.seller_id = $1
-      GROUP BY p.id
+      GROUP BY p.id, u.id
       ORDER BY p.id DESC;
     `;
     const result = await db.query(sql, [sellerId]);
     return result.rows.map(row => ({
       ...row,
       price: Number(row.price),
-      rating: parseFloat(row.rating) || 5.0,
-      lat: row.lat ? parseFloat(row.lat) : -7.7660,
-      lng: row.lng ? parseFloat(row.lng) : 110.3800
+      status: normalizeSellerStatus(row.seller_status || row.status),
+      location: row.seller_location || row.location,
+      route: row.seller_route || row.route,
+      rating: parseFloat(row.rating) || 0,
+      lat: row.seller_lat ? parseFloat(row.seller_lat) : (row.lat ? parseFloat(row.lat) : -7.7660),
+      lng: row.seller_lng ? parseFloat(row.seller_lng) : (row.lng ? parseFloat(row.lng) : 110.3800)
     }));
   },
 
@@ -257,7 +285,12 @@ const productModel = {
       SELECT 
         p.*,
         u.name AS seller,
-        COALESCE(ROUND(AVG(r.rating), 1), 5.0) AS rating,
+        u.seller_status,
+        u.seller_location,
+        u.seller_route,
+        u.seller_lat,
+        u.seller_lng,
+        COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
         COUNT(r.id)::int AS "reviewsCount"
       FROM products p
       LEFT JOIN users u ON p.seller_id = u.id
@@ -268,16 +301,19 @@ const productModel = {
         LOWER(p.description) LIKE $1 OR
         LOWER(p.location) LIKE $1 OR
         LOWER(u.name) LIKE $1
-      GROUP BY p.id, u.name
+      GROUP BY p.id, u.id
       ORDER BY p.id ASC;
     `;
     const result = await db.query(sql, [lower]);
     return result.rows.map(row => ({
       ...row,
       price: Number(row.price),
-      rating: parseFloat(row.rating) || 5.0,
-      lat: row.lat ? parseFloat(row.lat) : -7.7660,
-      lng: row.lng ? parseFloat(row.lng) : 110.3800
+      status: normalizeSellerStatus(row.seller_status || row.status),
+      location: row.seller_location || row.location,
+      route: row.seller_route || row.route,
+      rating: parseFloat(row.rating) || 0,
+      lat: row.seller_lat ? parseFloat(row.seller_lat) : (row.lat ? parseFloat(row.lat) : -7.7660),
+      lng: row.seller_lng ? parseFloat(row.seller_lng) : (row.lng ? parseFloat(row.lng) : 110.3800)
     }));
   }
 };

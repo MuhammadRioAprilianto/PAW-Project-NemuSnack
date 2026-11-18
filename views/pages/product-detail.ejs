@@ -40,13 +40,15 @@
             <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-emerald-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md flex items-center">
               <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Sedang Mangkal
             </span>
-          <% } else if (product.status === 'Sedang Berjalan') { %>
+          <% } else if (product.status === 'Sedang Berjalan' || product.status === 'Berjalan') { %>
             <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-amber-800 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md flex items-center">
-              🚶 Sedang Berjalan (Keliling)
+              🚶 Berjalan
             </span>
+          <% } else if (product.status === 'Libur') { %>
+            <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-slate-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md">🌙 Libur</span>
           <% } else { %>
             <span class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-gray-700 text-xs font-black px-3.5 py-1.5 rounded-full shadow-md">
-              💤 Lapak Tutup
+              ⛔ Tutup
             </span>
           <% } %>
 
@@ -61,7 +63,7 @@
         <div>
           <!-- Seller Info -->
           <div class="flex items-center space-x-2 text-xs font-bold text-gray-500 mb-2">
-            <span>📍 <%= product.seller || 'Lapak Pedagang' %></span>
+            <span>📍 <%= seller ? seller.shop_name : (product.shop_name || product.seller || 'Lapak Pedagang') %></span>
             <span>•</span>
             <span class="font-mono text-gray-400">ID Produk: #<%= product.id %></span>
           </div>
@@ -73,7 +75,7 @@
           <!-- Rating -->
           <div class="flex items-center space-x-3 mb-4">
             <div class="flex items-center text-amber-500 text-sm font-extrabold">
-              <span>★ <%= product.rating %></span>
+              <span><%= product.rating > 0 ? `★ ${Number(product.rating).toFixed(1)}` : 'Belum ada rating' %></span>
             </div>
             <span class="text-xs text-gray-400 font-bold">•</span>
             <span class="text-xs font-bold text-gray-600"><%= reviews.length %> Ulasan Pelanggan</span>
@@ -97,8 +99,9 @@
 
           <!-- Titik Lokasi & Rute -->
           <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200 text-xs space-y-2 mb-6">
-            <p><strong>Titik Lapak:</strong> <span class="text-gray-700"><%= product.location || 'Area Sekitar Kampus' %></span></p>
-            <p><strong>Rute / Waktu:</strong> <span class="text-gray-700"><%= product.route || 'Standby sore hari' %></span></p>
+            <p><strong>Titik Lapak:</strong> <span class="text-gray-700"><%= seller ? seller.seller_location : (product.location || 'Area Sekitar Kampus') %></span></p>
+            <p><strong>Rute / Waktu:</strong> <span class="text-gray-700"><%= seller ? seller.seller_route : (product.route || 'Standby sore hari') %></span></p>
+            <% if (seller) { %><a href="/lapak/<%= seller.id %>" class="inline-flex mt-2 text-xs font-black text-brand-orange hover:underline">Lihat profil dan semua menu lapak →</a><% } %>
           </div>
         </div>
 
@@ -128,10 +131,13 @@
         <h2 class="text-lg font-black text-gray-900 flex items-center">
           <span class="mr-2">🗺️</span> Peta Titik Lapak Pedagang
         </h2>
-        <p class="text-xs text-gray-500 mt-0.5">Lokasi GPS terkini pedagang: <%= product.location %></p>
+        <p class="text-xs text-gray-500 mt-0.5">Lokasi lapak: <%= seller ? seller.seller_location : product.location %></p>
       </div>
 
       <div id="product-map" class="w-full h-72 rounded-2xl overflow-hidden border border-gray-100"></div>
+      <% if (seller && ['Tutup', 'Libur'].includes(seller.seller_status)) { %>
+        <p class="text-xs text-gray-500">Pin lokasi disembunyikan karena lapak sedang <%= seller.seller_status.toLowerCase() %>.</p>
+      <% } %>
     </div>
 
     <!-- 3. BAGIAN ULASAN & RATING DARI PEMBELI -->
@@ -148,7 +154,7 @@
         </div>
 
         <div class="flex items-center space-x-2 bg-orange-50 px-4 py-2 rounded-2xl border border-orange-100">
-          <span class="text-xl font-black text-brand-orange">★ <%= product.rating %></span>
+              <span class="text-xl font-black text-brand-orange"><%= product.rating > 0 ? `★ ${Number(product.rating).toFixed(1)}` : 'Belum ada rating' %></span>
           <span class="text-xs text-gray-500 font-bold">/ 5.0 (<%= reviews.length %> ulasan)</span>
         </div>
       </div>
@@ -164,19 +170,13 @@
               <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
                 Pilih Rating Kepuasan
               </label>
-              <div class="flex items-center space-x-4">
-                <label class="flex items-center space-x-1 cursor-pointer">
-                  <input type="radio" name="rating" value="5" checked class="text-brand-orange">
-                  <span class="text-xs font-bold text-amber-500">★★★★★ 5 Bintang</span>
-                </label>
-                <label class="flex items-center space-x-1 cursor-pointer">
-                  <input type="radio" name="rating" value="4" class="text-brand-orange">
-                  <span class="text-xs font-bold text-amber-500">★★★★ 4 Bintang</span>
-                </label>
-                <label class="flex items-center space-x-1 cursor-pointer">
-                  <input type="radio" name="rating" value="3" class="text-brand-orange">
-                  <span class="text-xs font-bold text-amber-500">★★★ 3 Bintang</span>
-                </label>
+              <div class="flex flex-wrap items-center gap-3">
+                <% [5, 4, 3, 2, 1].forEach(value => { %>
+                  <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 bg-white cursor-pointer hover:border-brand-orange">
+                    <input type="radio" name="rating" value="<%= value %>" <%= value === 5 ? 'checked' : '' %> class="text-brand-orange">
+                    <span class="text-xs font-bold text-amber-500"><%= '★'.repeat(value) %> <span class="text-gray-700"><%= value %></span></span>
+                  </label>
+                <% }); %>
               </div>
             </div>
 
@@ -244,8 +244,10 @@
 <!-- Leaflet Map Script untuk Detail Produk -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const lat = <%= product.lat || -7.7660 %>;
-    const lng = <%= product.lng || 110.3800 %>;
+    const lat = <%- JSON.stringify(seller ? seller.lat : product.lat) %>;
+    const lng = <%- JSON.stringify(seller ? seller.lng : product.lng) %>;
+    const status = <%- JSON.stringify(seller ? seller.seller_status : product.status) %>;
+    const routePoints = <%- JSON.stringify(seller ? seller.seller_route_points : []) %>;
     const map = L.map('product-map').setView([lat, lng], 16);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -253,7 +255,16 @@
       attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    const marker = L.marker([lat, lng]).addTo(map);
-    marker.bindPopup(`<b><%= product.name %></b><br><%= product.seller %><br><%= product.location %>`).openPopup();
+    if (!['Tutup', 'Libur'].includes(status)) {
+      const marker = L.marker([lat, lng]).addTo(map);
+      const popup = document.createElement('div');
+      popup.textContent = <%- JSON.stringify(seller ? seller.shop_name : product.shop_name || product.seller).replace(/</g, '\\u003c') %>;
+      marker.bindPopup(popup).openPopup();
+      if (Array.isArray(routePoints) && routePoints.length > 1) {
+        L.polyline(routePoints, { color: '#2563EB', weight: 7, opacity: 0.9, dashArray: '14 8', lineCap: 'round' }).addTo(map);
+        routePoints.forEach((point, index) => L.circleMarker(point, { radius: 6, color: '#fff', weight: 2, fillColor: '#2563EB', fillOpacity: 1 }).bindTooltip(`Titik rute ${index + 1}`).addTo(map));
+      }
+    }
+    window.setTimeout(() => map.invalidateSize(), 100);
   });
 </script>

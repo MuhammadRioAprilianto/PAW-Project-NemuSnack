@@ -25,7 +25,7 @@
         </div>
       <% } %>
 
-      <form action="/penjual/products/<%= product.id %>/edit" method="POST" class="space-y-4">
+      <form action="/penjual/products/<%= product.id %>/edit" method="POST" enctype="multipart/form-data" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
@@ -54,23 +54,7 @@
             <input type="number" name="price" value="<%= product.price %>" required min="500" step="500" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
           </div>
 
-          <div>
-            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-              Status Lapak Menu Ini
-            </label>
-            <select name="status" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs font-bold focus:outline-none focus:border-brand-orange bg-white">
-              <option value="Mangkal" <%= product.status === 'Mangkal' ? 'selected' : '' %>>📍 Mangkal</option>
-              <option value="Sedang Berjalan" <%= product.status === 'Sedang Berjalan' ? 'selected' : '' %>>🚶 Sedang Berjalan</option>
-              <option value="Tutup" <%= product.status === 'Tutup' ? 'selected' : '' %>>💤 Libur / Tutup</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-              URL Foto Produk
-            </label>
-            <input type="text" name="image" value="<%= product.image %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
-          </div>
+          <%- include('../partials/image-upload', { uploadId: 'edit-product-image', uploadLabel: 'Foto Produk', currentImage: product.image }) %>
 
           <div>
             <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
@@ -79,19 +63,6 @@
             <input type="text" name="whatsapp" value="<%= product.whatsapp || '' %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
           </div>
 
-          <div>
-            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-              Lokasi / Titik Mangkal
-            </label>
-            <input type="text" name="location" value="<%= product.location || '' %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
-          </div>
-
-          <div>
-            <label class="block text-xs font-black text-gray-700 uppercase tracking-wider mb-1.5">
-              Rute Keliling
-            </label>
-            <input type="text" name="route" value="<%= product.route || '' %>" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:border-brand-orange">
-          </div>
         </div>
 
         <div>

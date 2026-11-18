@@ -6,12 +6,24 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const userModel = require('../models/userModel');
 const reviewModel = require('../models/reviewModel');
 const logModel = require('../models/logModel');
 const loggerMiddleware = require('../middlewares/loggerMiddleware');
 
 // 1. Endpoint status ketersediaan API -> GET /api/status
 router.get('/status', productController.getStatus);
+
+// Lokasi dan status lapak aktif untuk penyegaran peta pengguna.
+router.get('/lapak/peta', async (req, res) => {
+  try {
+    const sellers = await userModel.getActiveSellersForMap();
+    return res.status(200).json({ success: true, total: sellers.length, data: sellers });
+  } catch (error) {
+    console.error('Error saat mengambil lapak aktif untuk peta:', error);
+    return res.status(500).json({ success: false, message: 'Gagal mengambil data peta lapak' });
+  }
+});
 
 // 2. Operasi CRUD Produk Jajanan (PostgreSQL)
 // Read All -> GET /api/produk
@@ -99,7 +111,8 @@ router.post('/produk/:id/reviews', async (req, res) => {
     const { id } = req.params;
     const { rating, comment } = req.body;
 
-    if (!rating || !comment) {
+    const ratingValue = Number(rating);
+    if (!Number.isInteger(ratingValue) || ratingValue < 1 || ratingValue > 5 || typeof comment !== 'string' || !comment.trim()) {
       return res.status(400).json({
         success: false,
         message: 'Rating (1-5) dan komentar ulasan wajib diisi'
@@ -111,7 +124,7 @@ router.post('/produk/:id/reviews', async (req, res) => {
     const newReview = await reviewModel.createReview({
       productId: id,
       userId,
-      rating: parseInt(rating, 10),
+      rating: ratingValue,
       comment
     });
 

@@ -65,12 +65,15 @@ project/
 │   │   ├── menu.ejs            # Katalog menu & Live API Route Inspector
 │   │   ├── product-detail.ejs  # Detail jajanan, rating, dan ulasan pembeli
 │   │   ├── product-edit.ejs    # Formulir edit produk penjual
+│   │   ├── sellers.ejs         # Direktori Lapak / PKL
+│   │   ├── seller-detail.ejs   # Profil, katalog, peta, rating, ulasan
 │   │   ├── login.ejs           # Halaman login (dengan tombol isi cepat demo 3 role)
 │   │   ├── register.ejs        # Halaman pendaftaran (Penjual vs Pembeli)
 │   │   ├── dashboard-admin.ejs # Dashboard monitoring & kelola user Admin
 │   │   └── dashboard-penjual.ejs # Dashboard operasional lapak Penjual
 │   ├── partials/
 │   │   ├── navbar.ejs          # Navigasi responsif dengan status login
+│   │   ├── image-upload.ejs    # Choose File, drag-and-drop, dan preview gambar
 │   │   └── footer.ejs          # Footer modern
 │   └── errors/
 │       └── 404.ejs             # Halaman 404 Not Found
@@ -93,14 +96,98 @@ project/
 | Method | Endpoint | Deskripsi | Status Code |
 |---|---|---|---|
 | **GET** | `/api/status` | Mengecek status ketersediaan backend API & koneksi DB | `200 OK` |
+| **GET** | `/api/lapak/peta` | Mengambil satu pin per lapak aktif untuk peta pengguna | `200 OK` |
 | **GET** | `/api/produk` | Mengambil seluruh katalog produk jajanan dari database | `200 OK` |
 | **GET** | `/api/produk/:id` | Mengambil data detail satu produk berdasarkan ID | `200 OK` / `404 Not Found` |
 | **POST** | `/api/produk` | Menambahkan produk baru ke dalam database | `201 Created` / `400 Bad Request` |
 | **PUT** | `/api/produk/:id` | Memperbarui data produk berdasarkan ID di database | `200 OK` / `404 Not Found` |
 | **DELETE** | `/api/produk/:id` | Menghapus data produk berdasarkan ID di database | `200 OK` / `404 Not Found` |
 | **GET** | `/api/rekomendasi?q=...` | Asisten pencarian & rekomendasi jajanan (Tanya AI) | `200 OK` |
+| **POST** | `/api/chat` | Endpoint AI Assistant Chatbot terintegrasi Google Gemini LLM | `200 OK` / `400` / `503` |
 | **POST** | `/api/produk/:id/reviews` | Mengirimkan ulasan & rating bintang untuk produk | `201 Created` / `400 Bad Request` |
 | **GET** | `/api/logs?limit=...` | Mengambil riwayat request yang dicatat middleware logger | `200 OK` |
+
+---
+
+## 🤖 Fitur AI Assistant Chatbot (Google Gemini API & Prompt Engineering)
+
+Aplikasi **NemuSnack** kini terintegrasi penuh dengan model Large Language Model (LLM) **Google Gemini** melalui backend Express.js. AI berperan sebagai asisten kuliner pintar yang memandu pembeli mencari informasi produk jajanan, harga, rasa, rekomendasi, hingga lokasi lapak mangkal PKL.
+
+### 1. Prinsip Desain & Batasan Pengetahuan (Guardrails)
+- **Database Context Grounding:** Service menyusun `System Instruction` secara **dinamis** dengan mengambil data produk terkini langsung dari PostgreSQL (`name`, `category`, `price`, `status`, `location`, `seller`, `whatsapp`, `rating`, `reviewsCount`, `description`). AI tidak pernah mengarang informasi fiktif di luar data aplikasi.
+- **Batasan Domain yang Ketat:** AI hanya berwenang menjawab pertanyaan seputar jajanan kaki lima, produk, harga, pedagang, dan lapak NemuSnack.
+- **Penolakan Sopan di Luar Konteks:** Jika pengguna menanyakan topik di luar konteks aplikasi (seperti: *"Buatkan saya kode program untuk membuat game"*, coding HTML/JS, matematika, politik, curhat, puisi), AI secara santun dan tegas menolak permintaan tersebut serta mengarahkan pengguna kembali ke topik kuliner NemuSnack.
+- **Pertahanan Terhadap Prompt Injection:** Dilengkapi instruksi ketat untuk mengabaikan upaya manipulasi peran pengguna (seperti *"abaikan instruksi sebelumnya"*, *"jailbreak"*, *"kamu sekarang adalah"*).
+- **Defense in Depth (Lapis Ganda):** Validasi dilakukan di dua level:
+  1. **Level Kode (Middleware & Backend):** `validateChatInput.js` memvalidasi keberadaan pesan, string type, non-empty trimmed message, batas maksimal 500 karakter, dan deteksi awal pola out-of-context.
+  2. **Level Model (Gemini LLM):** System Prompt terisolasi yang mengunci peran, batasan, dan aturan respons AI.
+- **Keamanan Kredensial (Zero Leakage):** `GEMINI_API_KEY` hanya disimpan pada file `.env` di server backend dan **tidak pernah dikirim atau dibocorkan ke sisi frontend/client**.
+
+### 2. Struktur Komponen MVC & Service AI
+```
+project/
+├── config/
+│   └── gemini.js            # Konfigurasi client Google Gemini API & pembacaan GEMINI_API_KEY
+├── controllers/
+│   └── chat.controller.js   # Controller penerima request POST /api/chat dan pengembalian respons
+├── middlewares/
+│   └── validateChatInput.js # Validasi input pesan (wajib diisi, maks. 500 karakter)
+├── routes/
+│   └── chat.routes.js       # Definisi endpoint publik POST /api/chat
+├── services/
+│   └── gemini.service.js    # Grounding database dinamis, System Prompt, guardrail, & call Gemini
+└── views/
+    ├── pages/
+    │   ├── home.ejs         # Komponen interaktif Chatbot AI (#ai-assistant) di Beranda
+    │   └── chat.ejs         # Halaman penuh khusus AI Assistant (/chat)
+    └── partials/
+        └── middleware-logger-drawer.ejs # Tab "AI CHAT" pengujian langsung di Side Drawer
+```
+
+### 3. Spesifikasi Endpoint Chatbot
+- **Method & URL:** `POST /api/chat`
+- **Headers:** `Content-Type: application/json`
+- **Request Body:**
+```json
+{
+  "message": "Informasi apa saja yang tersedia?"
+}
+```
+- **Response Berhasil (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Berhasil mendapatkan balasan dari AI Assistant",
+  "data": {
+    "reply": "Berikut jajanan kaki lima yang tersedia di NemuSnack: 1. Pisang Cokelat Lumer Pak Yono (Rp12.000, Kategori Manis)..."
+  }
+}
+```
+- **Response Validasi Gagal (400 Bad Request):**
+```json
+{
+  "success": false,
+  "message": "Pesan chat tidak boleh kosong"
+}
+```
+- **Response Penolakan di Luar Konteks (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "reply": "Maaf, saya adalah NemuSnack AI Assistant yang bertugas membantu Anda seputar direktori jajanan kaki lima, produk, harga, dan lapak pedagang di aplikasi NemuSnack. Saya tidak dapat membuatkan kode program atau aplikasi game. Apakah ada jajanan kuliner yang ingin Anda cari hari ini?"
+  }
+}
+```
+
+### 4. Antarmuka Frontend Chatbot
+- **Interactive Chat Interface:** Komponen percakapan modern pada section `#ai-assistant` di Beranda dan halaman `/chat`.
+- **Fetch API:** Mengirim pertanyaan ke backend secara asinkron tanpa reload halaman.
+- **Bubble Percakapan:** Membedakan bubble pengguna (oranye, kanan) dan balasan AI (putih dengan format teks rapi).
+- **Indikator Loading:** Animasi denyut tiga titik (*typing indicator*) saat AI memproses jawaban.
+- **Penanganan Error:** Menampilkan alert box informatif apabila terjadi gangguan koneksi atau layanan AI.
+- **Quick Prompt Pills:** Tombol rekomendasi pertanyaan cepat (*"🥟 Apa saja produk yang tersedia?"*, *"🥞 Jajanan manis lumer"*, *"💰 Jajanan murah < Rp12.000"*, *"🚫 Uji Pertanyaan Luar Konteks"*).
+- **Side Drawer Tester:** Tab *AI CHAT* pada Middleware Logger Drawer untuk pengujian langsung endpoint `POST /api/chat` secara instan.
 
 ---
 
@@ -131,13 +218,14 @@ Aplikasi dilengkapi dengan panel konsol **Middleware Logger interaktif** di bagi
 
 ### 2. 🏪 Penjual / Pedagang
 - **Autentikasi Akun:** Registrasi akun khusus Penjual dan Login.
-- **Pengaturan Lapak:** Mengubah status bekerja (*Mangkal*, *Sedang Berjalan*, *Libur/Tutup*), menentukan patokan lokasi mangkal, rute keliling, dan koordinat GPS.
+- **Pengaturan Lapak:** Status, patokan, koordinat, dan titik rute disimpan terpusat pada profil pedagang. Pin dapat digeser di peta dan rute dibuat dengan memilih titik berurutan.
 - **Manajemen Menu (CRUD):**
   - **Create:** Menambah menu jajanan baru melalui dashboard.
   - **Read:** Melihat daftar menu yang dijual beserta rating dan jumlah ulasan.
   - **Update:** Mengedit harga, nama, kategori, deskripsi, dan foto menu.
   - **Delete:** Menghapus menu jajanan dari database.
 - **Ulasan & Rating:** Melihat umpan balik dan komentar yang diberikan oleh pembeli pada produknya.
+- **Unggah Foto Produk:** Choose File, drag-and-drop, dan pratinjau sebelum menyimpan.
 
 ### 3. 🛒 User / Pembeli
 - **Jelajahi Menu & Lapak:** Melihat katalog jajanan kaki lima lengkap dengan kategori, status mangkal/keliling, dan harga asli.
@@ -145,6 +233,11 @@ Aplikasi dilengkapi dengan panel konsol **Middleware Logger interaktif** di bagi
 - **Detail Produk:** Melihat informasi komprehensif, titik lapak di peta, dan tombol direct order ke WhatsApp pedagang.
 - **Beri Rating & Ulasan:** Memberikan penilaian bintang (1-5) dan komentar testimoni.
 - **Tanya AI:** Asisten pencarian pintar berbasis preferensi rasa (manis, pedas, murah, gurih).
+
+### 4. 📍 Direktori Lapak / PKL
+- **Daftar & Pencarian:** Cari pedagang berdasarkan nama lapak, kategori, deskripsi, atau lokasi.
+- **Profil Lapak:** Lihat profil pedagang, katalog produk, lokasi, status operasional, rating rata-rata, dan ulasan.
+- **Peta Aktif:** Satu pin mewakili satu pedagang aktif. Pin tutup/libur disembunyikan; peta disegarkan berkala.
 
 ---
 
@@ -194,6 +287,10 @@ Jalankan file SQL untuk membuat tabel dan data awal:
 psql -d nemusnack_db -U rizoo -f seed.sql
 # Atau gunakan npm script:
 npm run seed
+```
+Untuk database yang sudah berisi data, jalankan migrasi agar kolom profil lapak dan titik rute tersedia tanpa menghapus produk:
+```bash
+node migrations/add_seller_columns.js
 ```
 
 ### 5. Jalankan Pengujian Otomatis (Testing)
